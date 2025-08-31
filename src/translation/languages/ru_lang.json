@@ -1,0 +1,60 @@
+{
+  "homepage": {
+    "title": "Сервис сокращения ссылок",
+    "placeholder": "Введите длинный URL",
+    "cut": "Сократить",
+    "cutting": "Сокращение...",
+    "copy": "Копировать",
+    "copied": "Скопировано!",
+    "downloadqr": "Скачать QR",
+    "urlopt": {
+      "clicks": {
+        "clicksword": "Клики:",
+        "unlim": "неограничено",
+        "1k": "1k",
+        "10k": "10k",
+        "100k": "100k",
+        "1mln": "1m"
+      },
+      "urtime": {
+        "liftimeword": "Время жизни:",
+        "week": "неделя",
+        "day": "день",
+        "hour": "час",
+        "month": "месяц"
+      }
+    }
+  },
+  "header": {
+    "about": "О сервисе",
+    "myurls": "Мои ссылки",
+    "signup": "Регистрация"
+  },
+  "footer": {
+    "discription": "Возьмите под свой контроль свои ссылки, сократите их, сгенерируйте QR-коды и отслеживайте их статус"
+  },
+  "message": {
+    "qrdowngenerror": "Ошибка генерации QR",
+    "urlblank": "Введите URL",
+    "urlcuterror": "Не удалось сократить URL-адрес",
+    "qrdownloaderror": "Ошибка загрузки QR",
+    "qrdownloading": "QR-код еще не готов"
+  },
+  "myurls": {
+    "refresh": "Обновить список",
+    "nourls": "URL-адреса не найдены.",
+    "copy": "Копировать",
+    "lifetime": "Время жизни:",
+    "clicks": "Клики:",
+    "logout": "Выйти"
+  },
+  "registration": {
+    "title": "Зарегистрироваться",
+    "submit": "Отправить",
+    "loginPlaceholder": "Логин",
+    "passwordPlaceholder": "Пароль",
+    "registrationError": "Ошибка регистрации",
+    "invalidLogin": "Логин не должен быть дленнее 15 символов и содержать спецсимволы."
+}
+}
+

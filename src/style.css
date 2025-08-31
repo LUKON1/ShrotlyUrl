@@ -1,0 +1,24 @@
+/* цвета tailwind:
+шапка и фут rose-300
+текст sky-400
+фон rose-50
+*/
+@import "tailwindcss";
+@font-face {
+  font-family: 'AmazeDoom';
+  src: url('./fonts/amazdoomleft.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: #fff1f2;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+

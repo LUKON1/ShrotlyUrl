@@ -1,0 +1,60 @@
+{
+  "homepage": {
+    "title": "Link Shortening Service",
+    "placeholder": "Enter a long URL",
+    "cut": "Shorten",
+    "cutting": "Shortening...",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "downloadqr": "Download QR",
+    "urlopt": {
+      "clicks": {
+        "clicksword": "Clicks:",
+        "unlim": "unlimited",
+        "1k": "1k",
+        "10k": "10k",
+        "100k": "100k",
+        "1mln": "1m"
+      },
+      "urtime": {
+        "liftimeword": "Lifetime:",
+        "week": "week",
+        "day": "day",
+        "hour": "hour",
+        "month": "month"
+      }
+    }
+  },
+  "header": {
+    "about": "About",
+    "myurls": "My urls",
+    "signup": "Sign Up"
+  },
+  "footer": {
+    "discription": "Take control of your links, shorten them, generate QR codes, and track their status"
+  },
+  "message": {
+    "qrdowngenerror": "Error generating QR",
+    "urlblank": "Enter a URL",
+    "urlcuterror": "Failed to shorten URL",
+    "qrdownloaderror": "QR download error",
+    "qrdownloading": "QR code not ready yet"
+  },
+   "myurls": {
+    "refresh": "Refresh List",
+    "nourls": "No URLs found.",
+    "copy": "Copy",
+    "lifetime": "Lifetime:",
+    "clicks": "Clicks:",
+    "logout": "Logout" 
+  },
+  "registration": {
+    "title": "Sign Up",
+    "submit": "Submit",
+    "loginPlaceholder": "Login",
+    "passwordPlaceholder": "Password",
+    "registrationError": "Registration error",
+    "invalidLogin": "Login must be 1-15 alphanumeric characters (no special symbols)."
+  }
+}
+
