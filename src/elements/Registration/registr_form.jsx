@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import Notifications from "../messagewindow";
+import Notifications from "../shared/messagewindow";
 import { useNavigate } from "react-router-dom";
 import Registrsubmit from "./registr_submit";
 import { useTranslation } from "react-i18next";

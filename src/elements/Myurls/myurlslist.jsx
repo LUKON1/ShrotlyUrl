@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
+import { formatDate } from "../../utils/formatDate";
 function Urlslist() {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const { t } = useTranslation();
@@ -9,9 +10,6 @@ function Urlslist() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const formatDate = (isoDate) => {
-    return dayjs(isoDate).format("DD.MM.YYYY");
-  };
   const displayedUrls = useMemo(() => {
     return searchTerm
       ? urls.filter((url) =>
@@ -19,9 +17,12 @@ function Urlslist() {
         )
       : urls;
   }, [searchTerm, urls]);
+
+
   useEffect(() => {
     fetchUrls();
   }, []);
+
 
   const fetchUrls = async () => {
     setLoading(true);

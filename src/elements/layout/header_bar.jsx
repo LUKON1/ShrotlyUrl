@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink } from "react-router-dom";
-import Slider from "./lang_chekbox";
+import LangCheckBox from "../shared/lang_checkbox";
 
 function Header_bar() {
   const { t } = useTranslation();
@@ -73,7 +73,7 @@ function Header_bar() {
           className="md:flex md:flex-row w-[50vw] text-center  justify-center items-center hidden text-lg md:text-xl lg:text-2xl
          text-rose-50 font-bold transition-all duration-200 ease-out h-2/3"
         >
-          <Slider />
+          <LangCheckBox />
           <NavLink
             to="/about"
             className={({ isActive }) =>
@@ -197,7 +197,7 @@ function Header_bar() {
                   {t("header.signup")}
                 </NavLink>
               )}
-              <Slider />
+              <LangCheckBox />
             </nav>
           </div>
         </div>

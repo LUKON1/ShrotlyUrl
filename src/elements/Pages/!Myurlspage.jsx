@@ -1,5 +1,5 @@
-import Logout from "./logout";
-import Urlslist from "./myurlslist";
+import Logout from "../Myurls/logout";
+import Urlslist from "../Myurls/myurlslist";
 function Myurlspage() {
   return (
     <div>

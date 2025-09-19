@@ -5,7 +5,6 @@ function Logout() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("usertoken");
     localStorage.setItem("isLoggedIn", "false");
     window.dispatchEvent(new Event('storage'));
     navigate("/");

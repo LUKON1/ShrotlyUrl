@@ -116,7 +116,7 @@ function Qrgen({ ShortUrl, qrContainerRef, notificationRef }) {
       ) : (
         // Показываем placeholder пока генерируется PNG
         <div className="w-64 h-64 flex items-center justify-center bg-rose-50 rounded-lg">
-          <span className="text-rose-300">Генерация QR...</span>
+          <span className="text-rose-300">Downloading...</span>
         </div>
       )}
     </div>

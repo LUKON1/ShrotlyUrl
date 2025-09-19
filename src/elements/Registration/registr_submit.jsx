@@ -13,7 +13,7 @@ function Registrsubmit() {
           p-4  rounded-md text-rose-950 font-extrabold
           w-3xs md:w-[55vw]
           lg:w-[70vw]
-           max-w-5xl"
+          max-w-5xl"
     >
       {t('registration.submit')}
     </button>

@@ -30,65 +30,68 @@
 ## Структура проекта || Project Structure
 
 ```
-shorturl
-├─ .continue
-│  └─ prompts
-│     └─ new-prompt.yaml
+ShortlyUrl1
 ├─ eslint.config.js
 ├─ index.html
 ├─ package-lock.json
 ├─ package.json
-├─ public                    # Статические ресурсы (изображения, service worker) | Static assets (images, service worker)
+├─ public
 │  └─ mockServiceWorker.js
 ├─ README.md
 ├─ src
-│  ├─ assets                # Изображения и иконки | Images and icons
+│  ├─ assets
 │  │  ├─ burger-cross.svg
 │  │  ├─ burger.svg
 │  │  ├─ cross.svg
 │  │  ├─ Flag_of_Kemerovo_Oblast.svg.png
 │  │  └─ home-page.png
-│  ├─ elements              # Компоненты React (разбиты по функционалу) | React components (categorized by functionality)
-│  │  ├─ App.jsx            # Корневой компонент приложения | Root application component
-│  │  ├─ footer.jsx
-│  │  ├─ header_bar.jsx
-│  │  ├─ Homepage           # Компоненты главной страницы (форма сокращения, кнопки, QR) | Homepage components (shortening form, buttons, QR)
-│  │  │  ├─ !Homepage.jsx
+│  ├─ elements
+│  │  ├─ Aboutpage.jsx
+│  │  ├─ App.jsx
+│  │  ├─ Homepage
 │  │  │  ├─ copy_button.jsx
-│  │  │  ├─ h1.jsx
 │  │  │  ├─ loadQR_Button.jsx
 │  │  │  ├─ main_form.jsx
 │  │  │  ├─ qr_gen.jsx
-│  │  │  ├─ submit_button.jsx
-│  │  │  └─ wrapper_home.jsx
-│  │  ├─ lang_chekbox.jsx
-│  │  ├─ messagewindow.jsx
-│  │  ├─ Myurls             # Компоненты страницы "Мои URL" | "My URLs" page components
-│  │  │  ├─ !Myurlspage.jsx
+│  │  │  └─ submit_button.jsx
+│  │  ├─ layout
+│  │  │  ├─ footer.jsx
+│  │  │  └─ header_bar.jsx
+│  │  ├─ Myurls
 │  │  │  ├─ logout.jsx
 │  │  │  └─ myurlslist.jsx
-│  │  ├─ PrivateRoute.jsx   # Защита маршрутов для авторизованных пользователей | Protected routes for authenticated users
-│  │  └─ Registration       # Компоненты страниц регистрации/авторизации | Registration/Authorization page components
-│  │     ├─ !Registrpage.jsx
-│  │     ├─ registr_form.jsx
-│  │     ├─ registr_h1.jsx
-│  │     ├─ registr_submit.jsx
-│  │     └─ registr_wrapper.jsx
-│  ├─ fonts                 # Пользовательские шрифты | Custom fonts
+│  │  ├─ Pages
+│  │  │  ├─ !Homepage.jsx
+│  │  │  ├─ !Myurlspage.jsx
+│  │  │  ├─ !Registrpage.jsx
+│  │  │  └─ PrivateRoute.jsx
+│  │  ├─ Registration
+│  │  │  ├─ registr_form.jsx
+│  │  │  └─ registr_submit.jsx
+│  │  └─ shared
+│  │     ├─ h1.jsx
+│  │     ├─ lang_checkbox.jsx
+│  │     ├─ messagewindow.jsx
+│  │     └─ wrapper_home.jsx
+│  ├─ fonts
 │  │  └─ amazdoomleft.ttf
-│  ├─ main.jsx              # Точка входа в приложение | Application entry point
-│  ├─ mocks                 # Конфигурация Mock Service Worker | Mock Service Worker configuration
+│  ├─ main.jsx
+│  ├─ mocks
 │  │  ├─ browser.js
 │  │  └─ handlers.js
-│  │
-│  ├─ style.css             # Глобальные стили Tailwind CSS | Global Tailwind CSS styles
-│  └─ translation           # Файлы локализации (i18n) | Localization files (i18n)
-│     ├─ i18n.js
-│     └─ languages
-│        ├─ en_lang.json
-│        └─ ru_lang.json
-├─ tailwind.config.js      # Конфигурация Tailwind CSS | Tailwind CSS configuration
-└─ vite.config.js          # Конфигурация Vite | Vite configuration
+│  ├─ planning.excalidraw
+│  ├─ style.css
+│  ├─ translation
+│  │  ├─ i18n.js
+│  │  └─ languages
+│  │     ├─ en_lang.json
+│  │     └─ ru_lang.json
+│  └─ utils
+│     ├─ containsMyDomain.js
+│     └─ formatDate.js
+├─ tailwind.config.js
+└─ vite.config.js
+
 ```
 
 ## Установка и Запуск | Installation and Run
@@ -116,5 +119,3 @@ shorturl
     npm run dev
     ```
     Приложение будет доступно по адресу `http://localhost:5173` (или другому порту, указанному Vite). | The application will be available at `http://localhost:5173` (or another port specified by Vite).
-
-

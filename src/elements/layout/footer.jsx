@@ -11,8 +11,9 @@ function Footer() {
       <div className="w-[70vw] h-full flex flex-col text-base md:text-xl lg:text-2xl justify-center items-center text-rose-50 font-bold text-left">
         {t('footer.discription')}
       </div>
-      <div className="font-bold text-rose-50 mb-1.5">powered by <a href="https://github.com/LUKON1"/></div>
+      <div className="font-bold text-rose-50 mb-1.5">powered by <a className="text-blue-500 underline" href="https://github.com/LUKON1">LUKON</a> and supported by <a className="text-blue-500 underline" href="https://github.com/Kribzdy">Kribzdy</a></div>
     </footer>
   );
 }
 export default Footer;
+

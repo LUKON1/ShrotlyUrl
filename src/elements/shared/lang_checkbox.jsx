@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-function Slider() {
+function LangCheckBox() {
   const { i18n } = useTranslation();
   const [isChecked, setIsChecked] = useState(i18n.language === 'en');
   const handleCheck = (e) => {
@@ -48,4 +48,4 @@ function Slider() {
     </label>
   );
 }
-export default Slider;
+export default LangCheckBox;
