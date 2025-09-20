@@ -1,8 +1,4 @@
-import { useTranslation } from 'react-i18next';
-
-function Registrsubmit() {
-  const { t } = useTranslation();
-
+function Registrsubmit({children}) {
   return (
     <button
       type="submit"
@@ -15,7 +11,7 @@ function Registrsubmit() {
           lg:w-[70vw]
           max-w-5xl"
     >
-      {t('registration.submit')}
+    {children}
     </button>
   );
 }

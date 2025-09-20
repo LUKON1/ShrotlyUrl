@@ -1,21 +1,19 @@
-import { useState, useRef, useEffect } from "react";
-import Notifications from "../shared/messagewindow";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
+import Notifications from "../shared/messagewindow";
 import Registrsubmit from "../shared/registr_submit";
 import { useTranslation } from "react-i18next";
+import axios from "../../api/axios";
 import useAuth from "../../utils/useAuth";
-import { validateLogin } from "../../utils/loginvalidate";
 
-function Registrform() {
-  const API_REGISTR = "/registr";
+function Signinform() {
+  const API_SIGNIN = "/signin";
+  const { setAuth } = useAuth();
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
-  const [confPwd, setConfPwd] = useState("");
-  const notificationRef = useRef();
   const inputRef = useRef();
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const notificationRef = useRef();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -25,34 +23,26 @@ function Registrform() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateLogin(user)) {
+    try {
+      const response = await axios.post(
+        API_SIGNIN,
+        JSON.stringify({ user, pwd }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true
+        }
+      );
+      const accessToken = response?.data?.accessToken;
+      setAuth({ user, pwd, accessToken });
+      setUser("");
+      setPwd("");
+      navigate("/myurls");
+    } catch (err) {
       notificationRef.current?.addNotification(
-        t("registration.invalidLogin"),
+        t("registration.incorrectpwdus"),
         3000
       );
-      return;
     }
-    if (pwd !== confPwd){
-      notificationRef.current?.addNotification(
-        t("registration.pwddif"),
-        3000
-      );
-      return;
-    }
-    const response = await axios.post(
-      API_REGISTR,
-      JSON.stringify({ user, pwd }),
-      {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      }
-    );
-    const accessToken = response?.data?.accessToken;
-    setAuth({ user, pwd, accessToken });
-    setUser("");
-    setPwd("");
-    setConfPwd("");
-    navigate("/myurls")
   };
 
   return (
@@ -63,6 +53,7 @@ function Registrform() {
         className="flex flex-col transition-all duration-200 ease-out gap-5"
       >
         <input
+          ref={inputRef}
           className="transition-all duration-200 ease-out text-center
                p-2 h-16 lg:h-20  text-1xl md:text-2xl lg:text-3xl border-1
                 rounded-md max-w-5xl border-sky-400 w-3xs md:w-[55vw]
@@ -70,7 +61,6 @@ function Registrform() {
           type="text"
           placeholder={t("registration.loginPlaceholder")}
           value={user}
-          ref={inputRef}
           onChange={(e) => {
             setUser(e.target.value);
           }}
@@ -88,24 +78,10 @@ function Registrform() {
           required
           minLength={5}
         />
-        <input
-          className="transition-all duration-200 ease-out text-center
-               p-2 h-16 lg:h-20  text-1xl md:text-2xl lg:text-3xl border-1
-                rounded-md max-w-5xl border-sky-400 w-3xs md:w-[55vw]
-                 lg:w-[70vw]"
-          type="password"
-          placeholder={t("registration.passwordPlaceholderagain")}
-          value={confPwd}
-          onChange={(e) => setConfPwd(e.target.value)}
-          required
-          minLength={5}
-        />
         <Registrsubmit>{t("registration.submit")}</Registrsubmit>
-        <Link className="underline text-lg hover:text-sky-600" to={"/signin"}>
-          {t("registration.haveanacc")}
-        </Link>
+        <Link className="underline text-lg hover:text-sky-600" to={"/registration"}>{t("registration.donthaveacc")}</Link>
       </form>
     </>
   );
 }
-export default Registrform;
+export default Signinform;

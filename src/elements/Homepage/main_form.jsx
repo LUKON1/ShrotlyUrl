@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { containsMyDomain } from "../../utils/containsMyDomain.js";
 
 function ShortenerForm() {
+  const API_SHORTER = "/shorter"
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const {t} = useTranslation()
 

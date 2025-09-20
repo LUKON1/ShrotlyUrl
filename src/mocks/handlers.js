@@ -1,12 +1,10 @@
 import { http, HttpResponse } from "msw";
-const CookieString = `userToken=13G51U6GKH7342K7JSDGJK; Path=/; HttpOnly; Sequre=False; SameSite=Lax; Max-Age=86400`
 export const handlers = [
-  http.post("https://devmode/Registr/", () => {
-    return new HttpResponse(null,{
-      headers:{
-        'set-cookie': CookieString,
-      },
-    }, { status: 201 });
+  http.post("https://devmode/registr", () => {
+    return HttpResponse.json({accesToken:"as2g24hgadsgej", user: "LUKONDEV"}, { status: 201 });
+  }),
+  http.post("https://devmode/signin", () => {
+    return HttpResponse.json({accesToken:"as2g24hgadsgej", user: "LUKONDEV"}, { status: 201 });
   }),
   http.get("https://devmode/myurls/", () => {
     return HttpResponse.json([
@@ -16,6 +14,7 @@ export const handlers = [
         createdAt: "2024-01-15T10:30:00Z",
         expiredAt:"2024-03-10T14:00:00Z", 
         urlClicks: 124,
+        id: 1
       },
       {
         shortUrl: "https://examom/satq3t821",
@@ -23,6 +22,7 @@ export const handlers = [
         createdAt: "2024-02-01T09:00:00Z",
         expiredAt: "2024-03-05T17:00:00Z",
         urlClicks: 132,
+        id: 2
       },
       {
         shortUrl: "https://exa.com/satq3t82",
@@ -30,6 +30,7 @@ export const handlers = [
         createdAt: "2025-09-14T08:00:00Z",
         expiredAt: "2025-09-15T12:00:00Z",
         urlClicks: 10,
+        id: 3
       },
       {
         shortUrl: "https://xamlcom/satq3t82",
@@ -37,6 +38,7 @@ export const handlers = [
         createdAt: "2025-09-13T16:00:00Z",
         expiredAt: "2025-09-25T16:00:00Z",
         urlClicks: 5757,
+        id: 4
       },
       {
         shortUrl: "https://exacom/satq3t8",
@@ -44,6 +46,7 @@ export const handlers = [
         createdAt: "2025-09-12T09:30:00Z",
         expiredAt: "2025-09-22T09:30:00Z",
         urlClicks: 10240,
+        id: 5
       },
       {
         shortUrl: "https://examle.com/satq3",
@@ -51,6 +54,7 @@ export const handlers = [
         createdAt: "2025-09-05T00:00:00Z",
         expiredAt: "2025-09-28T00:00:00Z",
         urlClicks: 100000,
+        id: 6
       },
       {
         shortUrl: "https://xamlcom/satq3t82",
@@ -58,6 +62,7 @@ export const handlers = [
         createdAt: "2025-09-13T16:00:00Z",
         expiredAt: "2025-09-25T16:00:00Z",
         urlClicks: 5757,
+        id: 7
       },
       
       

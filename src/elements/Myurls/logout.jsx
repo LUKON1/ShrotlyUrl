@@ -1,12 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthProvider";
 
 function Logout() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const {setAuth} = useContext(AuthContext);
   const handleLogout = () => {
-    localStorage.setItem("isLoggedIn", "false");
-    window.dispatchEvent(new Event('storage'));
+    setAuth({});
     navigate("/");
   };
   return (

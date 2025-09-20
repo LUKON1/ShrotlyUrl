@@ -7,6 +7,7 @@ import Header_bar from "./layout/header_bar.jsx";
 import PrivateRoute from "./Pages/PrivateRoute.jsx";
 import Myurlspage from "./Pages/!Myurlspage.jsx";
 import Aboutpage from "./Aboutpage.jsx";
+import Signinpage from "./Pages/!Signinpage.jsx";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
            </PrivateRoute>
           }/>
           <Route path="/registration" element={<Registrpage />}/>
+          <Route path="/signin" element={<Signinpage />}/>
         </Routes>
       </main>
       <Footer />

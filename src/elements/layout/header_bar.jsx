@@ -2,28 +2,14 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink } from "react-router-dom";
 import LangCheckBox from "../shared/lang_checkbox";
+import useAuth from "../../utils/useAuth";
 
 function Header_bar() {
   const { t } = useTranslation();
+  const {auth} = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const savedStatus = localStorage.getItem("isLoggedIn");
-      if (savedStatus === null) {
-        localStorage.setItem("isLoggedIn", "false");
-      }
-      setIsLoggedIn(savedStatus === "true");
-    };
 
-    window.addEventListener("storage", handleStorageChange);
-    handleStorageChange();
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
   const handleToggle = () => {
     if (isOpen) {
       // Закрываем с анимацией
@@ -84,7 +70,7 @@ function Header_bar() {
           >
             {t("header.about")}
           </NavLink>
-          {isLoggedIn ? (
+          {auth?.user ? (
             <NavLink
               to="/myurls"
               className={({ isActive }) =>
@@ -160,7 +146,7 @@ function Header_bar() {
               >
                 {t("header.about")}
               </NavLink>
-              {isLoggedIn ? (
+              {auth?.user ? (
                 <NavLink
                   to="/myurls"
                   className={({ isActive }) =>
