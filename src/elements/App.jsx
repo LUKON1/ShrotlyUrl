@@ -8,8 +8,19 @@ import PrivateRoute from "./Pages/PrivateRoute.jsx";
 import Myurlspage from "./Pages/!Myurlspage.jsx";
 import Aboutpage from "./Aboutpage.jsx";
 import Signinpage from "./Pages/!Signinpage.jsx";
+import useAuthOnLoading from "../utils/useAuthOnLoading.js"
+import AppLoader from "./shared/AppLoader.jsx";
 
 function App() {
+
+  const isLoadingAuth = useAuthOnLoading();
+  if(isLoadingAuth){
+    return(
+      <div className="flex flex-col w-screen min-h-screen items-center justify-center bg-rose-50">
+        <AppLoader/>
+      </div>
+    )
+  }
   return (
     <div className="flex flex-col w-screen min-h-screen bg-rose-50">
       <Header_bar />

@@ -2,14 +2,23 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
+import useAxiosPrivate from "../../utils/useAxiosPrivate";
 
 function Logout() {
+	const API_LOGOUT = "/user/logout"
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const { setAuth } = useContext(AuthContext);
-	const handleLogout = () => {
-		setAuth({});
-		navigate("/");
+	const axiosPrivate = useAxiosPrivate();
+	const handleLogout = async () => {
+		try {
+            await axiosPrivate.post(API_LOGOUT, {});
+        } catch (err) {
+            console.error("Logout error:", err);
+        } finally {
+            setAuth({});
+            navigate("/");
+        }
 	};
 	return (
 		<button

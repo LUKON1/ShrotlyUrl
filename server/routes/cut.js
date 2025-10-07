@@ -2,15 +2,28 @@ const express = require("express");
 const router = express.Router();
 const UrlModel = require("../models/Url");
 const getShortCode = require("../utils/shortcodegen");
+const jwt = require("jsonwebtoken");
 
 router.post("/shorter", async (req, res) => {
 	try {
-		const { url, urlTime, userId } = req.body;
+		const { url, urlTime } = req.body;
 		if (!url || !urlTime) {
 			return res.status(400).json({ error: "required fields missing" });
 		}
 		const createdAt = new Date();
 		const expiredAt = new Date(createdAt.getTime() + urlTime * 1000);
+
+		let userId = null;
+		const authHeader = req.header("Authorization");
+		if (authHeader && authHeader.startsWith("Bearer ")) {
+			const token = authHeader.replace("Bearer ", "");
+			try {
+				const decoded = jwt.verify(token, process.env.JWT_SECRET);
+				userId = decoded.userId;
+			} catch (tokenErr) {
+				return res.status(401).json({ error: "Access token invalid or expired" });
+			}
+		}
 
 		let shortCode;
 		let isUnicue = false;
@@ -25,7 +38,7 @@ router.post("/shorter", async (req, res) => {
 		const newUrl = new UrlModel({
 			url: url,
 			shortCode: shortCode,
-			userId: userId || null,
+			userId: userId,
 			createdAt: createdAt,
 			expiredAt: expiredAt,
 			clicks: 0,

@@ -2,8 +2,10 @@ import { Navigate } from 'react-router-dom';
 import useAuth from '../../utils/useAuth';
 function PrivateRoute({ children }) {
   const {auth} = useAuth();
-
-  return auth?.user ? children : <Navigate to="/registration" />;
+  if (auth?.accessToken) {
+    return children;
+  }
+  return <Navigate to="/signin" />;
 }
 
 export default PrivateRoute;

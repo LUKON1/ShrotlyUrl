@@ -8,7 +8,7 @@ import useAuth from "../../utils/useAuth";
 import { validateLogin } from "../../utils/loginvalidate";
 
 function Registrform() {
-	const API_REGISTR = "/registr";
+	const API_REGISTR = "user/registr";
 	const [user, setUser] = useState("");
 	const [pwd, setPwd] = useState("");
 	const [confPwd, setConfPwd] = useState("");

@@ -33,6 +33,7 @@
     "qrdownloading": "QR code not ready yet"
   },
    "myurls": {
+    "myurls" : "My urls",
     "refresh": "Refresh List",
     "nourls": "No URLs found.",
     "copy": "Copy",
