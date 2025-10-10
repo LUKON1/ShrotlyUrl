@@ -1,20 +1,21 @@
-# ShortURL - Сервис сокращения ссылок | URL Shortening Service
+# ShortURL - Мощный сервис сокращения ссылок и управления ими | ShortURL - Powerful URL Shortening and Management Service
+
 ## О проекте || About the Project
 
-**ShortURL** — это полнофункциональный сервис для сокращения длинных URL-адресов, разработанный как мой первый React-проект для портфолио. Он позволяет пользователям сокращать ссылки, генерировать QR-коды для них, а также управлять своими сокращенными URL-адресами, устанавливая срок жизни и лимиты по кликам. Проект демонстрирует мои навыки работы с React, маршрутизацией, управлением состоянием, международной локализацией, интеграцией с API и тестированием.
+**ShortURL** — это сервис для эффективного сокращения длинных URL-адресов и расширенного управления ими. Проект создан с использованием React и демонстрирует передовые подходы к разработке веб-приложений. Наша цель — не просто сокращать ссылки, но и предоставлять ценные инструменты для их отслеживания и анализа, особенно актуальные для RU-сегмента рынка, где подобные решения для бизнеса пока ограничены.
 
-**ShortURL** project is a full-featured URL shortening service developed as my first React portfolio project. It allows users to shorten URLs, generate QR codes for them, and manage their shortened URLs by setting lifetimes and click limits. This project showcases my skills in React, routing, state management, internationalization, API integration, and testing.
+**ShortURL** is a service for efficient URL shortening and advanced link management. The project is built with React, showcasing advanced web application development approaches. Our goal is not just to shorten links, but to provide valuable tools for tracking and analyzing them, particularly relevant for the Russian market where similar business solutions are currently limited.
 
 ## Возможности || Features
 
-*   **Сокращение URL | URL Shortening:** Быстрое преобразование длинных ссылок в короткие и удобные для обмена. | Quickly transform long links into short, shareable ones.
-*   **Настраиваемые URL | Customizable URLs:** Установка срока жизни и лимита кликов для сокращенных ссылок. | Set a lifetime and click limit for shortened links.
-*   **Генерация QR-кодов | QR Code Generation:** Автоматическое создание QR-кодов для сокращенных URL с возможностью их скачивания. | Automatically create QR codes for shortened URLs with download capability.
-*   **Регистрация и Авторизация | Registration and Authorization:** Система управления пользователями с защищенными маршрутами для зарегистрированных пользователей. | User management system with protected routes for registered users.
-*   **Список моих URL | My URLs List:** Просмотр, копирование и управление всеми сокращенными ссылками для авторизованных пользователей. | View, copy, and manage all shortened links for authorized users.
-*   **Мультиязычность (i18n) | Multilingual Support (i18n):** Поддержка нескольких языков (русский и английский) для удобства пользователей. | Support for multiple languages (Russian and English) for user convenience.
-*   **Адаптивный дизайн | Responsive Design:** Оптимизированный интерфейс для различных устройств (мобильные, планшеты, десктопы) с использованием Tailwind CSS. | Optimized interface for various devices (mobile, tablets, desktops) using Tailwind CSS.
-*   **Мокирование API | API Mocking:** Использование Mock Service Worker (MSW) для имитации бэкенд-запросов в режиме разработки и тестирования. | Use of Mock Service Worker (MSW) to simulate backend requests in development and testing modes.
+*   **Сокращение URL | URL Shortening:** Мгновенное преобразование длинных и неудобных ссылок в короткие, удобные для обмена. | Instantly transform long, unwieldy links into short, shareable ones.
+*   **Гибкие настройки URL | Flexible URL Settings:** Возможность устанавливать срок жизни кликов для каждой сокращенной ссылки, предоставляя контроль над распространением контента. | Ability to set a lifetime and click limit for each shortened link, providing control over content distribution.
+*   **Генерация QR-кодов | QR Code Generation:** Автоматическое создание уникальных QR-кодов для каждой сокращенной ссылки с возможностью скачивания для удобного распространения в офлайн-среде. | Automatically generate unique QR codes for each shortened link, with download capability for easy offline distribution.
+*   **Аутентификация и Управление Пользователями | Authentication and User Management:** Надежная система регистрации и авторизации, обеспечивающая доступ к персональным функциям и защищенным маршрутам для зарегистрированных пользователей. | Robust registration and authorization system, providing access to personal features and protected routes for registered users.
+*   **Персональный Кабинет | Personal Dashboard:** Просмотр, копирование и полное управление всеми сокращенными ссылками в удобном интерфейсе для авторизованных пользователей. | View, copy, and fully manage all shortened links through a user-friendly interface for authorized users.
+*   **Мультиязычность (i18n) | Multilingual Support (i18n):** Интерфейс с поддержкой нескольких языков (русский и английский) для максимального удобства глобальной аудитории. | Multilingual interface (Russian and English) for maximum convenience of a global audience.
+*   **Адаптивный дизайн | Responsive Design:** Оптимизированный пользовательский интерфейс, который прекрасно выглядит и функционирует на любых устройствах: от мобильных телефонов до десктопов, благодаря Tailwind CSS. | Optimized user interface that looks and functions beautifully on all devices, from mobile phones to desktops, thanks to Tailwind CSS.
+
 ## Технологии || Technologies
 *   **Frontend:**
     *   [React](https://react.dev/) - Библиотека для создания пользовательских интерфейсов. | A library for building user interfaces.
@@ -23,28 +24,65 @@
     *   [Tailwind CSS](https://tailwindcss.com/) - CSS-фреймворк для быстрого стилизования. | A CSS framework for rapid styling.
     *   [i18next & react-i18next](https://react.i18next.com/) - Для международной локализации. | For internationalization.
     *   [react-qr-code](https://www.npmjs.com/package/react-qr-code) - Для генерации QR-кодов. | For generating QR codes.
-*   **Тестирование и Разработка | Testing and Development:**
-    *   [Vitest](https://vitest.dev/) - Быстрый фреймворк для тестирования. | A fast testing framework.
+*   **Backend:**
+    *   [Node.js](https://nodejs.org/) - Среда выполнения JavaScript для создания масштабируемых сетевых приложений. | A JavaScript runtime for building scalable network applications.
+    *   [Express.js](https://expressjs.com/) - Минималистичный и гибкий фреймворк для веб-приложений Node.js. | A minimalist and flexible Node.js web application framework.
+    *   [MongoDB + Mongoose](https://www.mongodb.com/) - Популярная документо-ориентированная база данных NoSQL. | A popular document-oriented NoSQL database.
+*   **Testing and Development:**
     *   [Mock Service Worker (MSW)](https://mswjs.io/) - Для мокирования API в браузере. | For mocking API in the browser.
+
+## Перспективы Развития и Будущие Обновления || Development Prospects and Future Updates
+
+ стремимся превратить ShortURL в комплексное решение для бизнеса и индивидуальных пользователей, предлагая расширенные функции управления трафиком и аналитики. В планах по развитию:
+
+ aim to transform ShortURL into a comprehensive solution for businesses and individual users, offering advanced traffic management and analytics features. Development plans include:
+
+*   **Расширенный Трекинг и Аналитика | Advanced Tracking and Analytics:** Внедрение детальной статистики по кликам, географии, источникам трафика и другим показателям для глубокого анализа эффективности ссылок. | Implementing detailed statistics on clicks, geography, traffic sources, and other metrics for in-depth link performance analysis.
+*   **Kill Switch (Остановка ссылки) | Kill Switch (Link Deactivation):** Возможность мгновенно деактивировать любую сокращенную ссылку для контроля над распространением информации. | The ability to instantly deactivate any shortened link to control information dissemination.
+*   **Настраиваемые QR-коды | Customizable QR Codes:** Расширенные опции для кастомизации дизайна QR-кодов (цвета, логотипы) для соответствия брендингу. | Advanced options for customizing QR code design (colors, logos) to match branding.
+*   **Управление Кастомными Доменами | Custom Domain Management:** Поддержка привязки собственных доменов для сокращения ссылок, повышая узнаваемость бренда и доверие пользователей. | Support for binding custom domains for link shortening, enhancing brand recognition and user trust.
+*   **Динамический Редирект без Смены QR | Dynamic Redirect without QR Change:** Возможность изменять целевой URL сокращенной ссылки или QR-кода без необходимости перегенерации самого QR-кода. | The ability to change the target URL of a shortened link or QR code without needing to regenerate the QR code itself.
 
 ## Структура проекта || Project Structure
 
 ```
-ShortlyUrl1
+ShrotlyUrl
+├─ README.md
 ├─ eslint.config.js
 ├─ index.html
+├─ index.js
 ├─ package-lock.json
 ├─ package.json
 ├─ public
 │  └─ mockServiceWorker.js
-├─ README.md
+├─ routes
+│  └─ cut.js
+├─ server
+│  ├─ index.js
+│  ├─ middleware
+│  │  └─ auth.js
+│  ├─ models
+│  │  ├─ Url.js
+│  │  └─ User.js
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ routes
+│  │  ├─ cut.js
+│  │  ├─ myurls.js
+│  │  ├─ redirect.js
+│  │  └─ user.js
+│  └─ utils
+│     └─ shortcodegen.js
 ├─ src
+│  ├─ api
+│  │  └─ axios.js
 │  ├─ assets
 │  │  ├─ burger-cross.svg
 │  │  ├─ burger.svg
 │  │  ├─ cross.svg
-│  │  ├─ Flag_of_Kemerovo_Oblast.svg.png
 │  │  └─ home-page.png
+│  ├─ context
+│  │  └─ AuthProvider.jsx
 │  ├─ elements
 │  │  ├─ Aboutpage.jsx
 │  │  ├─ App.jsx
@@ -54,9 +92,6 @@ ShortlyUrl1
 │  │  │  ├─ main_form.jsx
 │  │  │  ├─ qr_gen.jsx
 │  │  │  └─ submit_button.jsx
-│  │  ├─ layout
-│  │  │  ├─ footer.jsx
-│  │  │  └─ header_bar.jsx
 │  │  ├─ Myurls
 │  │  │  ├─ logout.jsx
 │  │  │  └─ myurlslist.jsx
@@ -64,14 +99,20 @@ ShortlyUrl1
 │  │  │  ├─ !Homepage.jsx
 │  │  │  ├─ !Myurlspage.jsx
 │  │  │  ├─ !Registrpage.jsx
+│  │  │  ├─ !Signinpage.jsx
 │  │  │  └─ PrivateRoute.jsx
 │  │  ├─ Registration
 │  │  │  ├─ registr_form.jsx
-│  │  │  └─ registr_submit.jsx
+│  │  │  └─ signin_form.jsx
+│  │  ├─ layout
+│  │  │  ├─ footer.jsx
+│  │  │  └─ header_bar.jsx
 │  │  └─ shared
+│  │     ├─ AppLoader.jsx
 │  │     ├─ h1.jsx
 │  │     ├─ lang_checkbox.jsx
 │  │     ├─ messagewindow.jsx
+│  │     ├─ registr_submit.jsx
 │  │     └─ wrapper_home.jsx
 │  ├─ fonts
 │  │  └─ amazdoomleft.ttf
@@ -88,34 +129,12 @@ ShortlyUrl1
 │  │     └─ ru_lang.json
 │  └─ utils
 │     ├─ containsMyDomain.js
-│     └─ formatDate.js
+│     ├─ formatDate.js
+│     ├─ loginvalidate.js
+│     ├─ useAuth.js
+│     ├─ useAuthOnLoading.js
+│     ├─ useAxiosPrivate.js
+│     └─ useRefreshToken.js
 ├─ tailwind.config.js
 └─ vite.config.js
-
 ```
-
-## Установка и Запуск | Installation and Run
-
-Для локального запуска проекта выполните следующие шаги: | To run the project locally, follow these steps:
-
-1.  **Клонируйте репозиторий | Clone the repository:**
-    
-2.  **Установите зависимости | Install dependencies:**
-    ```bash
-    npm install
-    ```
-3.  **Создайте файл `.env` | Create an `.env` file:**
-    Скопируйте `.env.example` в `.env` и при необходимости настройте переменные окружения. | Copy `.env.example` to `.env` and configure environment variables as needed.
-    Для локальной разработки API обычно настроен на `https://devmode`, который перехватывает msw. В продакшене `VITE_API_BASE_URL` должен указывать на URL вашего реального бэкенда.
-    | For local development, the API is usually set to `https://devmode`, which is intercepted by MSW. In production, `VITE_API_BASE_URL` should point to the URL of your actual backend.
-
-    **Пример `.env.example` | Example `.env.example`:**
-    ```
-    VITE_API_BASE_URL=https://localhost:7206 # Or 'https://devmode' if you exclusively use MSW for local dev
-    ```
-
-4.  **Запустите проект в режиме разработки | Run the project in development mode:**
-    ```bash
-    npm run dev
-    ```
-    Приложение будет доступно по адресу `http://localhost:5173` (или другому порту, указанному Vite). | The application will be available at `http://localhost:5173` (or another port specified by Vite).
