@@ -12,28 +12,16 @@ function Header_bar() {
 
   const handleToggle = () => {
     if (isOpen) {
-      // Закрываем с анимацией
       setIsClosing(true);
       setTimeout(() => {
         setIsOpen(false);
         setIsClosing(false);
       }, 500);
     } else {
-      // Открываем
       setIsOpen(true);
       setIsClosing(false);
     }
   };
-  const fallAnimation = `
-    @keyframes fallDown {
-          from { height: 0vh; }
-          to {height : 50vh; }
-    }
-    @keyframes fallUp {
-    from { height: 50vh; }
-    to {  height: 0vh; }
-  }
-  `;
 
   return (
     <header
@@ -118,15 +106,9 @@ function Header_bar() {
       </div>
       {(isOpen || isClosing) && (
         <div className="md:hidden">
-          <style>{fallAnimation}</style>
           <div
-            className="absolute top-20 left-0 bg-rose-400
-              h-[20vh] w-screen overflow-hidden z-30 transition-all duration-200 ease-out "
-            style={{
-              animation: isClosing
-                ? "fallUp 0.5s ease-out forwards"
-                : "fallDown 0.3s ease-out  forwards",
-            }}
+            className={`absolute top-20 left-0 bg-rose-400
+              h-[20vh] w-screen overflow-hidden z-30 transition-all duration-200 ease-out ${isClosing? "animate-fallup":"animate-falldown"}`}
           >
             <nav className="flex flex-col text-left ml-[10vw]  h-[50vh] text-xl ">
               <NavLink
@@ -192,3 +174,5 @@ function Header_bar() {
   );
 }
 export default Header_bar;
+
+
