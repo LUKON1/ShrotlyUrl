@@ -32,6 +32,11 @@ const UrlSchema = new mongoose.Schema({
 		required: true,
 		default: 0,
 	},
+	qrCodeDataUrl: {
+		type: String,
+		required: true,
+		trim: true,
+	},
 });
 
 const UrlModel = mongoose.model("Url", UrlSchema);
