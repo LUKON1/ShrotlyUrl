@@ -8,12 +8,16 @@ import { useTranslation } from "react-i18next";
 import { containsMyDomain } from "../../utils/containsMyDomain.js";
 import axios from "../../api/axios.js";
 import useAuth from "../../utils/useAuth.js";
+import useAxiosPrivate from "../../utils/useAxiosPrivate.js";
 
 function ShortenerForm() {
     const API_SHORTER = "/cut/shorter";
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const { t } = useTranslation();
-    const { userId } = useAuth();
+    const { auth } = useAuth();
+    const userId = auth?.userId;
+
+    const axiosPrivate = useAxiosPrivate();
 
     const [url, setUrl] = useState("");
     const [shortUrl, setShortUrl] = useState("");
@@ -22,13 +26,13 @@ function ShortenerForm() {
 
     const notificationRef = useRef();
     const inputRef = useRef();
-    const [urlTime, setUrlTime] = useState("");
     const urlTimeOptions = [
+        { value: 2592000, label: t("homepage.urlopt.urtime.month") },
         { value: 604800, label: t("homepage.urlopt.urtime.week") },
         { value: 86400, label: t("homepage.urlopt.urtime.day") },
-        { value: 3600, label: t("homepage.urlopt.urtime.hour") },
-        { value: 2592000, label: t("homepage.urlopt.urtime.month") },
+        { value: 3600, label: t("homepage.urlopt.urtime.hour") }
     ];
+    const [urlTime, setUrlTime] = useState(urlTimeOptions[0].value);
 
     useEffect(() => {
         inputRef.current.focus();
@@ -49,12 +53,13 @@ function ShortenerForm() {
                 }
                 setIsLoading(true);
 
-                const response = await axios.post(
+                const currentAxiosInstance = userId ? axiosPrivate : axios;
+
+                const response = await currentAxiosInstance.post(
                     API_SHORTER,
                     JSON.stringify({
                         url: url,
-                        urlTime: urlTime,
-                        userId: userId,
+                        urlTime: urlTime
                     }),
                     {
                         headers: { "Content-Type": "application/json" },
@@ -66,7 +71,7 @@ function ShortenerForm() {
                     throw new Error();
                 }
 
-                const shortUrl = `${BASE_URL}${shortCode}`;
+                const shortUrl = `${BASE_URL}/${shortCode}`;
                 setShortUrl(shortUrl);
                 setQrCodeDataUrl(response?.data?.qrCodeDataUrl);
             } catch (error) {
@@ -75,7 +80,7 @@ function ShortenerForm() {
                 setIsLoading(false);
             }
         },
-        [urlTime, url, userId]
+        [urlTime, url, userId, axiosPrivate, axios]
     );
 
     return (

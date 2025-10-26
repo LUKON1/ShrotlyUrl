@@ -8,7 +8,7 @@ import useAuth from "../../utils/useAuth";
 import { validateLogin } from "../../utils/loginvalidate";
 
 function Registrform() {
-	const API_REGISTR = "user/registr";
+	const API_REGISTR = "/user/registr";
 	const [user, setUser] = useState("");
 	const [pwd, setPwd] = useState("");
 	const [confPwd, setConfPwd] = useState("");
@@ -49,6 +49,7 @@ function Registrform() {
 			);
 			const accessToken = response?.data?.accessToken;
 			const userId = response?.data?.userId;
+			console.log(userId)
 			setAuth({ user, pwd, accessToken, userId });
 			setUser("");
 			setPwd("");

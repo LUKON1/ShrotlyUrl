@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/User");
 
-router.post("/register", async (req, res) => {
+router.post("/registr", async (req, res) => {
 	try {
 		const { pwd, user } = req.body;
 		if (!pwd || !user) {
@@ -107,7 +107,7 @@ router.post("/login", async (req, res) => {
 router.post("/refresh", async (req, res) => {
 	try {
 		const cookies = req.cookies;
-		if (!cookies) {
+		if (!cookies?.jwt) {
 			res.status(401).json({
 				error: "Unautorized: Refresh token not found",
 			});

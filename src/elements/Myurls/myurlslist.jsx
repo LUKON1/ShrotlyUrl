@@ -3,88 +3,107 @@ import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { formatDate } from "../../utils/formatDate";
 
-function Urlslist({ urls, notificationRef }) {
-  const { t } = useTranslation();
-  const [searchTerm, setSearchTerm] = useState("");
+function Urlslist({ urls, notificationRef, getMyUrls, isLoading }) {
+    const { t } = useTranslation();
+    const [searchTerm, setSearchTerm] = useState("");
+    const displayedUrls = useMemo(() => {
+        return searchTerm
+            ? urls.filter((urlItem) => urlItem.url.toLowerCase().includes(searchTerm.toLowerCase()))
+            : urls;
+    }, [searchTerm, urls]);
 
-  const displayedUrls = useMemo(() => {
-    return searchTerm
-      ? urls.filter((urlItem) =>
-        urlItem.url.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      : urls;
-  }, [searchTerm, urls]);
-
-  return (
-    <>
-    <div className="flex flex-col items-center w-full">
+    return (
         <>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-            }}
-            placeholder={t("myurls.search")}
-            className="mb-4 p-3 border border-gray-300 rounded-md w-full max-w-5xl text-lg"
-          />
-          <ul className="w-full max-w-5xl">
-            {displayedUrls.map((urlItem) => (
-              
-              <li
-                key={urlItem._id}
-                className="bg-rose-100 rounded-md shadow-md p-4 sm:p-6 mb-4 mx-2 lg:mx-0"
-              >
-                <div className="flex justify-between items-center">
-                  <span className="select-all text-2xl sm:text-3xl md:text-4xl font-bold text-rose-800 hover:text-rose-600 transition-colors">
-                    {`${import.meta.env.VITE_BASE_URL}${urlItem.shortCode}`}
-                  </span>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(`${import.meta.env.VITE_BASE_URL}${urlItem.shortCode}`);
-                      notificationRef.current?.addNotification(t("homepage.copied"), 2000);
-                    }}
-                    className="transition-all duration-200 ease-out
-                       hover:bg-rose-400 active:bg-rose-500 bg-rose-300
-                        shadow-md hover:shadow-lg h-12 sm:h-14 md:h-16
-                        text-base sm:text-lg md:text-xl
-                        p-3 sm:p-4 rounded-md text-rose-950 font-extrabold flex items-center"
-                  >
-                    {t("myurls.copy")}
-                  </button>
-                </div>
-                <p className="text-base sm:text-lg md:text-xl text-gray-500 mt-1">
-                  {urlItem.url}
-                </p>
-                <div className="flex justify-between mt-2">
-                  <div
-                    className={`py-2  px-6 -ml-4 -mb-4 sm:-mb-6 rounded-tr-4xl sm:-ml-6 md:-ml-6 font-extrabold ${
-                      dayjs(urlItem.expiredAt).isAfter(dayjs())
-                        ? "bg-green-300 text-green-900"
-                        : "bg-red-300 text-red-900"
-                    } `}
-                  >
-                    <p className="text-lg sm:text-xl md:text-2xl">
-                      {dayjs(urlItem.expiredAt).isAfter(dayjs())
-                        ? t("myurls.isexpiredF")
-                        : t("myurls.isexpiredT")}
-                    </p>
-                    <span className="text-base sm:text-lg md:text-xl text-gray-500">
-                      {formatDate(urlItem.createdAt)} -- {formatDate(urlItem.expiredAt)}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-lg sm:text-xl md:text-2xl text-gray-700 font-extrabold">
-                      {t("myurls.clicks")} {urlItem.clicks}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+            <div className="flex w-full flex-col items-center">
+                <>
+                    <div className="flex w-full max-w-5xl flex-row items-center h-12 mb-4">
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                            }}
+                            placeholder={t("myurls.search")}
+                            className="w-full max-w-5xl rounded-md h-full rounded-r-none border border-gray-300 px-3 text-lg focus:outline-none"
+                        />
+                        <button
+                            onClick={getMyUrls}
+                            className="rounded rounded-l-none border border-l-0 h-full w-12 border-gray-300 p-1 text-white hover:bg-rose-200"
+                            type="button"
+                        >
+                            <img
+                                className="hover:cursor-pointer"
+                                src="/src/assets/reload.svg"
+                                alt={t("myurls.refresh")}
+                            />
+                        </button>
+                    </div>
+                    {isLoading ? (
+                        <div className="flex grow items-center justify-center text-2xl text-rose-900">
+                            {t("myurls.loading")}
+                        </div>
+                    ) : (
+                      <>
+                        {displayedUrls.length > 0 ? (<ul className="w-full max-w-5xl">
+                            {displayedUrls.map((urlItem) => (
+                                <li
+                                    key={urlItem._id}
+                                    className="mx-2 mb-4 rounded-md bg-rose-100 p-4 shadow-md sm:p-6 lg:mx-0"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-2xl font-bold text-rose-800 transition-colors select-all hover:text-rose-600 sm:text-3xl md:text-4xl">
+                                            {`${import.meta.env.VITE_BASE_URL}/${urlItem.shortCode}`}
+                                        </span>
+                                        <button
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(
+                                                    `${import.meta.env.VITE_BASE_URL}/${urlItem.shortCode}`
+                                                );
+                                                notificationRef.current?.addNotification(
+                                                    t("homepage.copied"),
+                                                    2000
+                                                );
+                                            }}
+                                            className="flex h-12 items-center rounded-md bg-rose-300 p-3 text-base font-extrabold text-rose-950 shadow-md transition-all duration-200 ease-out hover:bg-rose-400 hover:shadow-lg active:bg-rose-500 sm:h-14 sm:p-4 sm:text-lg md:h-16 md:text-xl"
+                                        >
+                                            {t("myurls.copy")}
+                                        </button>
+                                    </div>
+                                    <p className="mt-1 text-base text-gray-500 sm:text-lg md:text-xl">
+                                        {urlItem.url}
+                                    </p>
+                                    <div className="mt-2 flex justify-between">
+                                        <div
+                                            className={`-mb-4 -ml-4 rounded-tr-4xl px-6 py-2 font-extrabold sm:-mb-6 sm:-ml-6 md:-ml-6 ${
+                                                dayjs(urlItem.expiredAt).isAfter(dayjs())
+                                                    ? "bg-green-300 text-green-900"
+                                                    : "bg-red-300 text-red-900"
+                                            } `}
+                                        >
+                                            <p className="text-lg sm:text-xl md:text-2xl">
+                                                {dayjs(urlItem.expiredAt).isAfter(dayjs())
+                                                    ? t("myurls.isexpiredF")
+                                                    : t("myurls.isexpiredT")}
+                                            </p>
+                                            <span className="text-base text-gray-500 sm:text-lg md:text-xl">
+                                                {formatDate(urlItem.createdAt)} --{" "}
+                                                {formatDate(urlItem.expiredAt)}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <p className="text-lg font-extrabold text-gray-700 sm:text-xl md:text-2xl">
+                                                {t("myurls.clicks")} {urlItem.clicks}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>):(<p className="text-xl text-rose-900">{t("myurls.nourls")}</p>)}
+                      </>
+                    )}
+                </>
+            </div>
         </>
-      </div>
-    </>
-  );
+    );
 }
 export default Urlslist;

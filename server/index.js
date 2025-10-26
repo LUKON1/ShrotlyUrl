@@ -40,6 +40,7 @@ mongoose
 	})
 	.catch((err) => {
 		console.error(`mongo db connected with error:${err.message}`);
+		process.exit(1);
 	});
 
 app.listen(PORT, () => {

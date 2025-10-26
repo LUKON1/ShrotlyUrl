@@ -58,7 +58,7 @@ function Header_bar() {
           >
             {t("header.about")}
           </NavLink>
-          {auth?.user ? (
+          {auth?.userId ? (
             <NavLink
               to="/myurls"
               className={({ isActive }) =>
@@ -128,7 +128,7 @@ function Header_bar() {
               >
                 {t("header.about")}
               </NavLink>
-              {auth?.user ? (
+              {auth?.userId ? (
                 <NavLink
                   to="/myurls"
                   className={({ isActive }) =>
