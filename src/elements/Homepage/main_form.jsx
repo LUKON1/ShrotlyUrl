@@ -84,7 +84,7 @@ function ShortenerForm() {
     );
 
     return (
-        <div>
+        <>
             <Notifications ref={notificationRef} />
             <form
                 onSubmit={handleSubmit}
@@ -103,7 +103,7 @@ function ShortenerForm() {
                         )}
                         <input
                             ref={inputRef}
-                            className="text-1xl lg:w-[70vw h-16 w-3xs max-w-5xl rounded-lg border-2 border-sky-400 dark:border-sky-500 p-2 text-center transition-all duration-200 ease-out md:w-[55vw] md:text-2xl lg:h-20 lg:text-3xl bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 shadow-md focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400 focus:outline-none"
+                            className="text-1xl lg:w-[70vw] h-16 w-3xs max-w-5xl rounded-lg border-2 border-sky-400 dark:border-sky-500 p-2 text-center transition-all duration-200 ease-out md:w-[55vw] md:text-2xl lg:h-20 lg:text-3xl bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 shadow-md focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400 focus:outline-none"
                             type="url"
                             value={url}
                             onChange={(e) => {
@@ -151,7 +151,7 @@ function ShortenerForm() {
                     </div>
                 )}
             </form>
-        </div>
+        </>
     );
 }
 export default ShortenerForm;

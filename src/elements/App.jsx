@@ -24,9 +24,10 @@ function App() {
       </ThemeProvider>
     )
   }
+  //bg-rose-50 dark:bg-slate-900
   return (
     <ThemeProvider>
-      <div className="flex flex-col w-screen min-h-screen bg-rose-50 dark:bg-slate-900">
+      <div className="flex flex-col w-screen min-h-screen ">
         <Header_bar />
         <main className="flex flex-col grow">
           <Routes>
