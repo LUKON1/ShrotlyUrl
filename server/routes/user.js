@@ -27,7 +27,7 @@ router.post("/registr", async (req, res) => {
 		const accessToken = jwt.sign(
 			{ userId: newUser._id, user: newUser.user },
 			process.env.JWT_SECRET,
-			{ expiresIn: "20m" }
+			{ expiresIn: "1m" }
 		);
 
 		const refreshToken = jwt.sign(
@@ -75,7 +75,7 @@ router.post("/login", async (req, res) => {
 		const accessToken = jwt.sign(
 			{ userId: foundUser._id, user: foundUser.user },
 			process.env.JWT_SECRET,
-			{ expiresIn: "20m" }
+			{ expiresIn: "1m" }
 		);
 
 		const newRefreshToken = jwt.sign(
@@ -157,7 +157,7 @@ router.post("/refresh", async (req, res) => {
 				const newAccessToken = jwt.sign(
 					{ userId: foundUser._id, user: foundUser.user },
 					process.env.JWT_SECRET,
-					{ expiresIn: "20m" }
+					{ expiresIn: "1m" }
 				);
 
 				const newRefreshToken = jwt.sign(
