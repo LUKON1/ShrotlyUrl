@@ -31,7 +31,7 @@ router.get("/analytics", async (req, res) => {
 
         const totalUrls = userUrls.length;
         const totalClicks = userUrls.reduce((sum, url) => sum + url.clicks, 0);
-        const activeUrls = userUrls.filter(url => new Date(url.expiredAt) > new Date()).length;
+        const activeUrls = userUrls.filter((url) => new Date(url.expiredAt) > new Date()).length;
         const expiredUrls = totalUrls - activeUrls;
 
         const now = new Date();
@@ -39,17 +39,17 @@ router.get("/analytics", async (req, res) => {
         const last30Days = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
         const clicksLast7Days = userUrls
-            .filter(url => new Date(url.createdAt) >= last7Days)
+            .filter((url) => new Date(url.createdAt) >= last7Days)
             .reduce((sum, url) => sum + url.clicks, 0);
 
         const clicksLast30Days = userUrls
-            .filter(url => new Date(url.createdAt) >= last30Days)
+            .filter((url) => new Date(url.createdAt) >= last30Days)
             .reduce((sum, url) => sum + url.clicks, 0);
 
         const topUrls = userUrls
             .sort((a, b) => b.clicks - a.clicks)
             .slice(0, 5)
-            .map(url => ({
+            .map((url) => ({
                 shortCode: url.shortCode,
                 url: url.url,
                 clicks: url.clicks,
@@ -60,13 +60,13 @@ router.get("/analytics", async (req, res) => {
 
         for (let i = 6; i >= 0; i--) {
             const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-            const dateKey = date.toISOString().split('T')[0];
+            const dateKey = date.toISOString().split("T")[0];
             urlsCreatedByDay[dateKey] = 0;
             clicksByDay[dateKey] = 0;
         }
 
-        userUrls.forEach(url => {
-            const createdDate = new Date(url.createdAt).toISOString().split('T')[0];
+        userUrls.forEach((url) => {
+            const createdDate = new Date(url.createdAt).toISOString().split("T")[0];
             if (urlsCreatedByDay.hasOwnProperty(createdDate)) {
                 urlsCreatedByDay[createdDate]++;
             }
@@ -75,7 +75,7 @@ router.get("/analytics", async (req, res) => {
             }
         });
 
-        const chartData = Object.keys(urlsCreatedByDay).map(date => ({
+        const chartData = Object.keys(urlsCreatedByDay).map((date) => ({
             date: date,
             created: urlsCreatedByDay[date],
             clicks: clicksByDay[date],
@@ -104,7 +104,7 @@ router.get("/profile", async (req, res) => {
             return res.status(401).json({ error: "User not authenticated" });
         }
 
-        const user = await UserModel.findById(userId).select('-pwd -refreshToken');
+        const user = await UserModel.findById(userId).select("-pwd -refreshToken");
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
