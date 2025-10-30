@@ -18,7 +18,7 @@ const UrlAnalyticsChart = ({ urlId }) => {
         setError(null);
         // In a real application, you would fetch data from an API endpoint like `/api/analytics/${urlId}`
         // For now, we'll use mock data.
-        const mockData = Array.from({ length: 14 }, (_, i) => ({
+        const mockData = Array.from({ length: 25 }, (_, i) => ({
           date: dayjs().subtract(i, 'day').format('YYYY-MM-DD'),
           clicks: Math.floor(Math.random() * 100) + 10, // Random clicks between 10 and 109
         }));

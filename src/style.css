@@ -5,6 +5,7 @@
   --animate-fallup: fallUp 0.5s ease-out forwards;
   --animate-reversespin: reverseSpin 1s linear infinite;
   --animate-fadeout: fadeOut 0.5s ease-out 2.5s forwards;
+  --animate-fadeinup: fadeInUp 0.8s ease-out forwards;
 
   --font-brutal: "AmazeDoom", sans-serif;
 
@@ -42,6 +43,16 @@
     to {
       opacity: 0;
       transform: translateX(100%);
+    }
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }

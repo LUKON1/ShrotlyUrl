@@ -26,7 +26,7 @@ function LoadQR_Button({ qrCodeDataUrl, url }) {
             <button
                 onClick={handleLoadQR}
                 type="button"
-                className="text-1xl flex h-16 w-64 items-center justify-center rounded-md bg-rose-300 font-extrabold text-rose-950 shadow-md transition duration-300 ease-in-out hover:bg-rose-400 hover:shadow-lg active:bg-rose-500 md:text-2xl lg:h-20 lg:text-3xl"
+                className="transition-all duration-200 ease-out hover:bg-rose-400 dark:hover:bg-rose-600 active:bg-rose-500 dark:active:bg-rose-700 bg-rose-300 dark:bg-rose-500 shadow-lg hover:shadow-xl h-16 lg:h-20 w-64 text-1xl md:text-2xl lg:text-3xl p-4 rounded-lg text-slate-900 dark:text-white font-extrabold"
             >
                 {t("homepage.downloadqr")}
             </button>

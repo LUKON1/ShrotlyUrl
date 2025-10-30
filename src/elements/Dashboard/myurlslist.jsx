@@ -149,9 +149,12 @@ function Urlslist({ urls, notificationRef, getMyUrls, isLoading }) {
             <>
               {displayedUrls.length > 0 ? (
                 <ul className="mx-auto w-full max-w-7xl">
-                  {displayedUrls.map((urlItem) => (
+                  {displayedUrls.map((urlItem, index) => (
                     <div key={urlItem._id}>
-                      <li className="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-shadow hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800">
+                      <li
+                        className="animate-fadeinup mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-shadow hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
                         <div className="flex items-center justify-between">
                           <div className="flex max-w-[64%] flex-col">
                             <p className="text-base font-bold text-sky-400 transition-colors select-all hover:text-sky-600 sm:text-lg md:text-xl dark:text-sky-500 dark:hover:text-sky-300">
@@ -232,7 +235,10 @@ function Urlslist({ urls, notificationRef, getMyUrls, isLoading }) {
                             </span>
                           </div>
                           <div className="flex flex-row items-center" title={t("myurls.clicks")}>
-                            <svg className="h-7 w-7 sm:h-9 sm:w-9 md:h-12 md:w-12 p-1 dark:invert" viewBox="0 0 48 48" >
+                            <svg
+                              className="h-7 w-7 p-1 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:invert"
+                              viewBox="0 0 48 48"
+                            >
                               <use href="#clicks"></use>
                             </svg>
                             <p className="text-lg font-extrabold text-gray-700 sm:text-xl md:text-2xl dark:text-gray-300">

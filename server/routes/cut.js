@@ -42,8 +42,8 @@ router.post("/shorter", async (req, res) => {
 			type: "image/png",
 			width: 256,
 			color: {
-				dark: "#881337",
-				light: "#fff1f2"
+				dark: "#101828",
+				light: "#ffffff"
 			}
 		});
 		const newUrl = new UrlModel({

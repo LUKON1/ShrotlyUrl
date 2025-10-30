@@ -17,7 +17,8 @@ function TopUrlsList({ topUrls }) {
           {topUrls.map((url, index) => (
             <div
               key={url.shortCode}
-              className="flex items-center gap-4 p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+              className="animate-fadeinup flex items-center gap-4 p-4 rounded-lg bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-sky-400 to-blue-500 dark:from-sky-500 dark:to-blue-600 text-white font-bold text-sm">
                 {index + 1}

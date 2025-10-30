@@ -42,8 +42,8 @@ function Header_bar() {
               src="/src/assets/home-page.png"
               alt="home"
             />
-            <span className="hidden lg:block text-2xl font-bold text-rose-50 dark:text-slate-100">
-              ShortURL
+            <span className="text-xl lg:text-2xl font-bold text-rose-50 dark:text-slate-100">
+              ShortlyURL
             </span>
           </Link>
         </div>

@@ -6,7 +6,7 @@ function Qrgen({ qrCodeDataUrl, qrContainerRef }) {
             <img
                 src={qrCodeDataUrl}
                 alt="QR"
-                className="user-select-all h-64 w-64 object-contain"
+                className="user-select-all h-64 w-64 object-contain border-5 rounded-4xl border-rose-300 dark:border-[#00a6f4]"
             />
         </div>
     );
