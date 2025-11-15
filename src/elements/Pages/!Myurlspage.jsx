@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import useAxiosPrivate from "../../utils/useAxiosPrivate";
+import useRefreshToken from "../../utils/useRefreshToken";
 import Urlslist from "../Dashboard/myurlslist";
 import Notifications from "../shared/messagewindow";
 import UserProfile from "../Dashboard/UserProfile";
@@ -16,6 +17,7 @@ function Myurlspage() {
   const API_PROFILE = "/myurls/profile";
   const { t } = useTranslation();
   const axiosPrivate = useAxiosPrivate();
+  const refresh = useRefreshToken();
   const [urls, setUrls] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -26,21 +28,32 @@ function Myurlspage() {
   const fetchDashboardData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [urlsRes, profileRes, analyticsRes] = await Promise.all([
+      await refresh();
+      const results = await Promise.allSettled([
         axiosPrivate.get(API_MYURLS),
         axiosPrivate.get(API_PROFILE),
         axiosPrivate.get(API_ANALYTICS),
       ]);
-      setProfile(profileRes.data);
-      setUrls(urlsRes.data);
-      setAnalytics(analyticsRes.data);
+      const [urlsRes, profileRes, analyticsRes] = results;
+      if (urlsRes.status === "fulfilled") {
+        setUrls(urlsRes.value.data);
+      }
+      if (profileRes.status === "fulfilled") {
+        setProfile(profileRes.value.data);
+      }
+      if (analyticsRes.status === "fulfilled") {
+        setAnalytics(analyticsRes.value.data);
+      }
+      if (results.some((result) => result.status === "rejected")) {
+        notificationRef.current?.addNotification(t("dashboard.loaderr"), 3000);
+      }
     } catch (err) {
-      console.error("Failed to fetch dashboard data:", err);
+      console.error("Failed to refresh token or other error:", err);
       notificationRef.current?.addNotification(t("dashboard.loaderr"), 3000);
     } finally {
       setIsLoading(false);
     }
-  }, [axiosPrivate, API_PROFILE, API_MYURLS, API_ANALYTICS]);
+  }, [axiosPrivate, refresh, API_PROFILE, API_MYURLS, API_ANALYTICS, t]);
 
   useEffect(() => {
     fetchDashboardData();
