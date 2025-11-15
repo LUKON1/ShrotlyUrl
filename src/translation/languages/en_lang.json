@@ -44,12 +44,22 @@
     "lifetime": "Lifetime:",
     "clicks": "Clicks",
     "logout": "Logout",
+    "deleteProfile": "Delete Profile",
     "isexpiredF": "Active",
     "isexpiredT": "Expired",
     "loading": "Loading...",
     "loaderr": "Load error",
     "top": "On top",
     "search": "Search by original url"
+  },
+  "modal": {
+    "deleteProfile": {
+      "title": "Delete Account",
+      "confirm": "Are you sure you want to delete your account? This action cannot be undone.",
+      "confirmBtn": "Delete",
+      "cancelBtn": "Cancel"
+    },
+    "error": "Failed to perform action. Please try again."
   },
   "registration": {
     "title": "Sign Up",
