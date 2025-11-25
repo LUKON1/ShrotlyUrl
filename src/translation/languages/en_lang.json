@@ -99,5 +99,13 @@
       "message": "Failed to load dashboard data. Please try refreshing the page.",
       "retry": "Refresh Data"
     }
+  },
+  "shared": {
+    "title": "Shared URL",
+    "error": "Error",
+    "homepage": "Homepage",
+    "clickHistory": "Click History",
+    "active": "Active",
+    "expired": "Expired"
   }
 }
