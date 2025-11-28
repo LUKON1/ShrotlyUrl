@@ -112,5 +112,36 @@
     "visitSite": "Посетить сайт",
     "downloadQR": "Скачать QR",
     "copy": "Копировать"
+  },
+  "urlCard": {
+    "pause": "Остановить",
+    "activate": "Включить",
+    "delete": "Удалить",
+    "paused": "Остановлена",
+    "activated": "Включена",
+    "downloadQR": "Скачать QR",
+    "viewAnalytics": "Аналитика",
+    "confirmDelete": "Подтверждение удаления",
+    "confirmDeleteMessage": "Вы уверены, что хотите удалить эту ссылку? Это действие нельзя отменить.",
+    "deleteSuccess": "Ссылка успешно удалена",
+    "deleteError": "Не удалось удалить ссылку",
+    "statusChanged": "Статус изменён:",
+    "toggleError": "Не удалось изменить статус ссылки",
+    "qrDownloaded": "QR-код загружен"
+  },
+  "urlDetail": {
+    "title": "Аналитика ссылки",
+    "shortUrl": "Короткая ссылка",
+    "originalUrl": "Оригинальная ссылка",
+    "status": "Статус",
+    "active": "Активна",
+    "paused": "Остановлена",
+    "created": "Создана",
+    "expires": "Истекает",
+    "clicksChart": "Переходы за последние 7 дней"
+  },
+  "modal": {
+    "cancel": "Отмена",
+    "confirm": "Подтвердить"
   }
 }
