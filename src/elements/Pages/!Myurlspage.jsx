@@ -75,6 +75,12 @@ function Myurlspage() {
     }
   }, [axiosPrivate, API_MYURLS]);
 
+  const updateUrl = useCallback((updatedUrl) => {
+    setUrls((prevUrls) =>
+      prevUrls.map((url) => (url._id === updatedUrl._id ? updatedUrl : url))
+    );
+  }, []);
+
   return (
     <div className="flex w-full flex-col items-center px-4 pb-20">
       <Notifications ref={notificationRef} />
@@ -235,6 +241,7 @@ function Myurlspage() {
           <Urlslist
             urls={urls}
             getMyUrls={getMyUrls}
+            updateUrl={updateUrl}
             notificationRef={notificationRef}
             isLoading={isLoading}
           />

@@ -53,7 +53,12 @@
     "loaderr": "Load error",
     "top": "On top",
     "topTitle": "Scroll to top",
-    "search": "Search by original url"
+    "search": "Search by original url",
+    "pause": "Pause",
+    "resume": "Resume",
+    "paused": "Paused",
+    "statusChanged": "Status changed",
+    "toggleError": "Failed to change status"
   },
   "modal": {
     "deleteProfile": {

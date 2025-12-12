@@ -136,6 +136,18 @@ function HiddenSVGIcons() {
           clipRule="evenodd"
         />
       </symbol>
+      <symbol id="pause" viewBox="0 0 24 24">
+        <path
+          fill="#FFFFFF"
+          d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"
+        />
+      </symbol>
+      <symbol id="play" viewBox="0 0 24 24">
+        <path
+          fill="#FFFFFF"
+          d="M8 5v14l11-7z"
+        />
+      </symbol>
     </svg>
   );
 }

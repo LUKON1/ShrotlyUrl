@@ -37,6 +37,11 @@ const UrlSchema = new mongoose.Schema({
 		required: true,
 		trim: true,
 	},
+	isActive: {
+		type: Boolean,
+		required: true,
+		default: true,
+	},
 });
 
 const UrlModel = mongoose.model("Url", UrlSchema);

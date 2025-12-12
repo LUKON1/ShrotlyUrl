@@ -142,19 +142,22 @@ function ShortenerForm() {
           <div className="mb-30 flex flex-col items-center">
             <div className="mb-30 flex flex-col items-center justify-center gap-5 md:flex-row md:gap-6">
               <div
-              style={{ animationDelay: "0.2s" }}
-               className="animate-fadeinup opacity-0 text-1xl box-border flex h-16 w-3xs max-w-5xl flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-green-500 bg-green-50 p-2 text-center font-semibold text-green-700 shadow-lg md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-green-400 dark:bg-slate-800 dark:text-green-300">
+                style={{ animationDelay: "0.2s" }}
+                className="animate-fadeinup text-1xl box-border flex h-16 w-3xs max-w-5xl flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-green-500 bg-green-50 p-2 text-center font-semibold text-green-700 opacity-0 shadow-lg md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-green-400 dark:bg-slate-800 dark:text-green-300"
+              >
                 <span className="select-all">{shortUrl}</span>
               </div>
               <div
-              style={{ animationDelay: "0.3s" }}
-              className="animate-fadeinup opacity-0 transition-all duration-200 ease-out">
+                style={{ animationDelay: "0.3s" }}
+                className="animate-fadeinup opacity-0 transition-all duration-200 ease-out"
+              >
                 <CopyButton shortUrl={shortUrl} />
               </div>
             </div>
             <div
-            style={{ animationDelay: "0.4s" }}
-            className="animate-fadeinup opacity-0 flex flex-col gap-5 md:flex-col-reverse md:gap-8">
+              style={{ animationDelay: "0.4s" }}
+              className="animate-fadeinup flex flex-col gap-5 opacity-0 md:flex-col-reverse md:gap-8"
+            >
               <Qrgen qrCodeDataUrl={qrCodeDataUrl} />
               <LoadQR_Button qrCodeDataUrl={qrCodeDataUrl} url={url} />
             </div>

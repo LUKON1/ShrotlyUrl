@@ -20,7 +20,7 @@ const HOST_NAME = process.env.HOST_NAME;
 app.use(
   cors({
     origin: HOST_NAME,
-    methods: ["POST", "GET", "DELETE"],
+    methods: ["POST", "GET", "DELETE", "PATCH"],
     credentials: true,
   })
 );

@@ -10,6 +10,7 @@ function UrlCard({
   onShare,
   onDownloadQR,
   onToggleAnalytics,
+  onToggleActive,
   t,
   notificationRef,
 }) {
@@ -145,13 +146,17 @@ function UrlCard({
       <div className="flex items-center justify-between">
         <div
           className={`flex items-center gap-2 self-end rounded-lg border px-4 py-2 shadow-md transition-colors dark:text-white ${
-            dayjs(urlData.expiredAt).isAfter(dayjs())
-              ? "border-green-600 bg-green-500 text-white dark:border-green-600 dark:bg-green-700"
-              : "border-red-600 bg-red-500 text-white dark:border-red-600 dark:bg-red-500"
+            urlData.isActive === false
+              ? "border-gray-600 bg-gray-500 text-white dark:border-gray-500 dark:bg-gray-600"
+              : dayjs(urlData.expiredAt).isAfter(dayjs())
+                ? "border-green-600 bg-green-500 text-white dark:border-green-600 dark:bg-green-700"
+                : "border-red-600 bg-red-500 text-white dark:border-red-600 dark:bg-red-500"
           } `}
         >
           <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            {dayjs(urlData.expiredAt).isAfter(dayjs()) ? (
+            {urlData.isActive === false ? (
+              <use href="#cross" />
+            ) : dayjs(urlData.expiredAt).isAfter(dayjs()) ? (
               <use href="#check" />
             ) : (
               <use href="#cross" />
@@ -159,27 +164,48 @@ function UrlCard({
           </svg>
           <div>
             <p className="text-lg font-semibold sm:text-xl md:text-2xl">
-              {dayjs(urlData.expiredAt).isAfter(dayjs()) ? t("shared.active") : t("shared.expired")}
+              {urlData.isActive === false
+                ? t("myurls.paused")
+                : dayjs(urlData.expiredAt).isAfter(dayjs())
+                  ? t("shared.active")
+                  : t("shared.expired")}
             </p>
             <span className="text-base text-white sm:text-lg md:text-xl">
               {formatDate(urlData.createdAt)} — {formatDate(urlData.expiredAt)}
             </span>
           </div>
         </div>
-        <div
-          className="flex h-7 w-auto flex-row items-center gap-1 self-end rounded-xl border border-sky-500 bg-sky-400 px-2 sm:h-9 md:h-12 dark:bg-sky-700"
-          title="Clicks"
-        >
-          <svg
-            fill="#FFFFFF"
-            className="h-7 w-7 p-1 sm:h-9 sm:w-9 md:h-12 md:w-12"
-            viewBox="0 0 48 48"
+        <div className="flex items-center gap-2 self-end">
+          {mode === "myurls" && onToggleActive && (
+            <button
+              onClick={onToggleActive}
+              className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded-xl border transition-colors sm:h-9 sm:w-9 md:h-12 md:w-12 ${
+                urlData.isActive !== false
+                  ? "border-red-600 bg-red-500 hover:bg-red-600 dark:border-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                  : "border-sky-500 bg-sky-400 hover:bg-sky-500 dark:border-sky-600 dark:bg-sky-700 dark:hover:bg-sky-600"
+              }`}
+              title={urlData.isActive !== false ? t("myurls.pause") : t("myurls.resume")}
+            >
+              <svg fill="#FFFFFF" viewBox="0 0 24 24" className="p-1">
+                {urlData.isActive !== false ? <use href="#pause"></use> : <use href="#play"></use>}
+              </svg>
+            </button>
+          )}
+          <div
+            className="flex h-7 w-auto flex-row items-center gap-1 rounded-xl border border-sky-500 bg-sky-400 px-2 sm:h-9 md:h-12 dark:bg-sky-700"
+            title="Clicks"
           >
-            <use href="#clicks"></use>
-          </svg>
-          <p className="text-lg font-extrabold text-white sm:text-xl md:text-2xl">
-            {urlData.clicks}
-          </p>
+            <svg
+              fill="#FFFFFF"
+              className="h-7 w-7 p-1 sm:h-9 sm:w-9 md:h-12 md:w-12"
+              viewBox="0 0 48 48"
+            >
+              <use href="#clicks"></use>
+            </svg>
+            <p className="text-lg font-extrabold text-white sm:text-xl md:text-2xl">
+              {urlData.clicks}
+            </p>
+          </div>
         </div>
       </div>
     </div>

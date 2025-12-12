@@ -5,9 +5,11 @@ import { formatDate } from "../../utils/formatDate";
 import UrlAnalyticsChart from "./UrlAnalyticsChart";
 import AppLoader from "../shared/AppLoader";
 import UrlCard from "../shared/UrlCard";
+import useAxiosPrivate from "../../utils/useAxiosPrivate";
 
-function Urlslist({ urls, notificationRef, getMyUrls, isLoading }) {
+function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, isLoading }) {
   const { t } = useTranslation();
+  const axiosPrivate = useAxiosPrivate();
   const [searchTerm, setSearchTerm] = useState("");
   const [openAnalyticsId, setOpenAnalyticsId] = useState(null);
 
@@ -19,6 +21,20 @@ function Urlslist({ urls, notificationRef, getMyUrls, isLoading }) {
 
   const toggleAnalytics = (id) => {
     setOpenAnalyticsId(openAnalyticsId === id ? null : id);
+  };
+
+  const handleToggleActive = async (urlId) => {
+    try {
+      const response = await axiosPrivate.patch(`/myurls/toggle/${urlId}`);
+      if (updateUrl && response.data) {
+        updateUrl(response.data);
+      } else {
+        await getMyUrls();
+      }
+    } catch (err) {
+      console.error("Failed to toggle URL status:", err);
+      notificationRef.current?.addNotification(t("myurls.loaderr"), 3000);
+    }
   };
 
   return (
@@ -63,6 +79,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, isLoading }) {
                           mode="myurls"
                           urlData={urlItem}
                           onToggleAnalytics={() => toggleAnalytics(urlItem._id)}
+                          onToggleActive={() => handleToggleActive(urlItem._id)}
                           t={t}
                           notificationRef={notificationRef}
                         />
