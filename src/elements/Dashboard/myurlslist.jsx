@@ -7,11 +7,12 @@ import AppLoader from "../shared/AppLoader";
 import UrlCard from "../shared/UrlCard";
 import useAxiosPrivate from "../../utils/useAxiosPrivate";
 
-function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, isLoading }) {
+function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLoading }) {
   const { t } = useTranslation();
   const axiosPrivate = useAxiosPrivate();
   const [searchTerm, setSearchTerm] = useState("");
   const [openAnalyticsId, setOpenAnalyticsId] = useState(null);
+  const [deletingUrls, setDeletingUrls] = useState(new Set());
 
   const displayedUrls = useMemo(() => {
     return searchTerm
@@ -35,6 +36,34 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, isLoading }) {
       console.error("Failed to toggle URL status:", err);
       notificationRef.current?.addNotification(t("myurls.loaderr"), 3000);
     }
+  };
+
+  const handleDelete = async (urlId) => {
+    // Добавляем ID в deletingUrls для запуска анимации
+    setDeletingUrls((prev) => new Set(prev).add(urlId));
+
+    // Ждем завершения анимации перед удалением из DOM
+    setTimeout(async () => {
+      try {
+        await axiosPrivate.delete(`/myurls/${urlId}`);
+        if (removeUrl) {
+          removeUrl(urlId);
+          notificationRef.current?.addNotification(t("myurls.deleteSuccess"), 2000);
+        } else {
+          await getMyUrls();
+          notificationRef.current?.addNotification(t("myurls.deleteSuccess"), 2000);
+        }
+      } catch (err) {
+        console.error("Failed to delete URL:", err);
+        // Убираем из deletingUrls при ошибке, чтобы вернуть элемент
+        setDeletingUrls((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(urlId);
+          return newSet;
+        });
+        notificationRef.current?.addNotification(t("myurls.deleteError"), 3000);
+      }
+    }, 300); // Длительность анимации
   };
 
   return (
@@ -80,6 +109,8 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, isLoading }) {
                           urlData={urlItem}
                           onToggleAnalytics={() => toggleAnalytics(urlItem._id)}
                           onToggleActive={() => handleToggleActive(urlItem._id)}
+                          onDelete={() => handleDelete(urlItem._id)}
+                          isDeleting={deletingUrls.has(urlItem._id)}
                           t={t}
                           notificationRef={notificationRef}
                         />

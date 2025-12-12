@@ -137,15 +137,13 @@ function HiddenSVGIcons() {
         />
       </symbol>
       <symbol id="pause" viewBox="0 0 24 24">
-        <path
-          fill="#FFFFFF"
-          d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"
-        />
+        <rect x="6" y="4" width="4" height="16" rx="1" ry="1" fill="#FFFFFF" />
+        <rect x="14" y="4" width="4" height="16" rx="1" ry="1" fill="#FFFFFF" />
       </symbol>
       <symbol id="play" viewBox="0 0 24 24">
         <path
           fill="#FFFFFF"
-          d="M8 5v14l11-7z"
+          d="M8.5 5.5c0-.3.2-.5.5-.5.1 0 .2.1.2.1l10.5 6.5c.2.1.3.3.3.5 0 .2-.1.4-.3.5l-10.5 6.5c-.2.1-.4.1-.6 0-.1-.1-.1-.2-.1-.3V5.5z"
         />
       </symbol>
     </svg>

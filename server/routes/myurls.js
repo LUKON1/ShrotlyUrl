@@ -218,4 +218,28 @@ router.patch("/toggle/:urlId", async (req, res) => {
   }
 });
 
+router.delete("/:urlId", async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { urlId } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    const urlEntry = await UrlModel.findOne({ _id: urlId, userId: userId });
+
+    if (!urlEntry) {
+      return res.status(404).json({ error: "URL not found or access denied" });
+    }
+
+    await UrlModel.findByIdAndDelete(urlId);
+
+    res.status(200).json({ message: "URL deleted successfully" });
+  } catch (err) {
+    console.error("Error in DELETE /:urlId route:", err);
+    res.status(500).json({ error: "Server error", details: err.message });
+  }
+});
+
 module.exports = router;

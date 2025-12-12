@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import { formatDate } from "../../utils/formatDate";
+import ConfirmModal from "./ConfirmModal";
 
 function UrlCard({
   urlData,
@@ -11,11 +12,46 @@ function UrlCard({
   onDownloadQR,
   onToggleAnalytics,
   onToggleActive,
+  onDelete,
+  isDeleting = false,
   t,
   notificationRef,
 }) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const DONT_ASK_DELETE_KEY = "dontAskDeleteConfirmation";
+
+  const checkDontAskAgain = () => {
+    return sessionStorage.getItem(DONT_ASK_DELETE_KEY) === "true";
+  };
+
+  const handleDeleteClick = () => {
+    if (checkDontAskAgain()) {
+      // Если пользователь выбрал "больше не спрашивать", удаляем сразу
+      if (onDelete) {
+        onDelete();
+      }
+    } else {
+      // Показываем модальное окно
+      setIsDeleteModalOpen(true);
+    }
+  };
+
+  const handleDontAskAgainChange = (checked) => {
+    if (checked) {
+      sessionStorage.setItem(DONT_ASK_DELETE_KEY, "true");
+    } else {
+      sessionStorage.removeItem(DONT_ASK_DELETE_KEY);
+    }
+  };
   return (
-    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-shadow hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800">
+    <div
+      className={`mb-8 rounded-lg border p-4 shadow-lg transition-shadow sm:p-6 ${
+        isDeleting
+          ? "border-red-500 pointer-events-none shadow-red-500/50 dark:border-red-600 dark:shadow-red-600/50"
+          : "border-gray-200 bg-white hover:shadow-xl dark:border-slate-700 dark:bg-slate-800"
+      }`}
+      style={isDeleting ? { animation: "var(--animate-fadeout-slide)" } : {}}
+    >
       <div className="mb-4 flex items-center justify-between">
         <div className="flex max-w-[64%] flex-col">
           <div className="flex flex-row items-center gap-4">
@@ -176,20 +212,35 @@ function UrlCard({
           </div>
         </div>
         <div className="flex items-center gap-2 self-end">
-          {mode === "myurls" && onToggleActive && (
-            <button
-              onClick={onToggleActive}
-              className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded-xl border transition-colors sm:h-9 sm:w-9 md:h-12 md:w-12 ${
-                urlData.isActive !== false
-                  ? "border-red-600 bg-red-500 hover:bg-red-600 dark:border-red-700 dark:bg-red-600 dark:hover:bg-red-700"
-                  : "border-sky-500 bg-sky-400 hover:bg-sky-500 dark:border-sky-600 dark:bg-sky-700 dark:hover:bg-sky-600"
-              }`}
-              title={urlData.isActive !== false ? t("myurls.pause") : t("myurls.resume")}
-            >
-              <svg fill="#FFFFFF" viewBox="0 0 24 24" className="p-1">
-                {urlData.isActive !== false ? <use href="#pause"></use> : <use href="#play"></use>}
-              </svg>
-            </button>
+          {mode === "myurls" && (
+            <>
+              {onDelete && (
+                <button
+                  onClick={handleDeleteClick}
+                  className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-red-600 bg-red-500 transition-colors hover:bg-red-600 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                  title={t("myurls.delete")}
+                >
+                  <svg fill="#FFFFFF" viewBox="-3 -2 24 24" preserveAspectRatio="xMinYMin" className="p-1">
+                    <path d="M6 2V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-.133l-.68 10.2a3 3 0 0 1-2.993 2.8H5.826a3 3 0 0 1-2.993-2.796L2.137 7H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4zm10 2H2v1h14V4zM4.141 7l.687 10.068a1 1 0 0 0 .998.932h6.368a1 1 0 0 0 .998-.934L13.862 7h-9.72zM7 8a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v7a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1z" />
+                  </svg>
+                </button>
+              )}
+              {onToggleActive && (
+                <button
+                  onClick={onToggleActive}
+                  className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border transition-colors sm:h-9 sm:w-9 md:h-12 md:w-12 ${
+                    urlData.isActive !== false
+                      ? "border-red-600 bg-red-500 hover:bg-red-600 dark:border-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                      : "border-sky-500 bg-sky-400 hover:bg-sky-500 dark:border-sky-600 dark:bg-sky-700 dark:hover:bg-sky-600"
+                  }`}
+                  title={urlData.isActive !== false ? t("myurls.pause") : t("myurls.resume")}
+                >
+                  <svg fill="#FFFFFF" viewBox="0 0 24 24" className="p-1">
+                    {urlData.isActive !== false ? <use href="#pause"></use> : <use href="#play"></use>}
+                  </svg>
+                </button>
+              )}
+            </>
           )}
           <div
             className="flex h-7 w-auto flex-row items-center gap-1 rounded-xl border border-sky-500 bg-sky-400 px-2 sm:h-9 md:h-12 dark:bg-sky-700"
@@ -208,6 +259,22 @@ function UrlCard({
           </div>
         </div>
       </div>
+      {mode === "myurls" && onDelete && (
+        <ConfirmModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={() => {
+            onDelete();
+          }}
+          title={t("myurls.confirmDelete")}
+          message={t("myurls.confirmDeleteMessage")}
+          confirmText={t("myurls.delete")}
+          cancelText={t("modal.deleteProfile.cancelBtn")}
+          type="danger"
+          showDontAskAgain={true}
+          onDontAskAgainChange={handleDontAskAgainChange}
+        />
+      )}
     </div>
   );
 }

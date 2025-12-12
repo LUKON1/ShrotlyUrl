@@ -58,7 +58,13 @@
     "resume": "Resume",
     "paused": "Paused",
     "statusChanged": "Status changed",
-    "toggleError": "Failed to change status"
+    "toggleError": "Failed to change status",
+    "delete": "Delete",
+    "confirmDelete": "Confirm Deletion",
+    "confirmDeleteMessage": "Are you sure you want to delete this URL? This action cannot be undone.",
+    "deleteSuccess": "URL deleted successfully",
+    "deleteError": "Failed to delete URL",
+    "dontAskAgain": "Don't ask again"
   },
   "modal": {
     "deleteProfile": {

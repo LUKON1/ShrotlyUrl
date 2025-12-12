@@ -81,6 +81,10 @@ function Myurlspage() {
     );
   }, []);
 
+  const removeUrl = useCallback((urlId) => {
+    setUrls((prevUrls) => prevUrls.filter((url) => url._id !== urlId));
+  }, []);
+
   return (
     <div className="flex w-full flex-col items-center px-4 pb-20">
       <Notifications ref={notificationRef} />
@@ -242,6 +246,7 @@ function Myurlspage() {
             urls={urls}
             getMyUrls={getMyUrls}
             updateUrl={updateUrl}
+            removeUrl={removeUrl}
             notificationRef={notificationRef}
             isLoading={isLoading}
           />

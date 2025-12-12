@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function ConfirmModal({
   isOpen,
@@ -10,8 +10,19 @@ function ConfirmModal({
   confirmText = "Confirm",
   cancelText = "Cancel",
   type = "warning", // "warning", "danger", "info"
+  showDontAskAgain = false,
+  dontAskAgainKey = null,
+  onDontAskAgainChange = null,
 }) {
   const { t } = useTranslation();
+  const [dontAskAgain, setDontAskAgain] = useState(false);
+
+  // Сброс состояния галочки при закрытии модального окна
+  useEffect(() => {
+    if (!isOpen) {
+      setDontAskAgain(false);
+    }
+  }, [isOpen]);
 
   // Закрытие по Escape
   useEffect(() => {
@@ -66,6 +77,30 @@ function ConfirmModal({
 
           {/* Message */}
           <p className="mb-6 leading-relaxed text-gray-600 dark:text-gray-400">{message}</p>
+
+          {/* Don't ask again checkbox */}
+          {showDontAskAgain && (
+            <div className="mb-4 flex items-center">
+              <input
+                type="checkbox"
+                id="dontAskAgain"
+                checked={dontAskAgain}
+                onChange={(e) => {
+                  setDontAskAgain(e.target.checked);
+                  if (onDontAskAgainChange) {
+                    onDontAskAgainChange(e.target.checked);
+                  }
+                }}
+                className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-2 focus:ring-sky-500 dark:border-gray-600 dark:bg-slate-700"
+              />
+              <label
+                htmlFor="dontAskAgain"
+                className="ml-2 text-sm text-gray-700 dark:text-gray-300"
+              >
+                {t("myurls.dontAskAgain")}
+              </label>
+            </div>
+          )}
 
           {/* Buttons */}
           <div className="flex justify-end gap-3">
