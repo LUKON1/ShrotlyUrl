@@ -152,7 +152,7 @@ function HiddenSVGIcons() {
           ry="1"
           fill="none"
           stroke="#FFFFFF"
-          stroke-width="2"
+          strokeWidth="2"
         />
         <rect
           x="14"
@@ -163,16 +163,16 @@ function HiddenSVGIcons() {
           ry="1"
           fill="none"
           stroke="#FFFFFF"
-          stroke-width="2"
+          strokeWidth="2"
         />
       </symbol>
       <symbol id="play" viewBox="2 0 24 24">
         <path
           d="M8.5 5.5L20 12L8.5 18.5V5.5Z"
           stroke="#FFFFFF"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           fill="none"
         />
       </symbol>
