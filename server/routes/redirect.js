@@ -13,7 +13,7 @@ router.get("/:shortCode", async (req, res) => {
     }
 
     if (urlEntry.isActive === false) {
-      return res.status(403).send("Short URL is paused.");
+      return res.redirect(302, `${process.env.HOST_NAME}/paused`);
     }
 
     if (new Date(urlEntry.expiredAt) < new Date()) {

@@ -123,5 +123,10 @@
     "visitSite": "Visit Site",
     "downloadQR": "Download QR",
     "copy": "Copy"
+  },
+  "paused": {
+    "title": "Link Paused",
+    "message": "This shortened link has been paused by the owner and is temporarily unavailable.",
+    "home": "Go Home"
   }
 }

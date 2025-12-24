@@ -9,6 +9,7 @@ import Myurlspage from "./Pages/!Myurlspage.jsx";
 import PrivacyPolicyPage from "./PrivacyPolicyPage.jsx";
 import Signinpage from "./Pages/!Signinpage.jsx";
 import SharePage from "./Pages/SharePage.jsx";
+import PausedPage from "./Pages/PausedPage.jsx";
 import useAuthOnLoading from "../utils/useAuthOnLoading.js";
 import AppLoader from "./shared/AppLoader.jsx";
 import { ThemeProvider } from "../context/ThemeProvider.jsx";
@@ -33,6 +34,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/paused" element={<PausedPage />} />
             <Route
               path="/profile"
               element={
