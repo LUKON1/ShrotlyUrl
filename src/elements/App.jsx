@@ -1,31 +1,56 @@
 import "/src/style.css";
-import { Routes, Route, Link } from "react-router-dom";
-import Registrpage from "./Registration/!Registrpage.jsx";
-import Footer from "./footer.jsx";
-import Homepage from "./Homepage/!Homepage.jsx";
-import Header_bar from "./header_bar.jsx";
-import PrivateRoute from "./PrivateRoute.jsx";
-import Myurlspage from "./Myurls/!Myurlspage.jsx";
-import Aboutpage from "./Aboutpage.jsx";
+import { Routes, Route } from "react-router-dom";
+import Registrpage from "./Pages/!Registrpage.jsx";
+import Footer from "./layout/footer.jsx";
+import Homepage from "./Pages/!Homepage.jsx";
+import Header_bar from "./layout/header_bar.jsx";
+import PrivateRoute from "./Pages/PrivateRoute.jsx";
+import Myurlspage from "./Pages/!Myurlspage.jsx";
+import PrivacyPolicyPage from "./PrivacyPolicyPage.jsx";
+import Signinpage from "./Pages/!Signinpage.jsx";
+import SharePage from "./Pages/SharePage.jsx";
+import PausedPage from "./Pages/PausedPage.jsx";
+import useAuthOnLoading from "../utils/useAuthOnLoading.js";
+import AppLoader from "./shared/AppLoader.jsx";
+import { ThemeProvider } from "../context/ThemeProvider.jsx";
 
 function App() {
+  const isLoadingAuth = useAuthOnLoading();
+  if (isLoadingAuth) {
+    return (
+      <ThemeProvider>
+        <div className="flex min-h-screen w-screen flex-col items-center justify-center bg-rose-50 dark:bg-slate-900">
+          <AppLoader />
+        </div>
+      </ThemeProvider>
+    );
+  }
+  //bg-rose-50 dark:bg-slate-900
   return (
-    <div className="flex flex-col w-screen min-h-screen bg-rose-50">
-      <Header_bar />
-      <main className="flex flex-col flex-grow">
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/about" element={<Aboutpage />}/>
-          <Route path="/myurls" element={
-           <PrivateRoute>
-            <Myurlspage />
-           </PrivateRoute>
-          }/>
-          <Route path="/registration" element={<Registrpage />}/>
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="flex min-h-screen w-screen flex-col">
+        <Header_bar />
+        <main className="flex grow flex-col">
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/paused" element={<PausedPage />} />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Myurlspage />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/registration" element={<Registrpage />} />
+            <Route path="/signin" element={<Signinpage />} />
+            <Route path="/share/:shortCode" element={<SharePage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }
 export default App;

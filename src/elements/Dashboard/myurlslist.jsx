@@ -1,0 +1,187 @@
+import { useState, useMemo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "motion/react";
+import dayjs from "dayjs";
+import { formatDate } from "../../utils/formatDate";
+import UrlAnalyticsChart from "./UrlAnalyticsChart";
+import AppLoader from "../shared/AppLoader";
+import UrlCard from "../shared/UrlCard";
+import useAxiosPrivate from "../../utils/useAxiosPrivate";
+
+function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLoading }) {
+  const { t } = useTranslation();
+  const axiosPrivate = useAxiosPrivate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openAnalyticsId, setOpenAnalyticsId] = useState(null);
+  const [deletingIds, setDeletingIds] = useState(new Set());
+  const displayedUrls = useMemo(() => {
+    const filteredUrls = searchTerm
+      ? urls.filter((urlItem) => urlItem.url.toLowerCase().includes(searchTerm.toLowerCase()))
+      : urls;
+
+    // Оставляем все элементы, включая удаляемые, для корректной анимации
+    return filteredUrls;
+  }, [searchTerm, urls]);
+
+  const toggleAnalytics = (id) => {
+    setOpenAnalyticsId(openAnalyticsId === id ? null : id);
+  };
+
+  const handleToggleActive = async (urlId) => {
+    try {
+      const response = await axiosPrivate.patch(`/myurls/toggle/${urlId}`);
+      if (updateUrl && response.data) {
+        updateUrl(response.data);
+      } else {
+        await getMyUrls();
+      }
+    } catch (err) {
+      console.error("Failed to toggle URL status:", err);
+      notificationRef.current?.addNotification(t("myurls.loaderr"), 3000);
+    }
+  };
+
+  const handleDelete = useCallback(
+    async (urlId) => {
+      // Добавляем ID в список удаляемых для предотвращения перерисовки
+      setDeletingIds((prev) => new Set([...prev, urlId]));
+
+      try {
+        await axiosPrivate.delete(`/myurls/${urlId}`);
+
+        // Элемент будет удален автоматически через onAnimationComplete
+
+        notificationRef.current?.addNotification(t("myurls.deleteSuccess"), 2000);
+      } catch (err) {
+        console.error("Failed to delete URL:", err);
+        // Удаляем из списка удаляемых при ошибке
+        setDeletingIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(urlId);
+          return newSet;
+        });
+        notificationRef.current?.addNotification(t("myurls.deleteError"), 3000);
+      }
+    },
+    [axiosPrivate, removeUrl, getMyUrls, t, notificationRef]
+  );
+
+  return (
+    <>
+      <div className="flex w-full flex-col items-center">
+        <>
+          <div className="mx-auto mb-4 flex h-12 w-full max-w-7xl flex-row items-center">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+              placeholder={t("myurls.search")}
+              className="h-full w-full rounded-lg rounded-r-none border-2 border-sky-400 bg-white px-3 text-lg text-gray-900 focus:ring-2 focus:ring-sky-500 focus:outline-none dark:border-sky-500 dark:bg-slate-700 dark:text-gray-100"
+            />
+            <button
+              onClick={getMyUrls}
+              className="h-full w-12 rounded-lg rounded-l-none border-2 border-l-0 border-sky-400 bg-sky-400 p-1 transition-colors hover:bg-sky-500 dark:border-sky-500 dark:bg-sky-500 dark:hover:bg-sky-600"
+              type="button"
+            >
+              <svg fill="#FFFFFF" viewBox="0 0 35 31.8" className="hover:cursor-pointer">
+                <use href="#reload"></use>
+              </svg>
+            </button>
+          </div>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <AppLoader />
+            </div>
+          ) : (
+            <>
+              {displayedUrls.length > 0 ? (
+                <motion.ul
+                  className="mx-auto w-full max-w-7xl"
+                  layout="position"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    layout: {
+                      duration: 0.4,
+                      ease: "easeOut",
+                    },
+                  }}
+                >
+                  <AnimatePresence mode="popLayout">
+                    {displayedUrls.map((urlItem, index) => (
+                      <motion.li
+                        key={urlItem._id}
+                        className="mb-4"
+                        style={{ willChange: "transform, opacity" }}
+                        initial={{ opacity: 0, y: 100 }}
+                        animate={deletingIds.has(urlItem._id) ? "exit" : "enter"}
+                        variants={{
+                          enter: { opacity: 1, x: 0, y: 0 },
+                          exit: { opacity: 0, x: 5000, y: 0 },
+                        }}
+                        transition={{
+                          ease: [0.25, 0.46, 0.45, 0.94],
+                          delay: deletingIds.has(urlItem._id) ? 0 : index * 0.2,
+                        }}
+                        onAnimationComplete={(definition) => {
+                          if (definition === "exit" && deletingIds.has(urlItem._id)) {
+                            if (removeUrl) {
+                              removeUrl(urlItem._id);
+                            } else {
+                              getMyUrls();
+                            }
+                            setDeletingIds((prev) => {
+                              const newSet = new Set(prev);
+                              newSet.delete(urlItem._id);
+                              return newSet;
+                            });
+                          }
+                        }}
+                      >
+                        <UrlCard
+                          mode="myurls"
+                          urlData={urlItem}
+                          onToggleAnalytics={() => toggleAnalytics(urlItem._id)}
+                          onToggleActive={() => handleToggleActive(urlItem._id)}
+                          onDelete={() => handleDelete(urlItem._id)}
+                          t={t}
+                          notificationRef={notificationRef}
+                        />
+                        <AnimatePresence mode="wait">
+                          {openAnalyticsId === urlItem._id && (
+                            <motion.div
+                              className="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-shadow hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800"
+                              initial={{ opacity: 0, height: 0, y: 100, scale: 0.95 }}
+                              animate={{ opacity: 1, height: "auto", y: 0, scale: 1 }}
+                              exit={{ opacity: 0, height: 0, y: 100, scale: 0.95 }}
+                              transition={{
+                                duration: 0.4,
+                                ease: [0.25, 0.46, 0.45, 0.94],
+                                scale: {
+                                  duration: 0.3,
+                                  ease: "easeOut",
+                                },
+                              }}
+                            >
+                              <UrlAnalyticsChart urlId={urlItem._id} />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.li>
+                    ))}
+                  </AnimatePresence>
+                </motion.ul>
+              ) : (
+                <p className="text-xl text-rose-900 dark:text-rose-400">{t("myurls.nourls")}</p>
+              )}
+            </>
+          )}
+        </>
+      </div>
+    </>
+  );
+}
+export default Urlslist;

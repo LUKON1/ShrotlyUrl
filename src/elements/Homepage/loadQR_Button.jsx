@@ -1,48 +1,37 @@
 import { useTranslation } from "react-i18next";
-function LoadQR_Button({ qrContainerRef, notificationRef, url }) {
-  const {t} = useTranslation()
-  const handleLoadQR = () => {
-    if (!qrContainerRef?.current) {
-      notificationRef.current?.addNotification(t('message.qrdownloaderror'), 3000);
-      return;
-    }
-    try {
-      // Находим img элемент внутри контейнера
-      const imgElement = qrContainerRef.current.querySelector("img");
-      if (!imgElement || !imgElement.src) {
-        notificationRef.current?.addNotification(t('message.qrdownloading'), 3000);
-        return;
-      }
-      const urlFullDomain = new URL(url);
-      const urlMainDomain = urlFullDomain.hostname;
-      const domainParts = urlMainDomain.split(".");
-      const baseDomain = domainParts.slice(-2).join(".");
-      // Создаём ссылку для скачивания
 
-      const link = document.createElement("a");
-      link.href = imgElement.src;
-      link.download = `${baseDomain}-QRcode.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch {
-      return;
-    }
-  };
-  return (
-    <div>
-      <button
-        onClick={handleLoadQR}
-        type="button"
-        className="bg-rose-300 text-rose-950 hover:bg-rose-400 active:bg-rose-500
-        transition duration-300 ease-in-out
-        rounded-md h-16 lg:h-20 w-64 flex items-center justify-center
-        shadow-md hover:shadow-lg 
-        text-1xl md:text-2xl lg:text-3xl font-extrabold"
-      >
-        {t('homepage.downloadqr')}
-      </button>
-    </div>
-  );
+function LoadQR_Button({ qrCodeDataUrl, url }) {
+    const { t } = useTranslation();
+
+    const handleLoadQR = () => {
+        if (!qrCodeDataUrl) {
+            return;
+        }
+
+        const urlFullDomain = new URL(url);
+        const urlMainDomain = urlFullDomain.hostname;
+        const domainParts = urlMainDomain.split(".");
+        const baseDomain = domainParts.slice(-2).join(".");
+
+        const link = document.createElement("a");
+        link.href = qrCodeDataUrl;
+        link.download = `${baseDomain}-QRcode.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    return (
+        <div>
+            <button
+                onClick={handleLoadQR}
+                type="button"
+                className="transition-all duration-200 ease-out hover:bg-rose-400 dark:hover:bg-rose-600 active:bg-rose-500 dark:active:bg-rose-700 bg-rose-300 dark:bg-rose-500 shadow-lg hover:shadow-xl h-16 lg:h-20 w-64 text-1xl md:text-2xl lg:text-3xl p-4 rounded-lg text-slate-900 dark:text-white font-extrabold"
+            >
+                {t("homepage.downloadqr")}
+            </button>
+        </div>
+    );
 }
+
 export default LoadQR_Button;

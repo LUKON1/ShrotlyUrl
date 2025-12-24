@@ -1,154 +1,126 @@
-// main_form.jsx - Основная форма для сокращения URL. | Main form for URL shortening.
-import { useState, useEffect, useRef, useCallback } from "react"; // Хуки React для состояния, эффектов, ссылок и мемоизации функций. | React hooks for state, effects, refs, and function memoization.
-import CopyButton from "./copy_button.jsx"; // Компонент кнопки "Копировать". | Copy button component.
-import SubmitButton from "./submit_button.jsx"; // Компонент кнопки "Отправить". | Submit button component.
-import Qrgen from "./qr_gen.jsx"; // Компонент для генерации QR-кода. | QR code generation component.
-import LoadQR_Button from "./loadQR_Button.jsx"; // Компонент кнопки для загрузки QR-кода. | QR code download button component.
-import Notifications from "../messagewindow.jsx"; // Компонент для отображения уведомлений. | Notification display component.
-import { useTranslation } from "react-i18next"; // Хук для интернационализации. | Hook for internationalization.
+import { useState, useEffect, useRef, useCallback } from "react";
+import CopyButton from "./copy_button.jsx";
+import SubmitButton from "./submit_button.jsx";
+import Qrgen from "./qr_gen.jsx";
+import LoadQR_Button from "./loadQR_Button.jsx";
+import Notifications from "../shared/messagewindow.jsx";
+import { useTranslation } from "react-i18next";
+import { containsMyDomain } from "../../utils/containsMyDomain.js";
+import axios from "../../api/axios.js";
+import useAuth from "../../utils/useAuth.js";
+import useAxiosPrivate from "../../utils/useAxiosPrivate.js";
 
 function ShortenerForm() {
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  const {t} = useTranslation() // Инициализация хука перевода. | Initialize translation hook.
+  const API_SHORTER = "/cut/shorter";
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const { t } = useTranslation();
+  const { auth } = useAuth();
+  const userId = auth?.userId;
 
-  // --- Управление состоянием формы и результатами | Form state and results management ---
-  const [url, setUrl] = useState(""); 
-  const [shortUrl, setShortUrl] = useState(""); 
-  const [isLoading, setIsLoading] = useState(false); 
+  const axiosPrivate = useAxiosPrivate();
 
-  // --- Ссылки на DOM-элементы и компоненты | Refs to DOM elements and components ---
-  const notificationRef = useRef(); 
-  const qrContainerRef = useRef(null);
-  const inputRef = useRef(); 
+  const [url, setUrl] = useState("");
+  const [shortUrl, setShortUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState("");
 
-  // --- Опции для URL (время жизни, количество кликов) и их перевод | URL options (lifetime, click count) and their translation ---
-  const [urlTime, setUrlTime] = useState("");
+  const notificationRef = useRef();
+  const inputRef = useRef();
   const urlTimeOptions = [
-    { value: 604800, label: t('homepage.urlopt.urtime.week')},
-    { value: 86400, label: t('homepage.urlopt.urtime.day') },
-    { value: 3600, label: t('homepage.urlopt.urtime.hour') },
-    { value: 2592000, label: t('homepage.urlopt.urtime.month') },
+    { value: 2592000, label: t("homepage.urlopt.urtime.month") },
+    { value: 604800, label: t("homepage.urlopt.urtime.week") },
+    { value: 86400, label: t("homepage.urlopt.urtime.day") },
+    { value: 3600, label: t("homepage.urlopt.urtime.hour") },
   ];
-  const [urlClicks, setUrlClicks] = useState("-1");
-  const urlClicksOptions = [
-    { value: -1, label: t('homepage.urlopt.clicks.unlim') },
-    { value: 1000, label: t('homepage.urlopt.clicks.1k') },
-    { value: 10000, label: t('homepage.urlopt.clicks.10k') },
-    { value: 100000, label: t('homepage.urlopt.clicks.100k') },
-    { value: 1000000, label: t('homepage.urlopt.clicks.1mln') },
-  ];
- 
-  // --- Фокусировка на поле ввода при монтировании компонента | Focus input field on component mount ---
+  const [urlTime, setUrlTime] = useState(urlTimeOptions[0].value);
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
-  // --- Обработчик отправки формы | Form submission handler ---
-  const handleSubmit = useCallback(async (e) => {
-      e.preventDefault(); // Предотвращает перезагрузку страницы. | Prevents page reload.
-      
-      // Валидация: проверка на пустой URL. | Validation: check for empty URL.
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+
       if (!url) {
-        notificationRef.current?.addNotification(t('message.urlblank'), 3000);
+        notificationRef.current?.addNotification(t("message.urlblank"), 3000);
         return;
       }
 
-      // Валидация: проверка на совпадение домена с текущим. | Validation: check for matching domain with current one.
-      const containsMyDomain = (url) => {
-        const MyDomainHost = window.location.host;
-        const MyDomainName = window.location.hostname;
-        const banedDomains = ["localhost:7206", MyDomainName , MyDomainHost ];
-        const regexp = new RegExp(
-          `^(https?:\/\/)?(www\.)?(${banedDomains.join("|")})(\/|$)`,
-          "i"
-        );
-        return regexp.test(url);
-      };
-
       try {
         if (containsMyDomain(url)) {
-          throw new Error(); // Генерирует ошибку, если URL совпадает с доменом приложения. | Throws an error if URL matches the application's domain.
+          throw new Error();
         }
-        setIsLoading(true); // Устанавливает состояние загрузки. | Sets loading state.
-        const usertoken = localStorage.getItem("usertoken"); // Получает токен пользователя. | Gets user token.
-       
-        // Отправка запроса на сокращение URL к API. | Sending URL shortening request to the API.
-        const response = await fetch(`${API_BASE_URL}/ShortUrl/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          // Отправка URL, времени жизни, количества кликов и токена пользователя. | Sending URL, lifetime, click count, and user token.
-          body: JSON.stringify({url:url, urlTime:urlTime, urlClicks:urlClicks, usertoken: usertoken ? usertoken : "unregistred"}) 
-        });
-        
-        if (!response.ok) {
-          throw new Error("Response error"); // Обработка ошибок HTTP-ответа. | Handle HTTP response errors.
-        }
-        console.log(`http status:  ${response.status}`);
-        
-        const usercode = await response.text(); // Получение сокращенного кода. | Get the shortened code.
-        if (usercode.length !== 7) {
-          throw new Error(); // Проверка длины кода. | Code length check.
-        }
-        
-        const shortUrl = `https://localhost:7206/ShortUrl/${usercode}`; // Формирование полного сокращенного URL. | Construct the full shortened URL.
-        setShortUrl(shortUrl); // Обновление состояния сокращенного URL. | Update the shortened URL state.
+        setIsLoading(true);
 
-      } catch (error) {
-        // Отображение уведомления об ошибке. | Display error notification.
-        notificationRef.current?.addNotification(
-          t('message.urlcuterror'),
-          3000
+        const currentAxiosInstance = userId ? axiosPrivate : axios;
+
+        const response = await currentAxiosInstance.post(
+          API_SHORTER,
+          JSON.stringify({
+            url: url,
+            urlTime: urlTime,
+          }),
+          {
+            headers: { "Content-Type": "application/json" },
+          }
         );
+
+        const shortCode = response?.data?.shortCode;
+        if (shortCode.length !== 7) {
+          throw new Error();
+        }
+
+        const shortUrl = `${BASE_URL}/${shortCode}`;
+        setShortUrl(shortUrl);
+        setQrCodeDataUrl(response?.data?.qrCodeDataUrl);
+      } catch (error) {
+        notificationRef.current?.addNotification(t("message.urlcuterror"), 3000);
       } finally {
-        setIsLoading(false); // Сброс состояния загрузки. | Reset loading state.
+        setIsLoading(false);
       }
     },
-    [urlClicks, urlTime, url] // Зависимости `useCallback`. | `useCallback` dependencies.
+    [urlTime, url, userId, axiosPrivate, axios]
   );
 
-  // --- Рендеринг компонента | Component rendering ---
   return (
-    <div>
-      <Notifications ref={notificationRef} /> {/* Компонент для вывода всплывающих уведомлений. | Component for displaying pop-up notifications. */}
+    <>
+      <Notifications ref={notificationRef} />
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col transition-all duration-200 ease-out"
+        className="flex flex-col gap-15 transition-all duration-200 ease-out md:gap-0 lg:gap-1.5"
       >
-        <div className="flex flex-col items-center md:flex-row md:gap-6 mb-6 md:mb-18 gap-40">
-          <div className="felx flex-col relative">
-            {/* Кнопка очистки поля ввода URL. | URL input clear button. */}
+        <div className="mb-6 flex flex-col items-center gap-24 md:mb-18 md:flex-row md:gap-6">
+          <div className="felx relative flex-col">
             {url && (
-              <button className="absolute" onClick={() => setUrl("")}>
+              <button className="absolute z-10 p-1" onClick={() => setUrl("")} type="button">
                 <img
-                  className="w-8 h-full hover:cursor-pointer lg:w-10"
+                  className="h-full w-8 hover:cursor-pointer lg:w-10 dark:invert"
                   src="/src/assets/cross.svg"
                   alt="X"
                 />
               </button>
             )}
-            {/* Поле ввода длинного URL. | Long URL input field. */}
             <input
               ref={inputRef}
-              className=" transition-all duration-200 ease-out text-center p-2 h-16 lg:h-20  text-1xl md:text-2xl lg:text-3xl border-1 rounded-md max-w-5xl border-sky-400 w-3xs md:w-[55vw] lg:w-[70vw]"
+              className="animate-fadeinup text-1xl h-16 w-3xs max-w-5xl rounded-lg border-2 border-sky-400 bg-white p-2 text-center text-gray-900 opacity-0 shadow-md transition-all duration-200 ease-out focus:ring-2 focus:ring-sky-500 focus:outline-none md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-sky-500 dark:bg-slate-800 dark:text-gray-100 dark:focus:ring-sky-400"
+              style={{ animationDelay: "0.1s" }}
               type="url"
               value={url}
               onChange={(e) => {
                 const url = e?.target.value;
                 setUrl(url);
               }}
-              placeholder= {t('homepage.placeholder')}
+              placeholder={t("homepage.placeholder")}
             />
-            {/* Блок выбора опций времени жизни и кликов URL. | Block for selecting URL lifetime and click options. */}
             <div
-              className="absolute flex md:flex-row flex-col gap-x-2.5 lg:gap-x-10 gap-y-6 w-full mt-2.5 bg-rose-50 border border-sky-400  focus:outline-none  py-2 px-1 rounded justify-center text-xs md:text-lg lg:text-2xl"
+              style={{ animationDelay: "0.3s" }}
+              className="animate-fadeinup absolute mt-2.5 flex w-full flex-col justify-center gap-x-2.5 gap-y-6 rounded-lg border-2 border-sky-400 bg-white px-1 py-2 text-xs text-gray-900 opacity-0 shadow-md focus:outline-none md:flex-row md:text-lg lg:gap-x-10 lg:text-2xl dark:border-sky-500 dark:bg-slate-800 dark:text-gray-100"
             >
-              {/* Выбор времени жизни URL. | URL lifetime selection. */}
-              <div className="flex flex-row md:gap-2  justify-between md:justify-normal">
-                <p>{t('homepage.urlopt.urtime.liftimeword')}</p>
+              <div className="flex flex-row justify-between md:justify-normal md:gap-2">
+                <p className="flex items-center">{t("homepage.urlopt.urtime.liftimeword")}</p>
                 <select
-                  className="w-30 lg:w-35 text-center md:w-20"
+                  className="w-30 rounded border border-sky-400 px-2 py-1 text-center focus:ring-2 focus:ring-sky-500 focus:outline-none md:w-24 lg:w-35 dark:border-sky-500 dark:bg-slate-700"
                   value={urlTime}
                   onChange={(e) => {
                     setUrlTime(Number(e?.target.value));
@@ -161,60 +133,38 @@ function ShortenerForm() {
                   ))}
                 </select>
               </div>
-              {/* Выбор количества кликов URL. | URL click count selection. */}
-              <div className="flex flex-row justify-between md:gap-2  md:justify-normal">
-                <p>{t('homepage.urlopt.clicks.clicksword')}</p>
-                <select
-                  className="w-30 text-center md:w-23 lg:w-35"
-                  value={urlClicks}
-                  onChange={(e) => {
-                    setUrlClicks(Number(e?.target.value));
-                  }}
-                >
-                  {urlClicksOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
           </div>
-          <SubmitButton isLoading={isLoading} /> {/* Кнопка отправки формы. | Form submit button. */}
+          <SubmitButton isLoading={isLoading} />
         </div>
-        
-        {/* Блок отображения сокращенного URL и QR-кода (появляется после успешного сокращения). | Block for displaying shortened URL and QR code (appears after successful shortening). */}
+
         {shortUrl && (
-          <div className=" flex flex-col items-center mb-60">
-            <div className="mb-30 flex flex-col items-center md:flex-row gap-5 md:gap-6 justify-center">
-              {/* Отображение сокращенного URL. | Display of the shortened URL. */}
+          <div className="mb-30 flex flex-col items-center">
+            <div className="mb-30 flex flex-col items-center justify-center gap-5 md:flex-row md:gap-6">
               <div
-                className="transition-all duration-200 ease-out flex flex-col items-center justify-center overflow-hidden text-center h-16 p-2 box-border border-1 rounded-md lg:h-20  text-1xl md:text-2xl lg:text-3xl  max-w-5xl border-sky-400 w-3xs md:w-[55vw] lg:w-[70vw]"
+                style={{ animationDelay: "0.2s" }}
+                className="animate-fadeinup text-1xl box-border flex h-16 w-3xs max-w-5xl flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-green-500 bg-green-50 p-2 text-center font-semibold text-green-700 opacity-0 shadow-lg md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-green-400 dark:bg-slate-800 dark:text-green-300"
               >
-              <span className="select-all">{shortUrl}</span>
+                <span className="select-all">{shortUrl}</span>
               </div>
-              <div className="transition-all duration-200 ease-out ">
-                <CopyButton shortUrl={shortUrl} /> {/* Кнопка для копирования сокращенного URL. | Button to copy the shortened URL. */}
+              <div
+                style={{ animationDelay: "0.3s" }}
+                className="animate-fadeinup opacity-0 transition-all duration-200 ease-out"
+              >
+                <CopyButton shortUrl={shortUrl} />
               </div>
             </div>
-            <div className="transition-all duration-200 ease-out flex flex-col md:flex-col-reverse md:gap-8 gap-5">
-              <Qrgen
-                ShortUrl={shortUrl}
-                qrContainerRef={qrContainerRef}
-                notificationRef={notificationRef}
-              /> {/* Компонент для генерации и отображения QR-кода. | Component for generating and displaying the QR code. */}
-              <LoadQR_Button
-                qrContainerRef={qrContainerRef}
-                notificationRef={notificationRef}
-                url={url}
-              /> {/* Кнопка для загрузки QR-кода. | Button to download the QR code. */}
+            <div
+              style={{ animationDelay: "0.4s" }}
+              className="animate-fadeinup flex flex-col gap-5 opacity-0 md:flex-col-reverse md:gap-8"
+            >
+              <Qrgen qrCodeDataUrl={qrCodeDataUrl} />
+              <LoadQR_Button qrCodeDataUrl={qrCodeDataUrl} url={url} />
             </div>
           </div>
         )}
       </form>
-    </div>
+    </>
   );
 }
 export default ShortenerForm;
-
-

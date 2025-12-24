@@ -8,14 +8,6 @@
     "copied": "Copied!",
     "downloadqr": "Download QR",
     "urlopt": {
-      "clicks": {
-        "clicksword": "Clicks:",
-        "unlim": "unlimited",
-        "1k": "1k",
-        "10k": "10k",
-        "100k": "100k",
-        "1mln": "1m"
-      },
       "urtime": {
         "liftimeword": "Lifetime:",
         "week": "week",
@@ -26,12 +18,13 @@
     }
   },
   "header": {
-    "about": "About",
-    "myurls": "My urls",
+    "about": "Privacy Policy",
+    "myurls": "Profile",
     "signup": "Sign Up"
   },
   "footer": {
-    "discription": "Take control of your links, shorten them, generate QR codes, and track their status"
+    "copyright": "© 2025 ShrotlyUrl. All rights reserved.",
+    "support": "support@shrotlyurl.com"
   },
   "message": {
     "qrdowngenerror": "Error generating QR",
@@ -40,21 +33,100 @@
     "qrdownloaderror": "QR download error",
     "qrdownloading": "QR code not ready yet"
   },
-   "myurls": {
+  "myurls": {
     "refresh": "Refresh List",
     "nourls": "No URLs found.",
     "copy": "Copy",
+    "share": "Share",
+    "downloadQr": "Download QR",
+    "viewAnalytics": "View Analytics",
+    "analytics": "Analytics of activity",
+    "loadingAnalytics": "Loading Analytics...",
+    "analyticsError": "Failed to load analytics",
     "lifetime": "Lifetime:",
-    "clicks": "Clicks:",
-    "logout": "Logout" 
+    "clicks": "Clicks",
+    "logout": "Logout",
+    "deleteProfile": "Delete Profile",
+    "isexpiredF": "Active",
+    "isexpiredT": "Expired",
+    "loading": "Loading...",
+    "loaderr": "Load error",
+    "top": "On top",
+    "topTitle": "Scroll to top",
+    "search": "Search by original url",
+    "pause": "Pause",
+    "resume": "Resume",
+    "paused": "Paused",
+    "statusChanged": "Status changed",
+    "toggleError": "Failed to change status",
+    "delete": "Delete",
+    "confirmDelete": "Confirm Deletion",
+    "confirmDeleteMessage": "Are you sure you want to delete this URL? This action cannot be undone.",
+    "deleteSuccess": "URL deleted successfully",
+    "deleteError": "Failed to delete URL",
+    "dontAskAgain": "Don't ask again"
+  },
+  "modal": {
+    "deleteProfile": {
+      "title": "Delete Account",
+      "confirm": "Are you sure you want to delete your account? This action cannot be undone.",
+      "confirmBtn": "Delete",
+      "cancelBtn": "Cancel"
+    },
+    "error": "Failed to perform action. Please try again."
   },
   "registration": {
     "title": "Sign Up",
     "submit": "Submit",
-    "loginPlaceholder": "Login",
+    "loginPlaceholder": "Username",
     "passwordPlaceholder": "Password",
+    "passwordPlaceholderagain": "approuve password",
     "registrationError": "Registration error",
-    "invalidLogin": "Login must be 1-15 alphanumeric characters (no special symbols)."
+    "invalidLogin": "Username must be 4-15 latin alphanumeric characters (no special symbols).",
+    "login": "Log in",
+    "incorrectpwdus": "Incorrect Username or password",
+    "haveanacc": "already have an account?",
+    "donthaveacc": "need an account?",
+    "pwddif": "passwords don't match",
+    "Usalreadyexists": "Username already exists"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Manage your URLs and track analytics",
+    "overview": "Overview",
+    "myUrls": "URLs",
+    "totalUrls": "Total URLs",
+    "totalClicks": "Total Clicks",
+    "activeUrls": "Active URLs",
+    "expiredUrls": "Expired URLs",
+    "last7Days": "last 7 days",
+    "last30Days": "last 30 days",
+    "activityChart": "Activity Over Last 7 Days",
+    "topUrls": "Top 5 URLs by Clicks",
+    "memberSince": "Member since",
+    "noData": "No data available",
+    "loaderr": "profile load error",
+    "error": {
+      "title": "Loading Error",
+      "message": "Failed to load dashboard data. Please try refreshing the page.",
+      "retry": "Refresh Data"
+    }
+  },
+  "shared": {
+    "title": "Shared URL",
+    "error": "Error",
+    "homepage": "Homepage",
+    "clickHistory": "Click History",
+    "active": "Active",
+    "expired": "Expired",
+    "shareLinkCopied": "Share link copied!",
+    "visitSite": "Visit Site",
+    "downloadQR": "Download QR",
+    "copy": "Copy"
+  },
+  "paused": {
+    "title": "Link Paused",
+    "message": "This shortened link has been paused by the owner and is temporarily unavailable.",
+    "home": "Go Home"
   }
 }
-
