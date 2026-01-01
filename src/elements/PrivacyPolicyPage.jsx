@@ -20,7 +20,7 @@ function Aboutpage() {
 						локализацией, интеграцией с API и тестированием.
 					</p>
 					<div className="mt-8 pt-6 border-t border-gray-200 dark:border-slate-600">
-						<h2 className="text-2xl font-semibold mb-4 text-rose-500 dark:text-rose-400">Основные возможности:</h2>
+						<h2 className="text-2xl font-semibold mb-4 text-slate-700 dark:text-rose-400">Основные возможности:</h2>
 						<ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
 							<li>Сокращение длинных URL-адресов</li>
 							<li>Генерация QR-кодов для ссылок</li>

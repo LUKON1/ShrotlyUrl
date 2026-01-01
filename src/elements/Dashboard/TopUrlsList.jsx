@@ -32,7 +32,7 @@ function TopUrlsList({ topUrls }) {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-rose-500 dark:text-rose-400">
+                <span className="text-2xl font-bold text-slate-600 dark:text-rose-400">
                   {url.clicks}
                 </span>
                 <span className="text-xs text-gray-500 dark:text-gray-400">

@@ -171,7 +171,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
                   </AnimatePresence>
                 </motion.ul>
               ) : (
-                <p className="text-xl text-rose-900 dark:text-rose-400">{t("myurls.nourls")}</p>
+                <p className="text-xl text-slate-700 dark:text-rose-400">{t("myurls.nourls")}</p>
               )}
             </>
           )}

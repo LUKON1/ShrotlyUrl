@@ -23,8 +23,22 @@
     "signup": "Sign Up"
   },
   "footer": {
-    "copyright": "© 2025 ShrotlyUrl. All rights reserved.",
-    "support": "support@shrotlyurl.com"
+    "copyright": "© ShortlyURL. All rights reserved.",
+    "support": "support@shortlyurl.com",
+    "companyName": "ShortlyURL",
+    "companyDesc": "Shorten your URLs and track analytics with our modern URL shortener service.",
+    "information": "Information",
+    "home": "Home",
+    "about": "About us",
+    "contact": "Contact us",
+    "community": "Community",
+    "faq": "FAQ",
+    "login": "Login",
+    "signup": "Sign Up",
+    "legal": "Legal",
+    "license": "MIT License",
+    "poweredBy": "Created by",
+    "and": "and"
   },
   "message": {
     "qrdowngenerror": "Error generating QR",

@@ -48,7 +48,7 @@ function SharePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen w-screen flex-col items-center justify-center bg-rose-50 dark:bg-slate-900">
+      <div className="flex min-h-screen w-screen flex-col items-center justify-center bg-slate-50 dark:bg-slate-900">
         <AppLoader />
       </div>
     );
@@ -56,7 +56,7 @@ function SharePage() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen w-screen flex-col items-center justify-center bg-rose-50 dark:bg-slate-900">
+      <div className="flex min-h-screen w-screen flex-col items-center justify-center bg-slate-50 dark:bg-slate-900">
         <div className="text-center">
           <h2 className="mb-4 text-2xl font-bold text-red-600 dark:text-red-400">
             {t("shared.error")}
@@ -74,7 +74,7 @@ function SharePage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center bg-rose-50 px-4 pb-20 dark:bg-slate-900">
+    <div className="flex min-h-screen w-full flex-col items-center bg-slate-50 px-4 pb-20 dark:bg-slate-900">
       <div className="w-full max-w-2xl">
         <div className="mb-8">
           <H1>{t("shared.title")}</H1>

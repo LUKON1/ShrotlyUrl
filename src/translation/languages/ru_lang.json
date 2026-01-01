@@ -23,8 +23,22 @@
     "signup": "Регистрация"
   },
   "footer": {
-    "copyright": "© 2025 ShrotlyUrl. Все права защищены.",
-    "support": "support@shrotlyurl.com"
+    "copyright": "© ShortlyURL. Все права защищены.",
+    "support": "support@shortlyurl.com",
+    "companyName": "ShortlyURL",
+    "companyDesc": "Сокращайте ссылки и отслеживайте аналитику с помощью нашего современного сервиса сокращения URL.",
+    "information": "Информация",
+    "home": "Главная",
+    "about": "О нас",
+    "contact": "Контакты",
+    "community": "Сообщество",
+    "faq": "FAQ",
+    "login": "Войти",
+    "signup": "Регистрация",
+    "legal": "Правовая информация",
+    "license": "Лицензия MIT",
+    "poweredBy": "Создано",
+    "and": "и"
   },
   "message": {
     "qrdowngenerror": "Ошибка генерации QR",

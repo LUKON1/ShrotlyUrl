@@ -27,7 +27,7 @@ function Header_bar() {
   return (
     <header
       className="header min-w-2xs mb-20 md:mb-30 lg:mb-40 flex
-         flex-row w-full h-20 relative bg-rose-400 dark:bg-slate-800 items-center
+         flex-row w-full h-20 relative bg-slate-900 dark:bg-slate-800 items-center
          shadow-lg transition-colors duration-200"
     >
       <div
@@ -42,7 +42,7 @@ function Header_bar() {
               src="/src/assets/home-page.png"
               alt="home"
             />
-            <span className="text-xl lg:text-2xl font-bold text-rose-50 dark:text-slate-100">
+            <span className="text-xl lg:text-2xl font-bold text-white dark:text-slate-100">
               ShortlyURL
             </span>
           </Link>
@@ -59,8 +59,8 @@ function Header_bar() {
               to="/profile"
               className={({ isActive }) =>
                 isActive
-                  ? "text-rose-900 dark:text-rose-400 px-4 py-2 rounded-lg bg-rose-100 dark:bg-slate-700 font-extrabold transition duration-300 ease-in-out"
-                  : "text-rose-100 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-rose-500 dark:hover:bg-slate-700 font-bold transition duration-300 ease-in-out"
+                  ? "text-blue-400 dark:text-blue-300 px-4 py-2 rounded-lg bg-slate-800 dark:bg-slate-700 font-extrabold transition duration-300 ease-in-out"
+                  : "text-slate-300 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-800 dark:hover:bg-slate-700 font-bold transition duration-300 ease-in-out"
               }
             >
               {t("header.myurls")}
@@ -70,8 +70,8 @@ function Header_bar() {
               to="/registration"
               className={({ isActive }) =>
                 isActive
-                  ? "text-rose-900 dark:text-rose-400 px-4 py-2 rounded-lg bg-rose-100 dark:bg-slate-700 font-extrabold transition duration-300 ease-in-out"
-                  : "text-rose-100 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-rose-500 dark:hover:bg-slate-700 font-bold transition duration-300 ease-in-out"
+                  ? "text-blue-400 dark:text-blue-300 px-4 py-2 rounded-lg bg-slate-800 dark:bg-slate-700 font-extrabold transition duration-300 ease-in-out"
+                  : "text-slate-300 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-800 dark:hover:bg-slate-700 font-bold transition duration-300 ease-in-out"
               }
             >
               {t("header.signup")}
@@ -104,7 +104,7 @@ function Header_bar() {
       {(isOpen || isClosing) && (
         <div className="md:hidden">
           <div
-            className={`absolute top-20 left-0 bg-rose-400 dark:bg-slate-800
+            className={`absolute top-20 left-0 bg-slate-900 dark:bg-slate-800
               h-[20vh] w-screen overflow-hidden z-30 transition-all duration-200 ease-out ${isClosing? "animate-fallup":"animate-falldown"}`}
           >
             <nav className="flex flex-col text-left px-6 h-[50vh] text-xl gap-2">
@@ -113,8 +113,8 @@ function Header_bar() {
                   to="/profile"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-rose-900 dark:text-rose-400 w-fit px-2 py-2 flex items-center font-extrabold transition duration-300 ease-in-out"
-                      : "text-rose-100 dark:text-slate-200 w-fit px-2 py-2 flex items-center hover:text-rose-250 dark:hover:text-slate-300 font-bold transition duration-300 ease-in-out"
+                      ? "text-blue-400 dark:text-blue-300 w-fit px-2 py-2 flex items-center font-extrabold transition duration-300 ease-in-out"
+                      : "text-slate-300 dark:text-slate-200 w-fit px-2 py-2 flex items-center hover:text-white dark:hover:text-slate-300 font-bold transition duration-300 ease-in-out"
                   }
                   onClick={() => {
                     setIsClosing(true);
@@ -131,8 +131,8 @@ function Header_bar() {
                   to="/registration"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-rose-900 dark:text-rose-400 w-fit px-2 py-2 flex items-center font-extrabold transition duration-100 ease-in-out"
-                      : "text-rose-100 dark:text-slate-200 w-fit px-2 py-2 flex items-center hover:text-rose-250 dark:hover:text-slate-300 font-bold transition duration-100 ease-in-out"
+                      ? "text-blue-400 dark:text-blue-300 w-fit px-2 py-2 flex items-center font-extrabold transition duration-100 ease-in-out"
+                      : "text-slate-300 dark:text-slate-200 w-fit px-2 py-2 flex items-center hover:text-white dark:hover:text-slate-300 font-bold transition duration-100 ease-in-out"
                   }
                   onClick={() => {
                     setIsClosing(true);

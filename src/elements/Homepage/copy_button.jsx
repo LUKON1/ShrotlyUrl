@@ -7,7 +7,7 @@ function CopyButton({ shortUrl }) {
 	return (
 		<button
 			type="button"
-			className="touch-manipulation transition-all duration-200 ease-out hover:bg-rose-400 dark:hover:bg-rose-600 active:bg-rose-500 dark:active:bg-rose-700 bg-rose-300 dark:bg-rose-500 shadow-lg hover:shadow-xl h-16 lg:h-20 w-64 text-1xl md:text-2xl lg:text-3xl p-4 rounded-lg text-slate-900 dark:text-white font-extrabold"
+			className="touch-manipulation transition-all duration-200 ease-out hover:bg-blue-500 dark:hover:bg-rose-600 active:bg-blue-600 dark:active:bg-rose-700 bg-blue-400 dark:bg-rose-500 shadow-lg hover:shadow-xl h-16 lg:h-20 w-64 text-1xl md:text-2xl lg:text-3xl p-4 rounded-lg text-white dark:text-white font-extrabold"
 			onClick={() => {
 				navigator.clipboard.writeText(shortUrl).then(() => {
 					setCopied(true);
