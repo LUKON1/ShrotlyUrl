@@ -45,8 +45,8 @@ function UrlCard({
   };
   return (
     <div
-      className="rounded-lg border border-gray-200 bg-white p-4 shadow-lg sm:p-6 dark:border-slate-700 dark:bg-slate-800"
-      style={{ willChange: "transform, opacity" }}
+      className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg hover:shadow-xl transition-all duration-200 dark:border-slate-700 dark:bg-slate-800"
+      style={{ willChange: "transform, opacity, background-color, border-color, color" }}
     >
       <div className="mb-4 flex items-center justify-between">
         <div className="flex max-w-[60%] min-w-0 flex-col sm:max-w-[70%] md:max-w-[75%]">
@@ -73,7 +73,7 @@ function UrlCard({
             {urlData.url}
           </p>
         </div>
-        <div className="flex flex-row-reverse items-center gap-1.5">
+        <div className="flex flex-row-reverse items-center gap-2">
           {mode === "myurls" && (
             <>
               {/* Share Button */}
@@ -87,7 +87,7 @@ function UrlCard({
                   );
                   notificationRef.current?.addNotification(t("shared.shareLinkCopied"), 2000);
                 }}
-                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-sky-500 bg-sky-400 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:bg-sky-700"
+                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-transparent bg-sky-500 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-sky-600 dark:bg-sky-600"
                 title={t("myurls.share")}
               >
                 <svg fill="#FFFFFF" viewBox="0 0 24 24" className="p-1">
@@ -100,7 +100,7 @@ function UrlCard({
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                 type="button"
-                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-sky-500 bg-sky-400 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:bg-sky-700"
+                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-transparent bg-sky-500 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-sky-600 dark:bg-sky-600"
                 onClick={() => {
                   const urlFullDomain = new URL(urlData.url);
                   const urlMainDomain = urlFullDomain.hostname;
@@ -115,7 +115,7 @@ function UrlCard({
                 }}
                 title={t("myurls.downloadQr")}
               >
-                <svg fill="none" viewBox="0 0 24 24" className="p-1">
+                <svg fill="#FFFFFF" viewBox="0 0 24 24" className="p-1">
                   <use href="#qrcode"></use>
                 </svg>
               </motion.button>
@@ -130,7 +130,7 @@ function UrlCard({
                   );
                   notificationRef.current?.addNotification(t("homepage.copied"), 2000);
                 }}
-                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-sky-500 bg-sky-400 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:bg-sky-700"
+                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-transparent bg-sky-500 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-sky-600 dark:bg-sky-600"
                 title={t("myurls.copy")}
               >
                 <svg fill="#FFFFFF" viewBox="0 0 24 24" className="p-1">
@@ -143,7 +143,7 @@ function UrlCard({
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                 onClick={onToggleAnalytics}
-                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-sky-500 bg-sky-400 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:bg-sky-700"
+                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-transparent bg-sky-500 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-sky-600 dark:bg-sky-600"
                 title={t("myurls.viewAnalytics")}
               >
                 <svg fill="#FFFFFF" viewBox="0 0 16 16" className="p-1">
@@ -160,7 +160,7 @@ function UrlCard({
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                 type="button"
-                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-sky-500 bg-sky-400 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:bg-sky-700"
+                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-transparent bg-sky-500 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-sky-600 dark:bg-sky-600"
                 onClick={() => {
                   const urlFullDomain = new URL(urlData.url);
                   const urlMainDomain = urlFullDomain.hostname;
@@ -175,7 +175,7 @@ function UrlCard({
                 }}
                 title={t("shared.downloadQR")}
               >
-                <svg fill="none" viewBox="0 0 24 24" className="p-1">
+                <svg fill="#FFFFFF" viewBox="0 0 24 24" className="p-1">
                   <use href="#qrcode"></use>
                 </svg>
               </motion.button>
@@ -185,7 +185,7 @@ function UrlCard({
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                 onClick={onCopy}
-                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-sky-500 bg-sky-400 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:bg-sky-700"
+                className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-transparent bg-sky-500 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-sky-600 dark:bg-sky-600"
                 title={t("shared.copy")}
               >
                 <svg fill="#FFFFFF" viewBox="0 0 24 24" className="p-1">
@@ -203,7 +203,7 @@ function UrlCard({
               ? "border-gray-600 bg-gray-500 text-white dark:border-gray-500 dark:bg-gray-600"
               : dayjs(urlData.expiredAt).isAfter(dayjs())
                 ? "border-green-600 bg-green-500 text-white dark:border-green-600 dark:bg-green-700"
-                : "border-red-600 bg-red-500 text-white dark:border-red-600 dark:bg-red-500"
+                : "border border-transparent bg-red-300 text-white dark:border-red-500 dark:bg-red-500"
           } `}
         >
           <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -230,7 +230,7 @@ function UrlCard({
         </div>
         <div className="flex flex-row-reverse items-center gap-4 self-end">
           <div
-            className="flex h-7 w-auto flex-row items-center gap-1 rounded-xl border border-sky-500 bg-sky-400 px-2 sm:h-9 md:h-12 dark:bg-sky-700"
+            className="flex h-7 w-auto flex-row items-center gap-1 rounded-xl border border-transparent bg-sky-500 px-2 sm:h-9 md:h-12 dark:border-sky-600 dark:bg-sky-600"
             title="Clicks"
           >
             <svg
@@ -245,17 +245,17 @@ function UrlCard({
             </p>
           </div>
           {mode === "myurls" && (
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               {onToggleActive && (
                 <motion.button
                   whileHover={{ scale: 1.14 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                   onClick={onToggleActive}
-                  className={`flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border sm:h-9 sm:w-9 md:h-12 md:w-12 ${
+                  className={`flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl sm:h-9 sm:w-9 md:h-12 md:w-12 ${
                     urlData.isActive !== false
-                      ? "border-red-600 bg-red-500 dark:border-red-700 dark:bg-red-600"
-                      : "border-sky-500 bg-sky-400 dark:bg-sky-700"
+                      ? "border border-transparent bg-red-300 dark:border-red-500 dark:bg-red-500"
+                      : "border border-transparent bg-sky-500 dark:border-sky-600 dark:bg-sky-600"
                   }`}
                   title={urlData.isActive !== false ? t("myurls.pause") : t("myurls.resume")}
                 >
@@ -278,7 +278,7 @@ function UrlCard({
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                   onClick={handleDeleteClick}
-                  className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-red-600 bg-red-500 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-red-700 dark:bg-red-600"
+                  className="flex h-7 w-7 cursor-pointer touch-manipulation items-center justify-center rounded-xl border border-transparent bg-red-300 sm:h-9 sm:w-9 md:h-12 md:w-12 dark:border-red-500 dark:bg-red-500"
                   title={t("myurls.delete")}
                 >
                   <svg

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
 import Notifications from "../shared/messagewindow";
 import Registrsubmit from "../shared/registr_submit";
@@ -49,13 +50,14 @@ function Signinform() {
   return (
     <>
       <Notifications ref={notificationRef} />
-      <form
+      <motion.form
         onSubmit={handleSubmit}
-        className="flex flex-col transition-all duration-200 ease-out gap-5 bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700"
+        className="flex flex-col gap-5 bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700"
+        transition={{ duration: 0.2, ease: "easeOut" }}
       >
-        <input
+        <motion.input
           ref={inputRef}
-          className="transition-all duration-200 ease-out text-center
+          className="text-center
                p-2 h-16 lg:h-20  text-1xl md:text-2xl lg:text-3xl border-2
                 rounded-lg max-w-5xl border-sky-400 dark:border-sky-500 w-3xs md:w-[55vw]
                  lg:w-[70vw] bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100
@@ -66,10 +68,12 @@ function Signinform() {
           onChange={(e) => {
             setUser(e.target.value);
           }}
+          whileFocus={{ scale: 1.02 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
           required
         />
-        <input
-          className="transition-all duration-200 ease-out text-center
+        <motion.input
+          className="text-center
                p-2 h-16 lg:h-20  text-1xl md:text-2xl lg:text-3xl border-2
                 rounded-lg max-w-5xl border-sky-400 dark:border-sky-500 w-3xs md:w-[55vw]
                  lg:w-[70vw] bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100
@@ -78,12 +82,16 @@ function Signinform() {
           placeholder={t("registration.passwordPlaceholder")}
           value={pwd}
           onChange={(e) => setPwd(e.target.value)}
+          whileFocus={{ scale: 1.02 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
           required
           minLength={5}
         />
         <Registrsubmit>{t("registration.submit")}</Registrsubmit>
-        <Link className="underline text-lg hover:text-sky-600 dark:hover:text-sky-400 text-gray-700 dark:text-gray-300 transition-colors" to="/registration">{t("registration.donthaveacc")}</Link>
-      </form>
+        <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+          <Link className="underline text-lg text-sky-600 dark:text-sky-400 text-gray-700 dark:text-gray-300" to="/registration">{t("registration.donthaveacc")}</Link>
+        </motion.div>
+      </motion.form>
     </>
   );
 }

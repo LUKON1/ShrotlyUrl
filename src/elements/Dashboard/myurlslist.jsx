@@ -68,7 +68,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
 
   return (
     <>
-      <div className="flex w-full flex-col items-center">
+      <div className="flex w-full flex-col items-center" style={{ contain: 'layout style' }}>
         <>
           <div className="mx-auto mb-4 flex h-12 w-full max-w-7xl flex-row items-center">
             <input
@@ -82,7 +82,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
             />
             <button
               onClick={getMyUrls}
-              className="h-full w-12 touch-manipulation rounded-lg rounded-l-none border-2 border-l-0 border-sky-400 bg-sky-400 p-1 transition-colors hover:bg-sky-500 dark:border-sky-500 dark:bg-sky-500 dark:hover:bg-sky-600"
+              className="h-full w-12 touch-manipulation rounded-lg rounded-l-none border-2 border-l-0 border-sky-500 bg-sky-500 p-1 transition-colors hover:bg-sky-600 dark:border-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700"
               type="button"
             >
               <svg fill="#FFFFFF" viewBox="0 0 35 31.8" className="hover:cursor-pointer">
@@ -98,7 +98,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
             <>
               {displayedUrls.length > 0 ? (
                 <motion.ul
-                  className="mx-auto w-full max-w-7xl"
+                  className="mx-auto w-full max-w-7xl px-4 sm:px-0"
                   layout="position"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -171,7 +171,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
                   </AnimatePresence>
                 </motion.ul>
               ) : (
-                <p className="text-xl text-slate-700 dark:text-rose-400">{t("myurls.nourls")}</p>
+                <p className="text-xl text-gray-600 dark:text-gray-400">{t("myurls.nourls")}</p>
               )}
             </>
           )}

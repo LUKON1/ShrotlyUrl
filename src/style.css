@@ -88,6 +88,13 @@
   font-style: normal;
   font-display: swap;
 }
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
 
 :root {
   overflow: hidden;
@@ -105,5 +112,16 @@
   background-color: #0f172a;
 }
 * {
-  transition: all 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    scale 0.4s ease,
+    opacity 0.3s ease,
+    box-shadow 0.4s ease,
+    width 0.4s ease,
+    height 0.4s ease,
+    margin 0.4s ease,
+    padding 0.4s ease,
+    border-width 0.3s ease,
+    border-radius 0.4s ease,
+    filter 0.4s ease;
 }

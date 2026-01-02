@@ -2,22 +2,22 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 function ProfileAnalyticsChart({ data, title }) {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700 p-6">
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700 p-6" style={{ willChange: 'background-color, border-color' }}>
       <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
         {title}
       </h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-slate-700" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="stroke-gray-200 dark:stroke-slate-700" />
           <XAxis
             dataKey="date"
             stroke="#6b7280"
-            className="dark:stroke-gray-400"
-            tick={{ fill: '#6b7280' }}
+            className="stroke-gray-500 dark:stroke-gray-400"
+            tick={{ fill: '#6b7280', className: 'fill-gray-500 dark:fill-gray-400' }}
           />
           <YAxis
             stroke="#6b7280"
-            className="dark:stroke-gray-400"
+            className="stroke-gray-500 dark:stroke-gray-400"
             tick={{ fill: '#6b7280' }}
           />
           <Tooltip

@@ -86,10 +86,10 @@ function Myurlspage() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center px-4 pb-20">
+    <div className="flex w-full flex-col items-center px-4 pb-20" style={{ contain: 'layout style paint' }}>
       <Notifications ref={notificationRef} />
 
-      <div className="w-full max-w-7xl">
+      <div className="w-full max-w-7xl" style={{ contain: 'layout style' }}>
         <div className="mb-8">
           <H1>{t("dashboard.title")}</H1>
         </div>

@@ -1,16 +1,34 @@
 import { useTranslation } from "react-i18next";
 import { useLocation, Link } from "react-router-dom";
+import { motion } from "motion/react";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeProvider";
 
 function Footer() {
   const location = useLocation();
   const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
+
   return (
     <footer className="relative mt-20 bg-slate-900 dark:bg-slate-800">
-      <button
-        className="touch-manipulation absolute -top-5 left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-rose-500 text-white shadow-lg transition-all duration-200 hover:-translate-y-4 hover:scale-110 hover:bg-rose-600 dark:bg-slate-700 dark:hover:bg-slate-600"
+      <motion.button
+        className="touch-manipulation absolute -top-5 left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full text-white shadow-lg"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         title={t("myurls.topTitle")}
         aria-label={t("myurls.topTitle")}
+        animate={{
+          backgroundColor: isDark ? "#334155" : "#f43f5e" // slate-700 : rose-500
+        }}
+        whileHover={{
+          y: -16, // -translate-y-4
+          scale: 1.1,
+          backgroundColor: isDark ? "#475569" : "#fb7185" // slate-600 : rose-400
+        }}
+        whileTap={{
+          scale: 0.95
+        }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
       >
         <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -20,7 +38,7 @@ function Footer() {
             d="M5 10l7-7m0 0l7 7m-7-7v18"
           />
         </svg>
-      </button>
+      </motion.button>
 
       {/* Main footer content */}
       <div className="bg-slate-900 py-12 dark:bg-slate-800">
@@ -43,19 +61,25 @@ function Footer() {
               </h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/" className="text-slate-300 hover:text-white transition-colors">
-                    {t("footer.home", "Home")}
-                  </Link>
+                  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+                    <Link to="/" className="text-slate-300 hover:text-white">
+                      {t("footer.home", "Home")}
+                    </Link>
+                  </motion.div>
                 </li>
                 <li>
-                  <Link to="/privacy" className="text-slate-300 hover:text-white transition-colors">
-                    {t("footer.about", "About us")}
-                  </Link>
+                  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+                    <Link to="/privacy" className="text-slate-300 hover:text-white">
+                      {t("footer.about", "About us")}
+                    </Link>
+                  </motion.div>
                 </li>
                 <li>
-                  <a href="mailto:support@shortlyurl.com" className="text-slate-300 hover:text-white transition-colors">
-                    {t("footer.contact", "Contact us")}
-                  </a>
+                  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+                    <a href="mailto:support@shortlyurl.com" className="text-slate-300 hover:text-white">
+                      {t("footer.contact", "Contact us")}
+                    </a>
+                  </motion.div>
                 </li>
               </ul>
             </div>
@@ -67,19 +91,25 @@ function Footer() {
               </h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-slate-300 hover:text-white transition-colors">
-                    {t("footer.faq", "FAQ")}
-                  </a>
+                  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+                    <a href="#" className="text-slate-300 hover:text-white">
+                      {t("footer.faq", "FAQ")}
+                    </a>
+                  </motion.div>
                 </li>
                 <li>
-                  <Link to="/signin" className="text-slate-300 hover:text-white transition-colors">
-                    {t("footer.login", "Login")}
-                  </Link>
+                  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+                    <Link to="/signin" className="text-slate-300 hover:text-white">
+                      {t("footer.login", "Login")}
+                    </Link>
+                  </motion.div>
                 </li>
                 <li>
-                  <Link to="/registration" className="text-slate-300 hover:text-white transition-colors">
-                    {t("footer.signup", "Sign Up")}
-                  </Link>
+                  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+                    <Link to="/registration" className="text-slate-300 hover:text-white">
+                      {t("footer.signup", "Sign Up")}
+                    </Link>
+                  </motion.div>
                 </li>
               </ul>
             </div>
@@ -94,12 +124,14 @@ function Footer() {
                 <p>{t("footer.license", "MIT License")}</p>
                 <p>
                   {t("footer.poweredBy", "Created by")}{" "}
-                  <a
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
+                  <motion.a
+                    className="text-blue-400 hover:text-blue-300"
                     href="https://github.com/LUKON1"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
                   >
                     LUKON
-                  </a>
+                  </motion.a>
                 </p>
               </div>
             </div>
