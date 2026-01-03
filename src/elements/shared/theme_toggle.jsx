@@ -10,6 +10,7 @@ function ThemeToggle() {
       onClick={toggleTheme}
       className="relative inline-flex h-8 w-16 cursor-pointer touch-manipulation items-center rounded-full"
       aria-label="Toggle theme"
+      initial={false}
       animate={{
         backgroundColor: theme === "dark" ? "#334155" : "#fbbf24", // slate-700 : amber-400
       }}
@@ -17,6 +18,7 @@ function ThemeToggle() {
     >
       <motion.div
         className="absolute flex h-6 w-6 items-center justify-center rounded-full"
+        initial={false}
         animate={{
           x: theme === "dark" ? 36 : 4, // translate-x-9 (36px) : translate-x-1 (4px)
           backgroundColor: theme === "dark" ? "#0f172a" : "#ffffff", // slate-900 : white

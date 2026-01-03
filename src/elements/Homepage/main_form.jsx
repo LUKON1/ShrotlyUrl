@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { motion } from "motion/react";
 import CopyButton from "./copy_button.jsx";
 import SubmitButton from "./submit_button.jsx";
 import Qrgen from "./qr_gen.jsx";
@@ -101,10 +102,12 @@ function ShortenerForm() {
                 />
               </button>
             )}
-            <input
+            <motion.input
               ref={inputRef}
-              className="animate-fadeinup text-1xl h-16 w-3xs max-w-5xl rounded-lg border-2 border-sky-400 bg-white p-2 text-center text-gray-900 opacity-0 shadow-md transition-all duration-200 ease-out focus:ring-2 focus:ring-sky-500 focus:outline-none md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-sky-500 dark:bg-slate-800 dark:text-gray-100 dark:focus:ring-sky-400"
-              style={{ animationDelay: "0.1s" }}
+              className="text-1xl h-16 w-3xs max-w-5xl rounded-lg border-2 border-sky-400 bg-white p-2 text-center text-gray-900 shadow-md transition-all duration-200 ease-out focus:ring-2 focus:ring-sky-500 focus:outline-none md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-sky-500 dark:bg-slate-800 dark:text-gray-100 dark:focus:ring-sky-400"
+              initial={{ opacity: 0, transform: "translateY(100px)" }}
+              animate={{ opacity: 1, transform: "translateY(0px)" }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
               type="url"
               value={url}
               onChange={(e) => {
@@ -113,9 +116,11 @@ function ShortenerForm() {
               }}
               placeholder={t("homepage.placeholder")}
             />
-            <div
-              style={{ animationDelay: "0.3s" }}
-              className="animate-fadeinup absolute mt-2.5 flex w-full flex-col justify-center gap-x-2.5 gap-y-6 rounded-lg border-2 border-sky-400 bg-white px-1 py-2 text-xs text-gray-900 opacity-0 shadow-md focus:outline-none md:flex-row md:text-lg lg:gap-x-10 lg:text-2xl dark:border-sky-500 dark:bg-slate-800 dark:text-gray-100"
+            <motion.div
+              className="absolute mt-2.5 flex w-full flex-col justify-center gap-x-2.5 gap-y-6 rounded-lg border-2 border-sky-400 bg-white px-1 py-2 text-xs text-gray-900 shadow-md focus:outline-none md:flex-row md:text-lg lg:gap-x-10 lg:text-2xl dark:border-sky-500 dark:bg-slate-800 dark:text-gray-100"
+              initial={{ opacity: 0, transform: "translateY(100px)" }}
+              animate={{ opacity: 1, transform: "translateY(0px)" }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             >
               <div className="flex flex-row justify-between md:justify-normal md:gap-2">
                 <p className="flex items-center">{t("homepage.urlopt.urtime.liftimeword")}</p>
@@ -133,7 +138,7 @@ function ShortenerForm() {
                   ))}
                 </select>
               </div>
-            </div>
+            </motion.div>
           </div>
           <SubmitButton isLoading={isLoading} />
         </div>
@@ -141,26 +146,32 @@ function ShortenerForm() {
         {shortUrl && (
           <div className="mb-30 flex flex-col items-center">
             <div className="mb-30 flex flex-col items-center justify-center gap-5 md:flex-row md:gap-6">
-              <div
-                style={{ animationDelay: "0.2s" }}
-                className="animate-fadeinup text-1xl box-border flex h-16 w-3xs max-w-5xl flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-green-500 bg-green-50 p-2 text-center font-semibold text-green-700 opacity-0 shadow-lg md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-green-400 dark:bg-slate-800 dark:text-green-300"
+              <motion.div
+                className="text-1xl box-border flex h-16 w-3xs max-w-5xl flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-green-500 bg-green-50 p-2 text-center font-semibold text-green-700 shadow-lg md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-green-400 dark:bg-slate-800 dark:text-green-300"
+                initial={{ opacity: 0, transform: "translateY(100px)" }}
+                animate={{ opacity: 1, transform: "translateY(0px)" }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               >
                 <span className="select-all">{shortUrl}</span>
-              </div>
-              <div
-                style={{ animationDelay: "0.3s" }}
-                className="animate-fadeinup opacity-0 transition-all duration-200 ease-out"
+              </motion.div>
+              <motion.div
+                className="transition-all duration-200 ease-out"
+                initial={{ opacity: 0, transform: "translateY(100px)" }}
+                animate={{ opacity: 1, transform: "translateY(0px)" }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
               >
                 <CopyButton shortUrl={shortUrl} />
-              </div>
+              </motion.div>
             </div>
-            <div
-              style={{ animationDelay: "0.4s" }}
-              className="animate-fadeinup flex flex-col gap-5 opacity-0 md:flex-col-reverse md:gap-8"
+            <motion.div
+              className="flex flex-col gap-5 md:flex-col-reverse md:gap-8"
+              initial={{ opacity: 0, transform: "translateY(100px)" }}
+              animate={{ opacity: 1, transform: "translateY(0px)" }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
             >
               <Qrgen qrCodeDataUrl={qrCodeDataUrl} />
               <LoadQR_Button qrCodeDataUrl={qrCodeDataUrl} url={url} />
-            </div>
+            </motion.div>
           </div>
         )}
       </form>

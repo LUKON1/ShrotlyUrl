@@ -45,7 +45,7 @@ function UrlCard({
   };
   return (
     <div
-      className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg hover:shadow-xl transition-all duration-200 dark:border-slate-700 dark:bg-slate-800"
+      className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-200 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800"
       style={{ willChange: "transform, opacity, background-color, border-color, color" }}
     >
       <div className="mb-4 flex items-center justify-between">

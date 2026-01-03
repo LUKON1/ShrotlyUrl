@@ -7,7 +7,7 @@ import useAuth from "../../utils/useAuth";
 
 function Header_bar() {
   const { t } = useTranslation();
-  const {auth} = useAuth();
+  const { auth } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -25,33 +25,23 @@ function Header_bar() {
   };
 
   return (
-    <header
-      className="header min-w-2xs mb-20 md:mb-30 lg:mb-40 flex
-         flex-row w-full h-20 relative bg-slate-900 dark:bg-slate-800 items-center
-         shadow-lg transition-colors duration-200"
-    >
-      <div
-        className="flex flex-row w-full h-full items-center
-       justify-between px-6 lg:px-20 transition-all duration-200 ease-out"
-      >
+    <header className="header relative mb-20 flex h-20 w-full min-w-2xs flex-row items-center bg-slate-900 shadow-lg transition-colors duration-200 md:mb-30 lg:mb-40 dark:bg-slate-800">
+      <div className="flex h-full w-full flex-row items-center justify-between px-6 transition-all duration-200 ease-out lg:px-20">
         <div className="">
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="group flex items-center gap-3">
             <img
               onDragStart={(e) => e.preventDefault()}
-              className="select-none h-14 w-14 relative group-hover:scale-110 transition-transform duration-200"
+              className="relative h-14 w-14 transition-transform duration-200 select-none group-hover:scale-110"
               src="/src/assets/home-page.png"
               alt="home"
             />
-            <span className="text-xl lg:text-2xl font-bold text-white dark:text-slate-100">
+            <span className="text-xl font-bold text-white lg:text-2xl dark:text-slate-100">
               ShortlyURL
             </span>
           </Link>
         </div>
 
-        <nav
-          className="md:flex md:flex-row gap-6 items-center hidden text-lg md:text-xl
-         transition-all duration-200 ease-out"
-        >
+        <nav className="hidden items-center gap-6 text-lg transition-all duration-200 ease-out md:flex md:flex-row md:text-xl">
           <ThemeToggle />
           <LangDropdown />
           {auth?.userId ? (
@@ -59,8 +49,8 @@ function Header_bar() {
               to="/profile"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-400 dark:text-blue-300 px-4 py-2 rounded-lg bg-slate-800 dark:bg-slate-700 font-extrabold transition duration-300 ease-in-out"
-                  : "text-slate-300 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-800 dark:hover:bg-slate-700 font-bold transition duration-300 ease-in-out"
+                  ? "rounded-lg bg-slate-800 px-4 py-2 font-extrabold text-blue-400 transition duration-300 ease-in-out dark:bg-slate-700 dark:text-blue-300"
+                  : "rounded-lg px-4 py-2 font-bold text-slate-300 transition duration-300 ease-in-out hover:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
               }
             >
               {t("header.myurls")}
@@ -70,22 +60,22 @@ function Header_bar() {
               to="/registration"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-400 dark:text-blue-300 px-4 py-2 rounded-lg bg-slate-800 dark:bg-slate-700 font-extrabold transition duration-300 ease-in-out"
-                  : "text-slate-300 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-800 dark:hover:bg-slate-700 font-bold transition duration-300 ease-in-out"
+                  ? "rounded-lg bg-slate-800 px-4 py-2 font-bold text-blue-400 dark:bg-slate-700 dark:text-blue-300"
+                  : "rounded-lg px-4 py-2 font-bold text-slate-300 hover:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
               }
             >
               {t("header.signup")}
             </NavLink>
           )}
         </nav>
-        <div className="md:hidden flex gap-3 items-center">
+        <div className="flex items-center gap-3 md:hidden">
           <ThemeToggle />
           <button onClick={handleToggle} type="button" className="touch-manipulation">
             {!isOpen ? (
               <img
                 src="/src/assets/burger.svg"
                 onDragStart={(e) => e.preventDefault()}
-                className="select-none h-14 w-14 dark:invert"
+                className="h-14 w-14 select-none dark:invert"
                 alt="меню"
               />
             ) : (
@@ -93,7 +83,7 @@ function Header_bar() {
                 <img
                   src="/src/assets/burger-cross.svg"
                   onDragStart={(e) => e.preventDefault()}
-                  className="select-none h-14 w-14 relative z-40 dark:invert"
+                  className="relative z-40 h-14 w-14 select-none dark:invert"
                   alt="меню"
                 />
               </>
@@ -104,17 +94,16 @@ function Header_bar() {
       {(isOpen || isClosing) && (
         <div className="md:hidden">
           <div
-            className={`absolute top-20 left-0 bg-slate-900 dark:bg-slate-800
-              h-[20vh] w-screen overflow-hidden z-30 transition-all duration-200 ease-out ${isClosing? "animate-fallup":"animate-falldown"}`}
+            className={`absolute top-20 left-0 z-30 h-[20vh] w-screen overflow-hidden bg-slate-900 transition-all duration-200 ease-out dark:bg-slate-800 ${isClosing ? "animate-fallup" : "animate-falldown"}`}
           >
-            <nav className="flex flex-col text-left px-6 h-[50vh] text-xl gap-2">
+            <nav className="flex h-[50vh] flex-col gap-2 px-6 text-left text-xl">
               {auth?.userId ? (
                 <NavLink
                   to="/profile"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-400 dark:text-blue-300 w-fit px-2 py-2 flex items-center font-extrabold transition duration-300 ease-in-out"
-                      : "text-slate-300 dark:text-slate-200 w-fit px-2 py-2 flex items-center hover:text-white dark:hover:text-slate-300 font-bold transition duration-300 ease-in-out"
+                      ? "flex w-fit items-center px-2 py-2 font-extrabold text-blue-400 transition duration-300 ease-in-out dark:text-blue-300"
+                      : "flex w-fit items-center px-2 py-2 font-bold text-slate-300 transition duration-300 ease-in-out hover:text-white dark:text-slate-200 dark:hover:text-slate-300"
                   }
                   onClick={() => {
                     setIsClosing(true);
@@ -131,8 +120,8 @@ function Header_bar() {
                   to="/registration"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-400 dark:text-blue-300 w-fit px-2 py-2 flex items-center font-extrabold transition duration-100 ease-in-out"
-                      : "text-slate-300 dark:text-slate-200 w-fit px-2 py-2 flex items-center hover:text-white dark:hover:text-slate-300 font-bold transition duration-100 ease-in-out"
+                      ? "flex w-fit items-center px-2 py-2 font-extrabold text-blue-400 transition duration-100 ease-in-out dark:text-blue-300"
+                      : "flex w-fit items-center px-2 py-2 font-bold text-slate-300 transition duration-100 ease-in-out hover:text-white dark:text-slate-200 dark:hover:text-slate-300"
                   }
                   onClick={() => {
                     setIsClosing(true);
@@ -156,5 +145,3 @@ function Header_bar() {
   );
 }
 export default Header_bar;
-
-
