@@ -218,6 +218,36 @@ router.patch("/toggle/:urlId", async (req, res) => {
   }
 });
 
+router.patch("/update-title/:urlId", async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { urlId } = req.params;
+    const { title } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    if (title !== null && title !== undefined && title.length > 24) {
+      return res.status(400).json({ error: "Title too long (max 24 characters)" });
+    }
+
+    const urlEntry = await UrlModel.findOne({ _id: urlId, userId: userId });
+
+    if (!urlEntry) {
+      return res.status(404).json({ error: "URL not found or access denied" });
+    }
+
+    urlEntry.title = title || null;
+    await urlEntry.save();
+
+    res.status(200).json(urlEntry);
+  } catch (err) {
+    console.error("Error in PATCH /update-title/:urlId route:", err);
+    res.status(500).json({ error: "Server error", details: err.message });
+  }
+});
+
 router.delete("/:urlId", async (req, res) => {
   try {
     const userId = req.userId;

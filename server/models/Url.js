@@ -42,6 +42,12 @@ const UrlSchema = new mongoose.Schema({
 		required: true,
 		default: true,
 	},
+	title: {
+		type: String,
+		trim: true,
+		maxlength: 24,
+		default: null,
+	},
 });
 
 const UrlModel = mongoose.model("Url", UrlSchema);

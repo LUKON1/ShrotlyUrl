@@ -138,7 +138,16 @@
     "shareLinkCopied": "Share link copied!",
     "visitSite": "Visit Site",
     "downloadQR": "Download QR",
-    "copy": "Copy"
+    "copy": "Copy",
+    "editTitle": "Edit Title",
+    "addTitle": "Add Title",
+    "save": "Save",
+    "titlePlaceholder": "Enter a title for this URL",
+    "titleUpdated": "Title updated successfully",
+    "titleUpdateError": "Failed to update title",
+    "titleTooLong": "Title must be 24 characters or less",
+    "titlePlaceholder": "Title",
+    "enterTitle": "Enter title"
   },
   "paused": {
     "title": "Link Paused",

@@ -41,6 +41,26 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
     }
   };
 
+  const handleUpdateTitle = useCallback(
+    async (urlId, title) => {
+      try {
+        const response = await axiosPrivate.patch(`/myurls/update-title/${urlId}`, {
+          title: title,
+        });
+
+        if (updateUrl && response.data) {
+          updateUrl(response.data);
+        } else {
+          await getMyUrls();
+        }
+      } catch (err) {
+        console.error("Failed to update URL title:", err);
+        throw err;
+      }
+    },
+    [axiosPrivate, updateUrl, getMyUrls]
+  );
+
   const handleDelete = useCallback(
     async (urlId) => {
       // Добавляем ID в список удаляемых для предотвращения перерисовки
@@ -147,6 +167,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
                           onToggleAnalytics={() => toggleAnalytics(urlItem._id)}
                           onToggleActive={() => handleToggleActive(urlItem._id)}
                           onDelete={() => handleDelete(urlItem._id)}
+                          onUpdateTitle={handleUpdateTitle}
                           t={t}
                           notificationRef={notificationRef}
                         />

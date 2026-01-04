@@ -14,10 +14,13 @@ function UrlCard({
   onToggleAnalytics,
   onToggleActive,
   onDelete,
+  onUpdateTitle,
   t,
   notificationRef,
 }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
   const DONT_ASK_DELETE_KEY = "dontAskDeleteConfirmation";
 
   const checkDontAskAgain = () => {
@@ -43,13 +46,125 @@ function UrlCard({
       sessionStorage.removeItem(DONT_ASK_DELETE_KEY);
     }
   };
+
+  const handleEditTitleClick = () => {
+    if (isEditingTitle) {
+      // Сохранить при повторном нажатии
+      handleSaveTitle();
+    } else {
+      // Начать редактирование
+      setEditTitle(urlData.title || "");
+      setIsEditingTitle(true);
+    }
+  };
+
+  const handleSaveTitle = async () => {
+    if (editTitle.length > 24) {
+      notificationRef.current?.addNotification(t("shared.titleTooLong"), 3000);
+      return;
+    }
+
+    // Валидация: удаляем потенциально опасные символы и лишние пробелы
+    const sanitizedTitle = editTitle
+      .trim()
+      .replace(/[<>]/g, "") // Удаляем угловые скобки
+      .replace(/javascript:/gi, "") // Удаляем javascript: схемы
+      .replace(/on\w+=/gi, "") // Удаляем обработчики событий
+      .replace(/[<>'"&]/g, "") // Удаляем HTML-спецсимволы
+      .slice(0, 24); // Ограничиваем до 24 символов
+
+    try {
+      if (onUpdateTitle) {
+        await onUpdateTitle(urlData._id, sanitizedTitle || null);
+      }
+      setIsEditingTitle(false);
+      notificationRef.current?.addNotification(t("shared.titleUpdated"), 2000);
+    } catch (error) {
+      notificationRef.current?.addNotification(t("shared.titleUpdateError"), 3000);
+    }
+  };
+
+  const handleTitleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSaveTitle();
+    } else if (e.key === "Escape") {
+      setIsEditingTitle(false);
+      setEditTitle("");
+    }
+  };
   return (
     <div
       className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-200 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800"
       style={{ willChange: "transform, opacity, background-color, border-color, color" }}
     >
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-start justify-between">
         <div className="flex max-w-[60%] min-w-0 flex-col sm:max-w-[70%] md:max-w-[75%]">
+          {mode === "myurls" && (
+            <div className="mb-2 flex items-center gap-2">
+              {isEditingTitle ? (
+                <>
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    onKeyDown={handleTitleKeyDown}
+                    className="h-9 w-auto max-w-[200px] min-w-[120px] rounded-md border border-gray-300 bg-white px-3 py-1 text-lg font-semibold text-gray-800 focus:border-sky-500 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:focus:border-sky-400"
+                    placeholder={t("shared.enterTitle")}
+                    maxLength={24}
+                    autoFocus
+                  />
+                  <motion.button
+                    transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
+                    onClick={handleEditTitleClick}
+                    className="flex h-9 w-9 cursor-pointer touch-manipulation items-center justify-center rounded-md bg-sky-500 px-2 py-1 text-white hover:bg-sky-600 dark:bg-sky-500 dark:hover:bg-sky-400"
+                    title={t("shared.save")}
+                  >
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4"
+                    >
+                      <use href="#redact"></use>
+                    </svg>
+                  </motion.button>
+                </>
+              ) : (
+                <>
+                  {urlData.title ? (
+                    <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                      {urlData.title}
+                    </span>
+                  ) : (
+                    <span className="inline-block h-9 max-w-[200px] min-w-[80px] truncate rounded-md border border-gray-200 px-3 py-1 text-lg text-gray-500 dark:border-slate-600 dark:text-gray-400">
+                      {t("shared.titlePlaceholder")}
+                    </span>
+                  )}
+                  <motion.button
+                    transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
+                    onClick={handleEditTitleClick}
+                    className={`flex h-9 w-9 cursor-pointer touch-manipulation items-center justify-center rounded-md px-2 py-1 ${
+                      urlData.title
+                        ? "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-600 dark:text-gray-200 dark:hover:bg-slate-500"
+                        : "bg-sky-500 text-white hover:bg-sky-600 dark:bg-sky-500 dark:hover:bg-sky-400"
+                    }`}
+                    title={urlData.title ? t("shared.editTitle") : t("shared.addTitle")}
+                  >
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4"
+                    >
+                      <use href="#redact"></use>
+                    </svg>
+                  </motion.button>
+                </>
+              )}
+            </div>
+          )}
           <div className="flex flex-row items-center gap-4">
             <p className="text-base font-bold text-sky-400 select-all hover:text-sky-600 sm:text-lg md:text-xl dark:text-sky-500 dark:hover:text-sky-300">
               {`${import.meta.env.VITE_BASE_URL}/${urlData.shortCode}`}

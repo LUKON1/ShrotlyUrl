@@ -138,7 +138,16 @@
     "shareLinkCopied": "Ссылка скопирована!",
     "visitSite": "Посетить сайт",
     "downloadQR": "Скачать QR",
-    "copy": "Копировать"
+    "copy": "Копировать",
+    "editTitle": "Изменить название",
+    "addTitle": "Добавить название",
+    "save": "Сохранить",
+    "titlePlaceholder": "Введите название для этой ссылки",
+    "titleUpdated": "Название успешно обновлено",
+    "titleUpdateError": "Не удалось обновить название",
+    "titleTooLong": "Название должно быть не более 24 символов",
+    "titlePlaceholder": "Название",
+    "enterTitle": "Введите название"
   },
   "urlCard": {
     "pause": "Остановить",
