@@ -10,6 +10,7 @@ import { containsMyDomain } from "../../utils/containsMyDomain.js";
 import axios from "../../api/axios.js";
 import useAuth from "../../utils/useAuth.js";
 import useAxiosPrivate from "../../utils/useAxiosPrivate.js";
+import TimeDropdown from "./time_dropdown.jsx";
 
 function ShortenerForm() {
   const API_SHORTER = "/cut/shorter";
@@ -128,19 +129,12 @@ function ShortenerForm() {
             >
               <div className="flex flex-row justify-between md:justify-normal md:gap-2">
                 <p className="flex items-center">{t("homepage.urlopt.urtime.liftimeword")}</p>
-                <select
-                  className="w-30 rounded border border-sky-400 px-2 py-1 text-center focus:ring-2 focus:ring-sky-500 focus:outline-none md:w-24 lg:w-35 dark:border-sky-500 dark:bg-slate-700"
+                <TimeDropdown
                   value={urlTime}
-                  onChange={(e) => {
-                    setUrlTime(Number(e?.target.value));
-                  }}
-                >
-                  {urlTimeOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                  onChange={setUrlTime}
+                  options={urlTimeOptions}
+                  className="w-30 md:w-24 lg:w-35"
+                />
               </div>
             </motion.div>
           </div>

@@ -1,21 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 
-function LangDropdown() {
-  const { i18n } = useTranslation();
+function TimeDropdown({ value, onChange, options, className }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const languages = [
-    { code: "ru", label: "RU", flag: "🇷🇺" },
-    { code: "en", label: "EN", flag: "🇺🇸" },
-  ];
+  const currentOption = options.find((opt) => opt.value === value) || options[0];
 
-  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
-
-  const handleLanguageChange = (langCode) => {
-    i18n.changeLanguage(langCode);
-    localStorage.setItem("lang", langCode);
+  const handleOptionChange = (optValue) => {
+    onChange(optValue);
     setIsOpen(false);
   };
 
@@ -35,12 +27,12 @@ function LangDropdown() {
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         style={{ transition: "var(--transition-bg)" }}
-        className="flex min-w-[116px] touch-manipulation items-center gap-2 rounded-lg bg-slate-700 px-4 py-2 font-semibold text-white transition-colors duration-200 hover:bg-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+        className={`flex touch-manipulation items-center gap-2 rounded border border-sky-400 px-2 py-1 text-center focus:ring-2 focus:ring-sky-500 focus:outline-none dark:border-sky-500 dark:bg-slate-700 ${className || ""}`}
       >
-        <span>{currentLanguage.flag}</span>
-        <span>{currentLanguage.label}</span>
+        <span>{currentOption.label}</span>
         <svg
           className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
           fill="none"
@@ -52,20 +44,20 @@ function LangDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 z-50 mt-2 min-w-[116px] overflow-hidden rounded-lg bg-white shadow-lg dark:bg-slate-900">
-          {languages.map((lang) => (
+        <div className="absolute top-full left-0 z-50 mt-2 min-w-[120px] overflow-hidden rounded-lg bg-white shadow-lg dark:bg-slate-800">
+          {options.map((opt) => (
             <button
-              key={lang.code}
-              onClick={() => handleLanguageChange(lang.code)}
+              type="button"
+              key={opt.value}
+              onClick={() => handleOptionChange(opt.value)}
               style={{ transition: "var(--transition-bg)" }}
-              className={`flex w-full touch-manipulation items-center gap-2 px-4 py-2 text-left transition-colors duration-150 hover:bg-slate-100 dark:hover:bg-slate-700 ${
-                lang.code === i18n.language
+              className={`z-50 flex w-full touch-manipulation items-center px-4 py-2 text-left transition-colors duration-150 hover:bg-slate-100 dark:hover:bg-slate-700 ${
+                opt.value === value
                   ? "bg-slate-200 font-semibold text-slate-800 dark:bg-slate-700 dark:text-blue-400"
                   : "text-gray-700 dark:text-gray-300"
               }`}
             >
-              <span>{lang.flag}</span>
-              <span>{lang.label}</span>
+              <span>{opt.label}</span>
             </button>
           ))}
         </div>
@@ -74,4 +66,4 @@ function LangDropdown() {
   );
 }
 
-export default LangDropdown;
+export default TimeDropdown;

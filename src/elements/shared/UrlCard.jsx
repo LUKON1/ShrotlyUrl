@@ -94,13 +94,13 @@ function UrlCard({
   };
   return (
     <div
-      className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-200 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800"
+      className="rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-200 hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800"
       style={{ willChange: "transform, opacity, background-color, border-color, color" }}
     >
-      <div className="mb-4 flex items-start justify-between">
+      <div className="mb-3 flex items-start justify-between sm:mb-4">
         <div className="flex max-w-[60%] min-w-0 flex-col sm:max-w-[70%] md:max-w-[75%]">
           {mode === "myurls" && (
-            <div className="mb-2 flex items-center gap-2">
+            <div className="xs:mb-1.5 xs:gap-1 mb-1.5 flex items-center gap-1 sm:mb-2 sm:gap-2">
               {isEditingTitle ? (
                 <>
                   <input
@@ -108,15 +108,15 @@ function UrlCard({
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
                     onKeyDown={handleTitleKeyDown}
-                    className="h-9 w-auto max-w-[200px] min-w-[120px] rounded-md border border-gray-300 bg-white px-3 py-1 text-lg font-semibold text-gray-800 focus:border-sky-500 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:focus:border-sky-400"
+                    className="xs:h-8 xs:px-2 xs:py-1 xs:text-sm h-8 w-auto max-w-[180px] min-w-[100px] rounded-md border border-gray-300 bg-white px-2 py-1 text-sm font-semibold text-gray-800 focus:border-sky-500 focus:outline-none sm:h-9 sm:max-w-[200px] sm:min-w-[120px] sm:px-3 sm:py-1 sm:text-lg dark:border-slate-600 dark:bg-slate-700 dark:text-gray-200 dark:focus:border-sky-400"
                     placeholder={t("shared.enterTitle")}
                     maxLength={24}
                     autoFocus
                   />
-                  <motion.button
-                    transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
+                  <button
+                    style={{ transition: "var(--transition-bg)" }}
                     onClick={handleEditTitleClick}
-                    className="flex h-9 w-9 cursor-pointer touch-manipulation items-center justify-center rounded-md bg-sky-500 px-2 py-1 text-white hover:bg-sky-600 dark:bg-sky-500 dark:hover:bg-sky-400"
+                    className="xs:h-8 xs:w-8 xs:px-1 xs:py-1 flex h-8 w-8 cursor-pointer touch-manipulation items-center justify-center rounded-md bg-sky-500 px-1 py-1 text-white hover:bg-sky-600 sm:h-9 sm:w-9 sm:px-2 sm:py-1 dark:bg-sky-500 dark:hover:bg-sky-400"
                     title={t("shared.save")}
                   >
                     <svg
@@ -124,27 +124,27 @@ function UrlCard({
                       stroke="currentColor"
                       strokeWidth="1.5"
                       viewBox="0 0 24 24"
-                      className="h-4 w-4"
+                      className="xs:h-3 xs:w-3 h-3 w-3 sm:h-4 sm:w-4"
                     >
                       <use href="#redact"></use>
                     </svg>
-                  </motion.button>
+                  </button>
                 </>
               ) : (
                 <>
                   {urlData.title ? (
-                    <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    <span className="xs:h-8 xs:px-2 xs:py-1 xs:text-lg inline-block h-8 w-auto min-w-[70px] rounded-md border border-gray-200 px-2 py-1 text-lg font-extrabold text-black sm:h-9 sm:min-w-[80px] sm:px-3 sm:py-1 sm:text-xl dark:border-slate-600 dark:text-white">
                       {urlData.title}
                     </span>
                   ) : (
-                    <span className="inline-block h-9 max-w-[200px] min-w-[80px] truncate rounded-md border border-gray-200 px-3 py-1 text-lg text-gray-500 dark:border-slate-600 dark:text-gray-400">
+                    <span className="xs:h-8 xs:px-2 xs:py-1 xs:text-sm inline-block h-8 max-w-[180px] min-w-[70px] truncate rounded-md border border-gray-200 px-2 py-1 text-sm text-gray-500 sm:h-9 sm:max-w-[200px] sm:min-w-[80px] sm:px-3 sm:py-1 sm:text-lg dark:border-slate-600 dark:text-gray-400">
                       {t("shared.titlePlaceholder")}
                     </span>
                   )}
-                  <motion.button
-                    transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
+                  <button
                     onClick={handleEditTitleClick}
-                    className={`flex h-9 w-9 cursor-pointer touch-manipulation items-center justify-center rounded-md px-2 py-1 ${
+                    style={{ transition: "var(--transition-bg)" }}
+                    className={`xs:h-8 xs:w-8 xs:px-1 xs:py-1 flex h-8 w-8 cursor-pointer touch-manipulation items-center justify-center rounded-md px-1 py-1 sm:h-9 sm:w-9 sm:px-2 sm:py-1 ${
                       urlData.title
                         ? "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-600 dark:text-gray-200 dark:hover:bg-slate-500"
                         : "bg-sky-500 text-white hover:bg-sky-600 dark:bg-sky-500 dark:hover:bg-sky-400"
@@ -156,16 +156,16 @@ function UrlCard({
                       stroke="currentColor"
                       strokeWidth="1.5"
                       viewBox="0 0 24 24"
-                      className="h-4 w-4"
+                      className="xs:h-3 xs:w-3 h-3 w-3 sm:h-4 sm:w-4"
                     >
                       <use href="#redact"></use>
                     </svg>
-                  </motion.button>
+                  </button>
                 </>
               )}
             </div>
           )}
-          <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-row items-center gap-3 sm:gap-4">
             <p className="text-base font-bold text-sky-400 select-all hover:text-sky-600 sm:text-lg md:text-xl dark:text-sky-500 dark:hover:text-sky-300">
               {`${import.meta.env.VITE_BASE_URL}/${urlData.shortCode}`}
             </p>
@@ -188,7 +188,7 @@ function UrlCard({
             {urlData.url}
           </p>
         </div>
-        <div className="flex flex-row-reverse items-center gap-2">
+        <div className="flex flex-row-reverse items-center gap-1.5 sm:gap-2">
           {mode === "myurls" && (
             <>
               {/* Share Button */}
@@ -313,7 +313,7 @@ function UrlCard({
       </div>
       <div className="flex items-center justify-between">
         <div
-          className={`flex items-center gap-2 self-end rounded-lg border px-4 py-2 shadow-md dark:text-white ${
+          className={`flex items-center gap-1.5 self-end rounded-lg border px-3 py-1.5 shadow-md sm:gap-2 sm:px-4 sm:py-2 dark:text-white ${
             urlData.isActive === false
               ? "border-gray-600 bg-gray-500 text-white dark:border-gray-500 dark:bg-gray-600"
               : dayjs(urlData.expiredAt).isAfter(dayjs())
@@ -321,7 +321,7 @@ function UrlCard({
                 : "border border-transparent bg-red-300 text-white dark:border-red-500 dark:bg-red-500"
           } `}
         >
-          <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <svg className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
             {urlData.isActive === false ? (
               <use href="#cross" />
             ) : dayjs(urlData.expiredAt).isAfter(dayjs()) ? (
@@ -331,36 +331,36 @@ function UrlCard({
             )}
           </svg>
           <div>
-            <p className="text-lg font-semibold sm:text-xl md:text-2xl">
+            <p className="text-base font-semibold sm:text-lg md:text-xl">
               {urlData.isActive === false
                 ? t("myurls.paused")
                 : dayjs(urlData.expiredAt).isAfter(dayjs())
                   ? t("shared.active")
                   : t("shared.expired")}
             </p>
-            <span className="text-base text-white sm:text-lg md:text-xl">
+            <span className="text-sm text-white sm:text-base md:text-lg">
               {formatDate(urlData.createdAt)} — {formatDate(urlData.expiredAt)}
             </span>
           </div>
         </div>
-        <div className="flex flex-row-reverse items-center gap-4 self-end">
+        <div className="flex flex-row-reverse items-center gap-3 self-end sm:gap-4">
           <div
-            className="flex h-7 w-auto flex-row items-center gap-1 rounded-xl border border-transparent bg-sky-500 px-2 sm:h-9 md:h-12 dark:border-sky-600 dark:bg-sky-600"
+            className="flex h-6 w-auto flex-row items-center gap-0.5 rounded-xl border border-transparent bg-sky-500 px-2 sm:h-7 sm:gap-1 md:h-12 dark:border-sky-600 dark:bg-sky-600"
             title="Clicks"
           >
             <svg
               fill="#FFFFFF"
-              className="h-7 w-7 p-1 sm:h-9 sm:w-9 md:h-12 md:w-12"
+              className="h-6 w-6 p-1 sm:h-7 sm:w-7 md:h-12 md:w-12"
               viewBox="0 0 48 48"
             >
               <use href="#clicks"></use>
             </svg>
-            <p className="text-lg font-extrabold text-white sm:text-xl md:text-2xl">
+            <p className="text-base font-extrabold text-white sm:text-lg md:text-xl">
               {urlData.clicks}
             </p>
           </div>
           {mode === "myurls" && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               {onToggleActive && (
                 <motion.button
                   whileHover={{ scale: 1.14 }}

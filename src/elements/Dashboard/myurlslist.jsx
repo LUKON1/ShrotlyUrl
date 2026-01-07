@@ -88,7 +88,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
 
   return (
     <>
-      <div className="flex w-full flex-col items-center" style={{ contain: 'layout style' }}>
+      <div className="flex w-full flex-col items-center" style={{ contain: "layout style" }}>
         <>
           <div className="mx-auto mb-4 flex h-12 w-full max-w-7xl flex-row items-center">
             <input
@@ -118,7 +118,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
             <>
               {displayedUrls.length > 0 ? (
                 <motion.ul
-                  className="mx-auto w-full max-w-7xl px-4 sm:px-0"
+                  className="mx-auto w-full max-w-7xl px-0"
                   layout="position"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

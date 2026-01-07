@@ -76,9 +76,7 @@ function Myurlspage() {
   }, [axiosPrivate, API_MYURLS]);
 
   const updateUrl = useCallback((updatedUrl) => {
-    setUrls((prevUrls) =>
-      prevUrls.map((url) => (url._id === updatedUrl._id ? updatedUrl : url))
-    );
+    setUrls((prevUrls) => prevUrls.map((url) => (url._id === updatedUrl._id ? updatedUrl : url)));
   }, []);
 
   const removeUrl = useCallback((urlId) => {
@@ -86,10 +84,13 @@ function Myurlspage() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center px-4 pb-20" style={{ contain: 'layout style paint' }}>
+    <div
+      className="flex w-full flex-col items-center px-4 pb-20"
+      style={{ contain: "layout style paint" }}
+    >
       <Notifications ref={notificationRef} />
 
-      <div className="w-full max-w-7xl" style={{ contain: 'layout style' }}>
+      <div className="w-full max-w-7xl" style={{ contain: "layout style" }}>
         <div className="mb-8">
           <H1>{t("dashboard.title")}</H1>
         </div>
@@ -152,7 +153,7 @@ function Myurlspage() {
                   </p>
                   <button
                     onClick={fetchDashboardData}
-                    className="touch-manipulation inline-flex items-center rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-600 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:outline-none dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-600"
+                    className="inline-flex touch-manipulation items-center rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-600 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:outline-none dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-600"
                   >
                     <svg
                       className="mr-2 h-4 w-4"

@@ -4,8 +4,8 @@ function PausedPage() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex min-h-full items-center justify-center bg-gray-50 px-4 dark:bg-slate-900">
-      <div className="mx-auto flex max-w-lg flex-col items-center justify-center rounded-lg bg-white p-8 text-center shadow-lg dark:bg-slate-800">
+    <div className="flex min-h-full items-center justify-center">
+      <div className="mx-auto flex max-w-lg flex-col items-center justify-center rounded-lg bg-white p-8 text-center shadow-lg hover:shadow-xl dark:bg-slate-800">
         <div className="mb-8 h-32 w-32">
           <svg viewBox="0 0 24 24" className="text-red-500 dark:text-red-400">
             <use href="#blocked"></use>
@@ -22,6 +22,7 @@ function PausedPage() {
         </p>
         <a
           href="/"
+          style={{ transition: "var(--transition-bg)" }}
           className="inline-flex touch-manipulation items-center rounded-md border border-transparent bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:outline-none"
         >
           {t("paused.home", "Go Home")}
