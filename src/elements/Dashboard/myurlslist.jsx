@@ -113,8 +113,10 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
             </button>
           </div>
           {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <AppLoader />
+            <div className="flex min-h-[50vh] flex-col justify-center">
+              <div className="flex items-center justify-center">
+                <AppLoader />
+              </div>
             </div>
           ) : (
             <>

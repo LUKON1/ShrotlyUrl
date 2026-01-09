@@ -126,8 +126,10 @@ function Myurlspage() {
 
         {activeTab === "overview" &&
           (isLoading ? (
-            <div className="flex items-center justify-center">
-              <AppLoader />
+            <div className="flex min-h-[50vh] flex-col justify-center">
+              <div className="flex items-center justify-center">
+                <AppLoader />
+              </div>
             </div>
           ) : hasDashboardError ? (
             <div className="flex items-center justify-center">
