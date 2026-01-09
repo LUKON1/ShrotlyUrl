@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { formatDate } from "../../utils/formatDate";
 import UrlAnalyticsChart from "./UrlAnalyticsChart";
@@ -10,6 +11,7 @@ import useAxiosPrivate from "../../utils/useAxiosPrivate";
 
 function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLoading }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const [searchTerm, setSearchTerm] = useState("");
   const [openAnalyticsId, setOpenAnalyticsId] = useState(null);
@@ -192,7 +194,39 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
                   </AnimatePresence>
                 </motion.ul>
               ) : (
-                <p className="text-xl text-gray-600 dark:text-gray-400">{t("myurls.nourls")}</p>
+                <div className="flex flex-col items-center justify-center py-20">
+                  <div className="max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                    <div className="text-center">
+                      <svg
+                        className="mx-auto h-12 w-12 text-gray-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                        Нет URL-адресов
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        Создайте вашу первую сокращенную ссылку
+                      </p>
+                      <div className="mt-6">
+                        <button
+                          onClick={() => navigate("/")}
+                          className="inline-flex items-center rounded-md border border-transparent bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:outline-none"
+                        >
+                          Создать новую
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
             </>
           )}

@@ -49,7 +49,7 @@ function Footer() {
         style={{ transition: "var(--transition-bg)" }}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-72 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-x-72 md:gap-x-8 lg:grid-cols-4">
             {/* Company Info */}
             <div>
               <h3 className="mb-4 text-2xl font-bold text-white">

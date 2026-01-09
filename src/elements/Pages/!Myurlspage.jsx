@@ -7,6 +7,7 @@ import Urlslist from "../Dashboard/myurlslist";
 import Notifications from "../shared/messagewindow";
 import UserProfile from "../Dashboard/UserProfile";
 import StatsCard from "../Dashboard/StatsCard";
+import HiddenSVGIcons from "../shared/HiddenSVGIcons";
 import ProfileAnalyticsChart from "../Dashboard/ProfileAnalyticsChart";
 import TopUrlsList from "../Dashboard/TopUrlsList";
 import H1 from ".././shared/h1";
@@ -130,20 +131,14 @@ function Myurlspage() {
             </div>
           ) : hasDashboardError ? (
             <div className="flex items-center justify-center">
-              <div className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-8 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+              <div className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-xl dark:border-slate-700 dark:bg-slate-800">
                 <div className="text-center">
                   <svg
-                    className="mx-auto mb-4 h-12 w-12 text-red-500 dark:text-red-400"
-                    fill="none"
+                    className="mx-auto mb-4 h-12 w-12 text-rose-500 dark:text-rose-400"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox="0 0 20 20"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                    />
+                    <use href="#warn"></use>
                   </svg>
                   <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
                     {t("dashboard.error.title")}
@@ -153,6 +148,7 @@ function Myurlspage() {
                   </p>
                   <button
                     onClick={fetchDashboardData}
+                    style={{ transition: "var(--transition-bg)" }}
                     className="inline-flex touch-manipulation items-center rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-600 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:outline-none dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-600"
                   >
                     <svg
