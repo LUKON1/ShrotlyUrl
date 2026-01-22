@@ -7,138 +7,111 @@ import Registrsubmit from "../shared/registr_submit";
 import { useTranslation } from "react-i18next";
 import useAuth from "../../utils/useAuth";
 import { validateLogin } from "../../utils/loginvalidate";
+import { CLIENT_ROUTES } from "../../utils/clientRoutes.js";
 
 function Registrform() {
-	const API_REGISTR = "/user/registr";
-	const [user, setUser] = useState("");
-	const [pwd, setPwd] = useState("");
-	const [confPwd, setConfPwd] = useState("");
-	const notificationRef = useRef();
-	const inputRef = useRef();
-	const navigate = useNavigate();
-	const { setAuth } = useAuth();
-	const { t } = useTranslation();
+  const API_REGISTR = "/user/registr";
+  const [user, setUser] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [confPwd, setConfPwd] = useState("");
+  const notificationRef = useRef();
+  const inputRef = useRef();
+  const navigate = useNavigate();
+  const { setAuth } = useAuth();
+  const { t } = useTranslation();
 
-	useEffect(() => {
-		inputRef.current.focus();
-	}, []);
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			if (!validateLogin(user)) {
-				notificationRef.current?.addNotification(
-					t("registration.invalidLogin"),
-					3000
-				);
-				return;
-			}
-			if (pwd !== confPwd) {
-				notificationRef.current?.addNotification(
-					t("registration.pwddif"),
-					3000
-				);
-				return;
-			}
-			const response = await axios.post(
-				API_REGISTR,
-				JSON.stringify({ user, pwd }),
-				{
-					headers: { "Content-Type": "application/json" },
-					withCredentials: true,
-				}
-			);
-			const accessToken = response?.data?.accessToken;
-			const userId = response?.data?.userId;
-			console.log(userId)
-			setAuth({ user, pwd, accessToken, userId });
-			setUser("");
-			setPwd("");
-			setConfPwd("");
-			navigate("/profile");
-		} catch (err) {
-			if (err.response) {
-				if (err.response.data.error === "Username already exists") {
-					notificationRef.current?.addNotification(
-						t("registration.Usalreadyexists"),
-						3000
-					);
-				}
-			} else {
-				notificationRef.current?.addNotification(
-					t("registration.registrationError"),
-					3000
-				);
-			}
-		}
-	};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!validateLogin(user)) {
+        notificationRef.current?.addNotification(t("registration.invalidLogin"), 3000);
+        return;
+      }
+      if (pwd !== confPwd) {
+        notificationRef.current?.addNotification(t("registration.pwddif"), 3000);
+        return;
+      }
+      const response = await axios.post(API_REGISTR, JSON.stringify({ user, pwd }), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      const accessToken = response?.data?.accessToken;
+      const userId = response?.data?.userId;
+      console.log(userId);
+      setAuth({ user, pwd, accessToken, userId });
+      setUser("");
+      setPwd("");
+      setConfPwd("");
+      navigate(CLIENT_ROUTES.PROFILE);
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data.error === "Username already exists") {
+          notificationRef.current?.addNotification(t("registration.Usalreadyexists"), 3000);
+        }
+      } else {
+        notificationRef.current?.addNotification(t("registration.registrationError"), 3000);
+      }
+    }
+  };
 
-	return (
-		<>
-			<Notifications ref={notificationRef} />
-			<motion.form
-				onSubmit={handleSubmit}
-				className="flex flex-col gap-5 bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-slate-700"
-				transition={{ duration: 0.2, ease: "easeOut" }}
-			>
-				<motion.input
-					className="text-center
-               p-2 h-16 lg:h-20  text-1xl md:text-2xl lg:text-3xl border-2
-                rounded-lg max-w-5xl border-sky-400 dark:border-sky-500 w-3xs md:w-[55vw]
-                 lg:w-[70vw] bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100
-                 focus:ring-2 focus:ring-sky-500 focus:outline-none shadow-sm"
-					type="text"
-					placeholder={t("registration.loginPlaceholder")}
-					value={user}
-					ref={inputRef}
-					onChange={(e) => {
-						setUser(e.target.value);
-					}}
-					whileFocus={{ scale: 1.02 }}
-					transition={{ duration: 0.2, ease: "easeOut" }}
-					required
-				/>
-				<motion.input
-					className="text-center
-               p-2 h-16 lg:h-20  text-1xl md:text-2xl lg:text-3xl border-2
-                rounded-lg max-w-5xl border-sky-400 dark:border-sky-500 w-3xs md:w-[55vw]
-                 lg:w-[70vw] bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100
-                 focus:ring-2 focus:ring-sky-500 focus:outline-none shadow-sm"
-					type="password"
-					placeholder={t("registration.passwordPlaceholder")}
-					value={pwd}
-					onChange={(e) => setPwd(e.target.value)}
-					whileFocus={{ scale: 1.02 }}
-					transition={{ duration: 0.2, ease: "easeOut" }}
-					required
-					minLength={5}
-				/>
-				<motion.input
-					className="text-center
-               p-2 h-16 lg:h-20  text-1xl md:text-2xl lg:text-3xl border-2
-                rounded-lg max-w-5xl border-sky-400 dark:border-sky-500 w-3xs md:w-[55vw]
-                 lg:w-[70vw] bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100
-                 focus:ring-2 focus:ring-sky-500 focus:outline-none shadow-sm"
-					type="password"
-					placeholder={t("registration.passwordPlaceholderagain")}
-					value={confPwd}
-					onChange={(e) => setConfPwd(e.target.value)}
-					whileFocus={{ scale: 1.02 }}
-					transition={{ duration: 0.2, ease: "easeOut" }}
-					required
-					minLength={5}
-				/>
-				<Registrsubmit>{t("registration.submit")}</Registrsubmit>
-				<motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
-					<Link
-						className="underline text-lg text-sky-600 dark:text-sky-400 text-gray-700 dark:text-gray-300"
-						to="/signin"
-					>
-						{t("registration.haveanacc")}
-					</Link>
-				</motion.div>
-			</motion.form>
-		</>
-	);
+  return (
+    <>
+      <Notifications ref={notificationRef} />
+      <motion.form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-5 rounded-2xl border border-gray-200 bg-white p-8 shadow-xl dark:border-slate-700 dark:bg-slate-800"
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
+        <motion.input
+          className="text-1xl h-16 w-3xs max-w-5xl rounded-lg border-2 border-sky-400 bg-white p-2 text-center text-gray-900 shadow-sm focus:ring-2 focus:ring-sky-500 focus:outline-none md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-sky-500 dark:bg-slate-700 dark:text-gray-100"
+          type="text"
+          placeholder={t("registration.loginPlaceholder")}
+          value={user}
+          ref={inputRef}
+          onChange={(e) => {
+            setUser(e.target.value);
+          }}
+          whileFocus={{ scale: 1.02 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          required
+        />
+        <motion.input
+          className="text-1xl h-16 w-3xs max-w-5xl rounded-lg border-2 border-sky-400 bg-white p-2 text-center text-gray-900 shadow-sm focus:ring-2 focus:ring-sky-500 focus:outline-none md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-sky-500 dark:bg-slate-700 dark:text-gray-100"
+          type="password"
+          placeholder={t("registration.passwordPlaceholder")}
+          value={pwd}
+          onChange={(e) => setPwd(e.target.value)}
+          whileFocus={{ scale: 1.02 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          required
+          minLength={5}
+        />
+        <motion.input
+          className="text-1xl h-16 w-3xs max-w-5xl rounded-lg border-2 border-sky-400 bg-white p-2 text-center text-gray-900 shadow-sm focus:ring-2 focus:ring-sky-500 focus:outline-none md:w-[55vw] md:text-2xl lg:h-20 lg:w-[70vw] lg:text-3xl dark:border-sky-500 dark:bg-slate-700 dark:text-gray-100"
+          type="password"
+          placeholder={t("registration.passwordPlaceholderagain")}
+          value={confPwd}
+          onChange={(e) => setConfPwd(e.target.value)}
+          whileFocus={{ scale: 1.02 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          required
+          minLength={5}
+        />
+        <Registrsubmit>{t("registration.submit")}</Registrsubmit>
+        <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+          <Link
+            className="text-lg text-sky-600 underline dark:text-sky-400"
+            to={CLIENT_ROUTES.SIGNIN}
+          >
+            {t("registration.haveanacc")}
+          </Link>
+        </motion.div>
+      </motion.form>
+    </>
+  );
 }
 export default Registrform;

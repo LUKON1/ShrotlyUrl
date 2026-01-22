@@ -11,9 +11,11 @@ import PrivacyPolicyPage from "./PrivacyPolicyPage.jsx";
 import Signinpage from "./Pages/!Signinpage.jsx";
 import SharePage from "./Pages/SharePage.jsx";
 import PausedPage from "./Pages/PausedPage.jsx";
+import ExpiredPage from "./Pages/ExpiredPage.jsx";
 import useAuthOnLoading from "../utils/useAuthOnLoading.js";
 import AppLoader from "./shared/AppLoader.jsx";
 import { ThemeProvider } from "../context/ThemeProvider.jsx";
+import { CLIENT_ROUTES } from "../utils/clientRoutes.js";
 
 function App() {
   const isLoadingAuth = useAuthOnLoading();
@@ -37,19 +39,20 @@ function App() {
         <main className="flex grow flex-col pt-20 md:pt-30 lg:pt-40">
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="/paused" element={<PausedPage />} />
+            <Route path={CLIENT_ROUTES.PRIVACY} element={<PrivacyPolicyPage />} />
+            <Route path={CLIENT_ROUTES.PAUSED} element={<PausedPage />} />
+            <Route path={CLIENT_ROUTES.EXPIRED} element={<ExpiredPage />} />
             <Route
-              path="/profile"
+              path={CLIENT_ROUTES.PROFILE}
               element={
                 <PrivateRoute>
                   <Myurlspage />
                 </PrivateRoute>
               }
             />
-            <Route path="/registration" element={<Registrpage />} />
-            <Route path="/signin" element={<Signinpage />} />
-            <Route path="/share/:shareId" element={<SharePage />} />
+            <Route path={CLIENT_ROUTES.REGISTRATION} element={<Registrpage />} />
+            <Route path={CLIENT_ROUTES.SIGNIN} element={<Signinpage />} />
+            <Route path={`${CLIENT_ROUTES.SHARE}/:shareId`} element={<SharePage />} />
           </Routes>
         </main>
         <Footer />

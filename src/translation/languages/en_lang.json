@@ -145,13 +145,16 @@
     "titlePlaceholder": "Enter a title for this URL",
     "titleUpdated": "Title updated successfully",
     "titleUpdateError": "Failed to update title",
-    "titleTooLong": "Title must be 24 characters or less",
-    "titlePlaceholder": "Title",
-    "enterTitle": "Enter title"
+    "titleTooLong": "Title must be 24 characters or less"
   },
   "paused": {
     "title": "Link Paused",
     "message": "This shortened link has been paused by the owner and is temporarily unavailable.",
+    "home": "Go Home"
+  },
+  "expired": {
+    "title": "Link Expired",
+    "message": "This shortened link has expired and is no longer available.",
     "home": "Go Home"
   }
 }

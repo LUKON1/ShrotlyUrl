@@ -6,6 +6,10 @@ router.get("/:shortCode", async (req, res) => {
   try {
     const { shortCode } = req.params;
 
+    if (shortCode.length !== 7) {
+      return res.status(404).send("Not found");
+    }
+
     const urlEntry = await UrlModel.findOne({ shortCode });
 
     if (!urlEntry) {
@@ -13,11 +17,11 @@ router.get("/:shortCode", async (req, res) => {
     }
 
     if (urlEntry.isActive === false) {
-      return res.redirect(302, `${process.env.HOST_NAME}/paused`);
+      return res.redirect(302, `${process.env.HOST_NAME}/pau`);
     }
 
     if (new Date(urlEntry.expiredAt) < new Date()) {
-      return res.status(410).send("Short URL has expired.");
+      return res.redirect(302, `${process.env.HOST_NAME}/exp`);
     }
 
     urlEntry.clicks++;

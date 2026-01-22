@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeProvider";
+import { CLIENT_ROUTES } from "../../utils/clientRoutes.js";
 
 function Footer() {
   const location = useLocation();
@@ -84,7 +85,7 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <Link to="/privacy" className="text-slate-300 hover:text-white">
+                    <Link to={CLIENT_ROUTES.PRIVACY} className="text-slate-300 hover:text-white">
                       {t("footer.about", "About us")}
                     </Link>
                   </motion.div>
@@ -126,7 +127,7 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <Link to="/signin" className="text-slate-300 hover:text-white">
+                    <Link to={CLIENT_ROUTES.SIGNIN} className="text-slate-300 hover:text-white">
                       {t("footer.login", "Login")}
                     </Link>
                   </motion.div>
@@ -136,7 +137,10 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <Link to="/registration" className="text-slate-300 hover:text-white">
+                    <Link
+                      to={CLIENT_ROUTES.REGISTRATION}
+                      className="text-slate-300 hover:text-white"
+                    >
                       {t("footer.signup", "Sign Up")}
                     </Link>
                   </motion.div>

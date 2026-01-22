@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import LangDropdown from "../shared/lang_dropdown";
 import ThemeToggle from "../shared/theme_toggle";
 import useAuth from "../../utils/useAuth";
+import { CLIENT_ROUTES } from "../../utils/clientRoutes.js";
 
 function Header_bar() {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ function Header_bar() {
             <LangDropdown />
             {auth?.userId ? (
               <NavLink
-                to="/profile"
+                to={CLIENT_ROUTES.PROFILE}
                 style={{ transition: "var(--transition-bg)" }}
                 className={({ isActive }) =>
                   isActive
@@ -57,7 +58,7 @@ function Header_bar() {
               </NavLink>
             ) : (
               <NavLink
-                to="/registration"
+                to={CLIENT_ROUTES.REGISTRATION}
                 style={{ transition: "var(--transition-bg)" }}
                 className={({ isActive }) =>
                   isActive
@@ -113,7 +114,7 @@ function Header_bar() {
               <nav className="flex flex-col gap-2 px-6 py-4 text-left text-xl">
                 {auth?.userId ? (
                   <NavLink
-                    to="/profile"
+                    to={CLIENT_ROUTES.PROFILE}
                     style={{ transition: "var(--transition-bg)" }}
                     className={({ isActive }) =>
                       isActive
@@ -126,7 +127,7 @@ function Header_bar() {
                   </NavLink>
                 ) : (
                   <NavLink
-                    to="/registration"
+                    to={CLIENT_ROUTES.REGISTRATION}
                     style={{ transition: "var(--transition-bg)" }}
                     className={({ isActive }) =>
                       isActive
