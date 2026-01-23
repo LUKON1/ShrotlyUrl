@@ -104,7 +104,7 @@ function Header_bar() {
           {isOpen && (
             <motion.div
               key="mobile-menu"
-              className="fixed top-20 left-0 w-screen bg-slate-900 dark:bg-slate-800"
+              className="absolute top-20 left-0 w-screen bg-slate-900 dark:bg-slate-800"
               style={{ transition: "var(--transition-bg)", zIndex: 40 }}
               initial={{ y: "-100%" }}
               animate={{ y: 0 }}
