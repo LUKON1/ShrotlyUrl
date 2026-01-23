@@ -135,7 +135,7 @@ function UrlCard({
   };
   return (
     <div
-      className="rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-200 hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800"
+      className="borderType a message... -gray-200 rounded-xl border bg-white p-4 shadow-lg transition-all duration-200 hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800"
       style={{ willChange: "transform, opacity, background-color, border-color, color" }}
     >
       <div className="mb-4 flex flex-col gap-4 sm:mb-4 sm:flex-row sm:items-start sm:justify-between">
