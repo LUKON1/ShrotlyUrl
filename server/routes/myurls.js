@@ -28,23 +28,103 @@ router.get("/analytics", async (req, res) => {
     }
 
     const userUrls = await UrlModel.find({ userId: userId });
+    const userUrlIds = userUrls.map((u) => u._id);
 
+    // Basic Stats
     const totalUrls = userUrls.length;
     const totalClicks = userUrls.reduce((sum, url) => sum + url.clicks, 0);
     const activeUrls = userUrls.filter((url) => new Date(url.expiredAt) > new Date()).length;
     const expiredUrls = totalUrls - activeUrls;
 
+    // Advanced Stats Aggregation
+    const DailyStatsModel = require("../models/DailyStats");
+    const ClickModel = require("../models/Click");
+
+    const chartData = {}; // date -> { created: 0, clicks: 0 }
+    const devices = {};
+    const browsers = {};
+    const countries = {};
+    const referrers = {};
+
+    const addToMap = (map, key, count = 1) => {
+      if (!key) return;
+      map[key] = (map[key] || 0) + count;
+    };
+
+    // 1. Process Historical Data
+    const dailyStats = await DailyStatsModel.find({ urlId: { $in: userUrlIds } });
+
+    dailyStats.forEach((stat) => {
+      // Chart Data
+      if (!chartData[stat.date]) chartData[stat.date] = { created: 0, clicks: 0 };
+      chartData[stat.date].clicks += stat.totalClicks;
+
+      // Distribution Data
+      if (stat.deviceTypes) stat.deviceTypes.forEach((v, k) => addToMap(devices, k, v));
+      if (stat.browsers) stat.browsers.forEach((v, k) => addToMap(browsers, k, v));
+      if (stat.countries) stat.countries.forEach((v, k) => addToMap(countries, k, v));
+      if (stat.referrers) stat.referrers.forEach((v, k) => addToMap(referrers, k, v));
+    });
+
+    // 2. Process Today's Data
+    const today = new Date().toISOString().split("T")[0];
+    const startOfDay = new Date(today);
+    const todayClicks = await ClickModel.find({
+      urlId: { $in: userUrlIds },
+      timestamp: { $gte: startOfDay },
+    });
+
+    if (!chartData[today]) chartData[today] = { created: 0, clicks: 0 };
+    chartData[today].clicks += todayClicks.length;
+
+    todayClicks.forEach((click) => {
+      addToMap(devices, click.deviceType);
+      addToMap(browsers, click.browser);
+      addToMap(countries, click.country);
+      addToMap(referrers, click.referrer);
+    });
+
+    // 3. Process Created By Day (From UrlModel)
+    userUrls.forEach((url) => {
+      const createdDate = new Date(url.createdAt).toISOString().split("T")[0];
+      if (!chartData[createdDate]) chartData[createdDate] = { created: 0, clicks: 0 };
+      chartData[createdDate].created += 1;
+    });
+
+    // 4. Format Chart Data Array
+    const chartDataArray = Object.keys(chartData)
+      .sort()
+      .map((date) => ({
+        date,
+        created: chartData[date].created,
+        clicks: chartData[date].clicks,
+      }));
+
+    // Fill last 30 days if empty (optional, but good for UI)
     const now = new Date();
-    const last7Days = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const last30Days = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+      if (!chartData[d]) {
+        // Only add if we need to fill gaps, assuming we want at least 30 days range
+        // For now, let's just let the frontend handle sparse data or return what we have
+      }
+    }
 
-    const clicksLast7Days = userUrls
-      .filter((url) => new Date(url.createdAt) >= last7Days)
-      .reduce((sum, url) => sum + url.clicks, 0);
+    // Calculate Last 7 and 30 Days Clicks based on aggregated data
+    const last7DaysDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
+    const last30DaysDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
 
-    const clicksLast30Days = userUrls
-      .filter((url) => new Date(url.createdAt) >= last30Days)
-      .reduce((sum, url) => sum + url.clicks, 0);
+    const clicksLast7Days = chartDataArray
+      .filter((d) => d.date >= last7DaysDate)
+      .reduce((sum, d) => sum + d.clicks, 0);
+
+    const clicksLast30Days = chartDataArray
+      .filter((d) => d.date >= last30DaysDate)
+      .reduce((sum, d) => sum + d.clicks, 0);
 
     const topUrls = userUrls
       .sort((a, b) => b.clicks - a.clicks)
@@ -55,32 +135,6 @@ router.get("/analytics", async (req, res) => {
         clicks: url.clicks,
       }));
 
-    const urlsCreatedByDay = {};
-    const clicksByDay = {};
-
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      const dateKey = date.toISOString().split("T")[0];
-      urlsCreatedByDay[dateKey] = 0;
-      clicksByDay[dateKey] = 0;
-    }
-
-    userUrls.forEach((url) => {
-      const createdDate = new Date(url.createdAt).toISOString().split("T")[0];
-      if (urlsCreatedByDay.hasOwnProperty(createdDate)) {
-        urlsCreatedByDay[createdDate]++;
-      }
-      if (clicksByDay.hasOwnProperty(createdDate)) {
-        clicksByDay[createdDate] += url.clicks;
-      }
-    });
-
-    const chartData = Object.keys(urlsCreatedByDay).map((date) => ({
-      date: date,
-      created: urlsCreatedByDay[date],
-      clicks: clicksByDay[date],
-    }));
-
     res.status(200).json({
       totalUrls,
       totalClicks,
@@ -89,7 +143,11 @@ router.get("/analytics", async (req, res) => {
       clicksLast7Days,
       clicksLast30Days,
       topUrls,
-      chartData,
+      chartData: chartDataArray,
+      devices,
+      browsers,
+      countries,
+      referrers,
     });
   } catch (err) {
     console.error("Error in /analytics route:", err);
@@ -112,52 +170,76 @@ router.get("/analytics/:urlId", async (req, res) => {
       return res.status(404).json({ error: "URL not found or access denied" });
     }
 
-    // Generate daily analytics data
-    // Since we don't track clicks per day historically, we'll distribute clicks across days
-    // This is a simplified approach - for production, you'd want to track actual click timestamps
-    const now = new Date();
-    const createdDate = new Date(urlEntry.createdAt);
-    const daysSinceCreation = Math.ceil((now - createdDate) / (1000 * 60 * 60 * 24));
-    const daysToShow = Math.min(daysSinceCreation, 30); // Show up to 30 days
+    // 1. Get Historical Data (DailyStats)
+    const DailyStatsModel = require("../models/DailyStats"); // Lazy load
+    const dailyStats = await DailyStatsModel.find({ urlId: urlEntry._id }).sort({ date: 1 });
 
+    // 2. Get Real-time Data (Clicks for today)
+    const ClickModel = require("../models/Click"); // Lazy load
+    const today = new Date().toISOString().split("T")[0];
+    const startOfDay = new Date(today);
+    const todayClicks = await ClickModel.find({
+      urlId: urlEntry._id,
+      timestamp: { $gte: startOfDay },
+    });
+
+    // 3. Aggregate Data
     const chartData = [];
-    const totalClicks = urlEntry.clicks;
-    const avgClicksPerDay = daysToShow > 0 ? totalClicks / daysToShow : 0;
+    const devices = {};
+    const browsers = {};
+    const countries = {};
+    const referrers = {};
 
-    for (let i = daysToShow - 1; i >= 0; i--) {
-      const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      const dateKey = date.toISOString().split("T")[0];
+    // Helper to sum up stats
+    const addToMap = (map, key, count = 1) => {
+      map[key] = (map[key] || 0) + count;
+    };
 
-      // Distribute clicks with some randomization for realistic appearance
-      // In production, you'd use actual click data from a ClickHistory collection
-      const baseClicks = Math.floor(avgClicksPerDay);
-      const variance = Math.floor(Math.random() * Math.max(1, baseClicks * 0.5));
-      const clicks =
-        i === 0
-          ? // Ensure the last day accounts for any remaining clicks
-            Math.max(0, totalClicks - chartData.reduce((sum, d) => sum + d.clicks, 0))
-          : Math.max(0, baseClicks + (Math.random() > 0.5 ? variance : -variance));
+    // Process Historical
+    dailyStats.forEach((stat) => {
+      chartData.push({ date: stat.date, clicks: stat.totalClicks });
 
-      chartData.push({
-        date: dateKey,
-        clicks: clicks,
-      });
+      if (stat.deviceTypes) stat.deviceTypes.forEach((v, k) => addToMap(devices, k, v));
+      if (stat.browsers) stat.browsers.forEach((v, k) => addToMap(browsers, k, v));
+      if (stat.countries) stat.countries.forEach((v, k) => addToMap(countries, k, v));
+      if (stat.referrers) stat.referrers.forEach((v, k) => addToMap(referrers, k, v));
+    });
+
+    // Process Today (Real-time)
+    const todayStats = { date: today, clicks: todayClicks.length };
+    // Check if today is already in chartData (unlikely if cron runs at night, but good for safety)
+    const existingToday = chartData.find((d) => d.date === today);
+    if (existingToday) {
+      existingToday.clicks += todayStats.clicks;
+    } else {
+      chartData.push(todayStats);
     }
 
-    // Adjust the distribution to match total clicks exactly
-    const distributedTotal = chartData.reduce((sum, d) => sum + d.clicks, 0);
-    if (distributedTotal !== totalClicks && chartData.length > 0) {
-      chartData[chartData.length - 1].clicks += totalClicks - distributedTotal;
-    }
+    todayClicks.forEach((click) => {
+      addToMap(devices, click.deviceType);
+      addToMap(browsers, click.browser);
+      addToMap(countries, click.country);
+      addToMap(referrers, click.referrer);
+    });
+
+    // Sort chart data by date
+    chartData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    // Fill missing dates with 0 (optional, but good for charts)
+    // ... (omitted for brevity, can be added if needed)
 
     res.status(200).json({
       urlId: urlEntry._id,
       shortCode: urlEntry.shortCode,
       url: urlEntry.url,
-      totalClicks: urlEntry.clicks,
+      totalClicks: urlEntry.clicks, // Use the master counter from UrlModel
       createdAt: urlEntry.createdAt,
       expiredAt: urlEntry.expiredAt,
       chartData: chartData,
+      devices,
+      browsers,
+      countries,
+      referrers,
     });
   } catch (err) {
     console.error("Error in /analytics/:urlId route:", err);

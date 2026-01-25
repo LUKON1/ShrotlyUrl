@@ -10,6 +10,7 @@ import StatsCard from "../Dashboard/StatsCard";
 import HiddenSVGIcons from "../shared/HiddenSVGIcons";
 import ProfileAnalyticsChart from "../Dashboard/ProfileAnalyticsChart";
 import TopUrlsList from "../Dashboard/TopUrlsList";
+import AnalyticsWidgets from "../Dashboard/AnalyticsWidgets";
 import H1 from ".././shared/h1";
 import AppLoader from "../shared/AppLoader";
 
@@ -174,69 +175,74 @@ function Myurlspage() {
           ) : (
             <div className="space-y-6">
               <UserProfile profile={profile} />
-              {analytics && (
-                <>
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    <StatsCard
-                      title={t("dashboard.totalUrls")}
-                      value={analytics.totalUrls}
-                      icon={
-                        <svg fill="currentColor" viewBox="0 0 24 24" className="h-8 w-8">
-                          <path d="M10,17.55,8.23,19.27a2.47,2.47,0,0,1-3.5-3.5l4.54-4.55a2.46,2.46,0,0,1,3.39-.09l.12.1a1,1,0,0,0,1.4-1.43A2.75,2.75,0,0,0,14,9.59a4.46,4.46,0,0,0-6.09.22L3.31,14.36a4.48,4.48,0,0,0,6.33,6.33L11.37,19A1,1,0,0,0,10,17.55ZM20.69,3.31a4.49,4.49,0,0,0-6.33,0L12.63,5A1,1,0,0,0,14,6.45l1.73-1.72a2.47,2.47,0,0,1,3.5,3.5l-4.54,4.55a2.46,2.46,0,0,1-3.39.09l-.12-.1a1,1,0,0,0-1.4,1.43,2.75,2.75,0,0,0,.23.21,4.47,4.47,0,0,0,6.09-.22l4.55-4.55A4.49,4.49,0,0,0,20.69,3.31Z" />
-                        </svg>
-                      }
-                    />
-                    <StatsCard
-                      title={t("dashboard.totalClicks")}
-                      value={analytics.totalClicks}
-                      icon={
-                        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      }
-                      subtitle={`${analytics.clicksLast7Days} ${t("dashboard.last7Days")}`}
-                    />
-                    <StatsCard
-                      title={t("dashboard.activeUrls")}
-                      value={analytics.activeUrls}
-                      icon={
-                        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      }
-                    />
-                    <StatsCard
-                      title={t("dashboard.expiredUrls")}
-                      value={analytics.expiredUrls}
-                      icon={
-                        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      }
-                    />
-                  </div>
 
-                  <ProfileAnalyticsChart
-                    data={analytics.chartData}
-                    title={t("dashboard.activityChart")}
-                  />
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                <StatsCard
+                  title={t("dashboard.totalUrls")}
+                  value={analytics?.totalUrls || 0}
+                  icon={
+                    <svg fill="currentColor" viewBox="0 0 24 24" className="h-8 w-8">
+                      <path d="M10,17.55,8.23,19.27a2.47,2.47,0,0,1-3.5-3.5l4.54-4.55a2.46,2.46,0,0,1,3.39-.09l.12.1a1,1,0,0,0,1.4-1.43A2.75,2.75,0,0,0,14,9.59a4.46,4.46,0,0,0-6.09.22L3.31,14.36a4.48,4.48,0,0,0,6.33,6.33L11.37,19A1,1,0,0,0,10,17.55ZM20.69,3.31a4.49,4.49,0,0,0-6.33,0L12.63,5A1,1,0,0,0,14,6.45l1.73-1.72a2.47,2.47,0,0,1,3.5,3.5l-4.54,4.55a2.46,2.46,0,0,1-3.39.09l-.12-.1a1,1,0,0,0-1.4,1.43,2.75,2.75,0,0,0,.23.21,4.47,4.47,0,0,0,6.09-.22l4.55-4.55A4.49,4.49,0,0,0,20.69,3.31Z" />
+                    </svg>
+                  }
+                />
+                <StatsCard
+                  title={t("dashboard.totalClicks")}
+                  value={analytics?.totalClicks || 0}
+                  icon={
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  }
+                  subtitle={`${analytics?.clicksLast7Days || 0} ${t("dashboard.last7Days")}`}
+                />
+                <StatsCard
+                  title={t("dashboard.activeUrls")}
+                  value={analytics?.activeUrls || 0}
+                  icon={
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  }
+                />
+                <StatsCard
+                  title={t("dashboard.expiredUrls")}
+                  value={analytics?.expiredUrls || 0}
+                  icon={
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  }
+                />
+              </div>
 
-                  <TopUrlsList topUrls={analytics.topUrls} />
-                </>
-              )}
+              <ProfileAnalyticsChart
+                data={analytics?.chartData || []}
+                title={t("dashboard.activityChart")}
+              />
+
+              <AnalyticsWidgets
+                devices={analytics?.devices || {}}
+                browsers={analytics?.browsers || {}}
+                countries={analytics?.countries || {}}
+                referrers={analytics?.referrers || {}}
+                t={t}
+              />
+
+              <TopUrlsList topUrls={analytics?.topUrls || []} />
             </div>
           ))}
 

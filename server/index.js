@@ -37,6 +37,9 @@ app.use("/api/share", shareRouter);
 
 app.use("/", redirectRouter);
 
+const startAggregation = require("./cron/aggregateStats");
+startAggregation();
+
 mongoose
   .connect(DB_URI)
   .then(() => {

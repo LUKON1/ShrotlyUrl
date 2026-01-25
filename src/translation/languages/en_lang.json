@@ -167,5 +167,12 @@
     "title": "No Internet Connection",
     "message": "Please check your internet connection and try reloading the application.",
     "reload": "Reload Application"
+  },
+  "analytics": {
+    "devices": "Devices",
+    "browsers": "Browsers",
+    "countries": "Countries",
+    "referrers": "Referrers",
+    "noData": "No data available"
   }
 }

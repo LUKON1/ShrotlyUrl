@@ -13,10 +13,13 @@ import { useTranslation } from "react-i18next";
 import useAxiosPrivate from "../../utils/useAxiosPrivate";
 import dayjs from "dayjs";
 
+import AnalyticsWidgets from "./AnalyticsWidgets";
+
 const UrlAnalyticsChart = ({ urlId }) => {
   const { t } = useTranslation();
   const axiosPrivate = useAxiosPrivate();
   const [chartData, setChartData] = useState([]);
+  const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -28,6 +31,7 @@ const UrlAnalyticsChart = ({ urlId }) => {
 
         const response = await axiosPrivate.get(`/myurls/analytics/${urlId}`);
         setChartData(response.data.chartData);
+        setAnalyticsData(response.data);
       } catch (err) {
         setError(t("myurls.analyticsError"));
         console.error("Failed to fetch analytics:", err);
@@ -57,56 +61,70 @@ const UrlAnalyticsChart = ({ urlId }) => {
     );
   }
 
-  if (!chartData || chartData.length === 0) {
-    return (
-      <div className="flex items-center justify-center py-8 text-xl text-gray-600 dark:text-gray-400">
-        {t("myurls.noAnalyticsData")}
-      </div>
-    );
-  }
+  // Allow rendering even with empty data to show empty state/grid
 
   return (
-    <div className="h-80 w-full">
+    <div className="w-full">
       <h3 className="mb-4 text-center text-2xl font-bold text-gray-800 dark:text-gray-200">
         {t("myurls.analytics")}
       </h3>
-      <ResponsiveContainer width="100%" height={280} minWidth={200} aspect={undefined} key={urlId}>
-        <LineChart
-          data={chartData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 30,
-          }}
+      <div className="h-80 w-full">
+        <ResponsiveContainer
+          width="100%"
+          height={280}
+          minWidth={200}
+          aspect={undefined}
+          key={urlId}
         >
-          <CartesianGrid strokeDasharray="3 3" className="stroke-gray-300 dark:stroke-gray-600" />
-          <XAxis
-            dataKey="date"
-            className="fill-gray-700 dark:fill-gray-300"
-            tickFormatter={(value) => dayjs(value).format("DD/MM")}
-          />
-          <YAxis className="fill-gray-700 dark:fill-gray-300" />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "rgb(30 41 59)",
-              border: "none",
-              color: "#fff",
+          <LineChart
+            data={chartData}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 30,
             }}
-            labelStyle={{ color: "#fff" }}
-            itemStyle={{ color: "#60a5fa" }}
-            labelFormatter={(value) => `${t("myurls.date")}: ${dayjs(value).format("DD/MM/YYYY")}`}
-            formatter={(value, name) => [value, t("myurls.clicks")]}
-          />
-          <Line
-            type="monotone"
-            dataKey="clicks"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-            name={t("myurls.clicks")}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+          >
+            <CartesianGrid strokeDasharray="3 3" className="stroke-gray-300 dark:stroke-gray-600" />
+            <XAxis
+              dataKey="date"
+              className="fill-gray-700 dark:fill-gray-300"
+              tickFormatter={(value) => dayjs(value).format("DD/MM")}
+            />
+            <YAxis className="fill-gray-700 dark:fill-gray-300" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "rgb(30 41 59)",
+                border: "none",
+                color: "#fff",
+              }}
+              labelStyle={{ color: "#fff" }}
+              itemStyle={{ color: "#60a5fa" }}
+              labelFormatter={(value) =>
+                `${t("myurls.date")}: ${dayjs(value).format("DD/MM/YYYY")}`
+              }
+              formatter={(value, name) => [value, t("myurls.clicks")]}
+            />
+            <Line
+              type="monotone"
+              dataKey="clicks"
+              stroke="#8884d8"
+              activeDot={{ r: 8 }}
+              name={t("myurls.clicks")}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      {analyticsData && (
+        <AnalyticsWidgets
+          devices={analyticsData.devices}
+          browsers={analyticsData.browsers}
+          countries={analyticsData.countries}
+          referrers={analyticsData.referrers}
+          t={t}
+        />
+      )}
     </div>
   );
 };
