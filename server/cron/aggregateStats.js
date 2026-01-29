@@ -17,8 +17,7 @@ const startAggregation = () => {
       const endOfYesterday = new Date(yesterday.setHours(23, 59, 59, 999));
       const dateKey = startOfYesterday.toISOString().split("T")[0]; // YYYY-MM-DD
 
-      // 2. Find all clicks for yesterday
-      // Using aggregate to group efficiently in DB
+      // 2. Optimized Aggregation Pipeline
       const aggregationResults = await ClickModel.aggregate([
         {
           $match: {
@@ -26,44 +25,118 @@ const startAggregation = () => {
           },
         },
         {
-          $group: {
-            _id: "$urlId",
-            totalClicks: { $sum: 1 },
-            countries: { $push: "$country" },
-            cities: { $push: "$city" },
-            deviceTypes: { $push: "$deviceType" },
-            browsers: { $push: "$browser" },
-            os: { $push: "$os" },
-            referrers: { $push: "$referrer" },
+          $facet: {
+            // Group by URL to get total clicks
+            totalClicks: [
+              {
+                $group: {
+                  _id: "$urlId",
+                  count: { $sum: 1 },
+                },
+              },
+            ],
+            // Group by each dimension to count occurrences
+            byCountry: [
+              {
+                $group: {
+                  _id: { urlId: "$urlId", value: "$country" },
+                  count: { $sum: 1 },
+                },
+              },
+            ],
+            byCity: [
+              {
+                $group: {
+                  _id: { urlId: "$urlId", value: "$city" },
+                  count: { $sum: 1 },
+                },
+              },
+            ],
+            byDeviceType: [
+              {
+                $group: {
+                  _id: { urlId: "$urlId", value: "$deviceType" },
+                  count: { $sum: 1 },
+                },
+              },
+            ],
+            byBrowser: [
+              {
+                $group: {
+                  _id: { urlId: "$urlId", value: "$browser" },
+                  count: { $sum: 1 },
+                },
+              },
+            ],
+            byOs: [
+              {
+                $group: {
+                  _id: { urlId: "$urlId", value: "$os" },
+                  count: { $sum: 1 },
+                },
+              },
+            ],
+            byReferrer: [
+              {
+                $group: {
+                  _id: { urlId: "$urlId", value: "$referrer" },
+                  count: { $sum: 1 },
+                },
+              },
+            ],
           },
         },
       ]);
 
-      // 3. Process each URL group
-      for (const group of aggregationResults) {
-        // Helper to count frequencies
-        const countFreq = (arr) => {
-          return arr.reduce((acc, curr) => {
-            acc[curr] = (acc[curr] || 0) + 1;
-            return acc;
-          }, {});
-        };
+      // 3. Process facet results (Transform into DailyStats format)
+      // The facet result is an array with one object containing all arrays
+      const facets = aggregationResults[0];
 
+      // Helper to transform facet array into nested object map: { urlId: { "value": count } }
+      const transformFacet = (facetArray) => {
+        const result = {};
+        facetArray.forEach((item) => {
+          const urlId = item._id.urlId.toString();
+          const value = item._id.value;
+          const count = item.count;
+
+          if (!result[urlId]) result[urlId] = {};
+          result[urlId][value] = count;
+        });
+        return result;
+      };
+
+      const clicksMap = {};
+      facets.totalClicks.forEach((item) => {
+        clicksMap[item._id.toString()] = item.count;
+      });
+
+      const countriesMap = transformFacet(facets.byCountry);
+      const citiesMap = transformFacet(facets.byCity);
+      const deviceTypesMap = transformFacet(facets.byDeviceType);
+      const browsersMap = transformFacet(facets.byBrowser);
+      const osMap = transformFacet(facets.byOs);
+      const referrersMap = transformFacet(facets.byReferrer);
+
+      // Get all unique URL IDs from totalClicks
+      const processedUrlIds = Object.keys(clicksMap);
+
+      for (const urlId of processedUrlIds) {
         const statsData = {
-          urlId: group._id,
+          urlId: urlId,
           date: dateKey,
-          totalClicks: group.totalClicks,
-          countries: countFreq(group.countries),
-          cities: countFreq(group.cities),
-          deviceTypes: countFreq(group.deviceTypes),
-          browsers: countFreq(group.browsers),
-          os: countFreq(group.os),
-          referrers: countFreq(group.referrers),
+          totalClicks: clicksMap[urlId] || 0,
+          countries: countriesMap[urlId] || {},
+          cities: citiesMap[urlId] || {},
+          deviceTypes: deviceTypesMap[urlId] || {},
+          browsers: browsersMap[urlId] || {},
+          os: osMap[urlId] || {},
+          referrers: referrersMap[urlId] || {},
         };
 
-        // 4. Save to DailyStats (Upsert = Update or Insert)
+        // 4. Save to DailyStats
         await DailyStatsModel.updateOne(
-          { urlId: group._id, date: dateKey },
+          { urlId: urlId, date: dateKey },
           { $set: statsData },
           { upsert: true }
         );
