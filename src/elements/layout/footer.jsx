@@ -82,7 +82,7 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <Link to="/" className="text-slate-300 hover:text-white">
+                    <Link to={CLIENT_ROUTES.HOME} className="text-slate-300 hover:text-white">
                       {t("footer.home", "Home")}
                     </Link>
                   </motion.div>
@@ -92,7 +92,7 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <Link to="/about" className="text-slate-300 hover:text-white">
+                    <Link to={CLIENT_ROUTES.ABOUT} className="text-slate-300 hover:text-white">
                       {t("footer.about", "About us")}
                     </Link>
                   </motion.div>
@@ -102,7 +102,7 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <Link to="/contacts" className="text-slate-300 hover:text-white">
+                    <Link to={CLIENT_ROUTES.CONTACT} className="text-slate-300 hover:text-white">
                       {t("footer.contact", "Contact us")}
                     </Link>
                   </motion.div>

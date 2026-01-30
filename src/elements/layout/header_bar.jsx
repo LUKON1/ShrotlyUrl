@@ -25,7 +25,11 @@ function Header_bar() {
       >
         <div className="flex h-full w-full flex-row items-center justify-between px-6 transition-all duration-200 ease-out lg:px-20">
           <div className="">
-            <Link to="/" className="group flex items-center gap-3" style={{ zIndex: 60 }}>
+            <Link
+              to={CLIENT_ROUTES.HOME}
+              className="group flex items-center gap-3"
+              style={{ zIndex: 60 }}
+            >
               <img
                 onDragStart={(e) => e.preventDefault()}
                 className="relative h-12 w-12 transition-transform duration-200 select-none group-hover:scale-110"

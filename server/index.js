@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const cookie = require("cookie-parser");
+const compression = require("compression");
 
 const urlShorterRouter = require("./routes/cut");
 const getUsUrlsRouter = require("./routes/myurls");
@@ -21,6 +22,7 @@ const PORT = process.env.PORT || 3000;
 const DB_URI = process.env.DB_URI;
 const HOST_NAME = process.env.HOST_NAME;
 
+app.use(compression());
 app.use(helmet());
 
 // Allowed origins

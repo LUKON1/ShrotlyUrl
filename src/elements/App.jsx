@@ -1,19 +1,9 @@
 import "/src/style.css";
 import { Routes, Route } from "react-router-dom";
 import { motion } from "motion/react";
-import Registrpage from "./Pages/!Registrpage.jsx";
-import Footer from "./layout/footer.jsx";
-import Homepage from "./Pages/!Homepage.jsx";
+import { lazy, Suspense, useEffect } from "react";
 import Header_bar from "./layout/header_bar.jsx";
 import PrivateRoute from "./Pages/PrivateRoute.jsx";
-import Myurlspage from "./Pages/!Myurlspage.jsx";
-import PrivacyPolicyPage from "./PrivacyPolicyPage.jsx";
-import Signinpage from "./Pages/!Signinpage.jsx";
-import SharePage from "./Pages/SharePage.jsx";
-import PausedPage from "./Pages/PausedPage.jsx";
-import ExpiredPage from "./Pages/ExpiredPage.jsx";
-import AboutPage from "./Pages/AboutPage.jsx";
-import ContactPage from "./Pages/ContactPage.jsx";
 import useAuthOnLoading from "../utils/useAuthOnLoading.js";
 import AppLoader from "./shared/AppLoader.jsx";
 import { ThemeProvider } from "../context/ThemeProvider.jsx";
@@ -21,7 +11,19 @@ import { OfflineProvider } from "../context/OfflineProvider.jsx";
 import OfflineModal from "./shared/OfflineModal.jsx";
 import { CLIENT_ROUTES } from "../utils/clientRoutes.js";
 import { useOffline } from "../context/OfflineProvider.jsx";
-import { useEffect } from "react";
+
+// Lazy loading pages
+const Homepage = lazy(() => import("./Pages/!Homepage.jsx"));
+const Registrpage = lazy(() => import("./Pages/!Registrpage.jsx"));
+const Myurlspage = lazy(() => import("./Pages/!Myurlspage.jsx"));
+const PrivacyPolicyPage = lazy(() => import("./PrivacyPolicyPage.jsx"));
+const Signinpage = lazy(() => import("./Pages/!Signinpage.jsx"));
+const SharePage = lazy(() => import("./Pages/SharePage.jsx"));
+const PausedPage = lazy(() => import("./Pages/PausedPage.jsx"));
+const ExpiredPage = lazy(() => import("./Pages/ExpiredPage.jsx"));
+const AboutPage = lazy(() => import("./Pages/AboutPage.jsx"));
+const ContactPage = lazy(() => import("./Pages/ContactPage.jsx"));
+const Footer = lazy(() => import("./layout/footer.jsx"));
 
 function AppContent() {
   const { isOfflineModalOpen, showOfflineModal, hideOfflineModal } = useOffline();
@@ -38,27 +40,37 @@ function AppContent() {
     <>
       <Header_bar />
       <main className="flex grow flex-col pt-20 md:pt-30 lg:pt-40">
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path={CLIENT_ROUTES.PRIVACY} element={<PrivacyPolicyPage />} />
-          <Route path={CLIENT_ROUTES.PAUSED} element={<PausedPage />} />
-          <Route path={CLIENT_ROUTES.EXPIRED} element={<ExpiredPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/cont" element={<ContactPage />} />
-          <Route
-            path={CLIENT_ROUTES.PROFILE}
-            element={
-              <PrivateRoute>
-                <Myurlspage />
-              </PrivateRoute>
-            }
-          />
-          <Route path={CLIENT_ROUTES.REGISTRATION} element={<Registrpage />} />
-          <Route path={CLIENT_ROUTES.SIGNIN} element={<Signinpage />} />
-          <Route path={`${CLIENT_ROUTES.SHARE}/:shareId`} element={<SharePage />} />
-        </Routes>
+        <Suspense
+          fallback={
+            <div className="flex h-[50vh] w-full items-center justify-center">
+              <AppLoader />
+            </div>
+          }
+        >
+          <Routes>
+            <Route path={CLIENT_ROUTES.HOME} element={<Homepage />} />
+            <Route path={CLIENT_ROUTES.PRIVACY} element={<PrivacyPolicyPage />} />
+            <Route path={CLIENT_ROUTES.PAUSED} element={<PausedPage />} />
+            <Route path={CLIENT_ROUTES.EXPIRED} element={<ExpiredPage />} />
+            <Route path={CLIENT_ROUTES.ABOUT} element={<AboutPage />} />
+            <Route path={CLIENT_ROUTES.CONTACT} element={<ContactPage />} />
+            <Route
+              path={CLIENT_ROUTES.PROFILE}
+              element={
+                <PrivateRoute>
+                  <Myurlspage />
+                </PrivateRoute>
+              }
+            />
+            <Route path={CLIENT_ROUTES.REGISTRATION} element={<Registrpage />} />
+            <Route path={CLIENT_ROUTES.SIGNIN} element={<Signinpage />} />
+            <Route path={`${CLIENT_ROUTES.SHARE}/:shareId`} element={<SharePage />} />
+          </Routes>
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
       <OfflineModal />
     </>
   );

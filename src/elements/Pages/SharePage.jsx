@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
+import { CLIENT_ROUTES } from "../../utils/clientRoutes.js";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { formatDate } from "../../utils/formatDate";
@@ -87,7 +88,7 @@ function SharePage() {
           </h2>
           <p className="mb-8 text-gray-600 dark:text-gray-400">{error}</p>
           <Link
-            to="/"
+            to={CLIENT_ROUTES.HOME}
             className="rounded-lg bg-sky-500 px-6 py-2 text-white transition-colors hover:bg-sky-600"
           >
             {t("shared.homepage")}
