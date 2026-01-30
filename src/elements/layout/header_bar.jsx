@@ -84,21 +84,21 @@ function Header_bar() {
               style={{ zIndex: 60 }}
             >
               {!isOpen ? (
-                <img
-                  src="/src/assets/burger.svg"
-                  onDragStart={(e) => e.preventDefault()}
-                  className="h-14 w-14 select-none dark:invert"
-                  alt="меню"
-                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 50 50"
+                  className="h-14 w-14 fill-current text-slate-300 transition-colors hover:text-white"
+                >
+                  <path d="M 0 7.5 L 0 12.5 L 50 12.5 L 50 7.5 Z M 0 22.5 L 0 27.5 L 50 27.5 L 50 22.5 Z M 0 37.5 L 0 42.5 L 50 42.5 L 50 37.5 Z" />
+                </svg>
               ) : (
-                <>
-                  <img
-                    src="/src/assets/burger-cross.svg"
-                    onDragStart={(e) => e.preventDefault()}
-                    className="relative z-40 h-14 w-14 select-none dark:invert"
-                    alt="меню"
-                  />
-                </>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 50 50"
+                  className="relative z-40 h-14 w-14 fill-current text-slate-300 transition-colors hover:text-white"
+                >
+                  <path d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z" />
+                </svg>
               )}
             </button>
           </div>
