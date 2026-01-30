@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 
 const BetaBanner = () => {
   let items = new Array(29).fill("Beta Test");
-  items.splice(Math.floor(Math.random() * 30), 0, "Kribzdy");
+  items.splice(Math.floor(Math.random() * 30), 0, " Kribzdy ");
   return (
     <div className="relative z-0 w-full overflow-hidden bg-slate-900 py-3 dark:bg-slate-800">
       {/* Decorative Gradient Strips */}
