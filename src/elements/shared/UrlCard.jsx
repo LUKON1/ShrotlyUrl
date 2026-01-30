@@ -208,7 +208,7 @@ function UrlCard({
           )}
           <div className="flex flex-row items-center gap-3 sm:gap-4">
             <p className="text-base font-bold text-sky-400 select-all hover:text-sky-600 sm:text-lg md:text-xl dark:text-sky-500 dark:hover:text-sky-300">
-              {`${import.meta.env.VITE_BASE_URL}/${urlData.shortCode}`}
+              {`${import.meta.env.VITE_BASE_URL || window.location.origin}/${urlData.shortCode}`}
             </p>
             {mode === "share" && (
               <motion.button
@@ -289,7 +289,7 @@ function UrlCard({
                 transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `${import.meta.env.VITE_BASE_URL}/share/${urlData._id}`
+                    `${import.meta.env.VITE_BASE_URL || window.location.origin}/share/${urlData._id}`
                   );
                   notificationRef.current?.addNotification(t("shared.shareLinkCopied"), 2000);
                 }}
@@ -332,7 +332,7 @@ function UrlCard({
                 transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `${import.meta.env.VITE_BASE_URL}/${urlData.shortCode}`
+                    `${import.meta.env.VITE_BASE_URL || window.location.origin}/${urlData.shortCode}`
                   );
                   notificationRef.current?.addNotification(t("homepage.copied"), 2000);
                 }}

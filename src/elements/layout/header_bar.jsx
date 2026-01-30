@@ -6,6 +6,7 @@ import LangDropdown from "../shared/lang_dropdown";
 import ThemeToggle from "../shared/theme_toggle";
 import useAuth from "../../utils/useAuth";
 import { CLIENT_ROUTES } from "../../utils/clientRoutes.js";
+import logo from "../../assets/favicon.svg";
 
 function Header_bar() {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ function Header_bar() {
               <img
                 onDragStart={(e) => e.preventDefault()}
                 className="relative h-12 w-12 transition-transform duration-200 select-none group-hover:scale-110"
-                src="src/assets/favicon.svg"
+                src={logo}
                 alt="home"
                 style={{ zIndex: 60 }}
               />

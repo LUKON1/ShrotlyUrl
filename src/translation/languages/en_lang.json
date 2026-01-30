@@ -178,5 +178,21 @@
     "countries": "Countries",
     "referrers": "Referrers",
     "noData": "No data available"
+  },
+  "bugreport": {
+    "title": "Report a Bug",
+    "subtitle": "Found an issue? Let us know so we can fix it ASAP.",
+    "topic": "Topic",
+    "description": "Description",
+    "descPlaceholder": "Describe what happened...",
+    "contact": "Contact (Optional)"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "send": "Send Report"
+  },
+  "about": {
+    "title": "About Us",
+    "description": "We are working hard to bring you this page. Stay tuned!"
   }
 }

@@ -20,7 +20,7 @@ function TopUrlsList({ topUrls }) {
           {topUrls.map((url, index) => (
             <motion.div
               key={url.shortCode}
-              className="flex items-center gap-4 rounded-lg p-4"
+              className="motion-safe flex items-center gap-4 rounded-lg p-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{
                 opacity: 1,
@@ -48,7 +48,7 @@ function TopUrlsList({ topUrls }) {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold text-gray-900 dark:text-gray-100">
-                  {`${import.meta.env.VITE_BASE_URL}/${url.shortCode}`}
+                  {`${import.meta.env.VITE_BASE_URL || window.location.origin}/${url.shortCode}`}
                 </p>
                 <p className="truncate text-sm text-gray-600 dark:text-gray-400">{url.url}</p>
               </div>

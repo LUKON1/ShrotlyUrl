@@ -11,6 +11,7 @@ const userRouter = require("./routes/user");
 const shareRouter = require("./routes/share");
 const auth = require("./middleware/auth");
 const redirectRouter = require("./routes/redirect");
+const supportRouter = require("./routes/support");
 
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -22,10 +23,24 @@ const HOST_NAME = process.env.HOST_NAME;
 
 app.use(helmet());
 
+// Allowed origins
+const allowedOrigins = [
+  HOST_NAME, // Production URL from .env
+  "http://localhost:5173", // Local Frontend
+  "http://localhost:4173", // Local Preview
+  "http://127.0.0.1:5173",
+];
+
 app.use(
   cors({
-    origin: HOST_NAME,
-    methods: ["POST", "GET", "DELETE", "PATCH"],
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      // Reflect the request origin to allow any of the allowed origins (and more for dev)
+      return callback(null, true);
+    },
+    methods: ["POST", "GET", "DELETE", "PATCH", "PUT", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
     credentials: true,
   })
 );
@@ -47,6 +62,7 @@ app.use("/api/cut", apiLimiter, urlShorterRouter);
 app.use("/api/myurls", auth, getUsUrlsRouter);
 app.use("/api/user", authLimiter, userRouter);
 app.use("/api/share", shareRouter);
+app.use("/api/support", supportRouter);
 
 app.use("/", redirectRouter);
 

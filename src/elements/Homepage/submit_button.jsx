@@ -12,7 +12,7 @@ function SubmitButton({ isLoading }) {
     <motion.button
       type="submit"
       disabled={isLoading}
-      className="text-1xl group relative flex h-16 w-64 cursor-pointer touch-manipulation items-center justify-center overflow-hidden rounded-lg p-2 font-extrabold text-gray-900 shadow-lg duration-200 hover:shadow-xl active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 md:text-2xl lg:h-20 lg:text-3xl dark:text-gray-100"
+      className="motion-safe text-1xl group relative flex h-16 w-64 cursor-pointer touch-manipulation items-center justify-center overflow-hidden rounded-lg p-2 font-extrabold text-gray-900 shadow-lg hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50 md:text-2xl lg:h-20 lg:text-3xl dark:text-gray-100"
       initial={{ opacity: 0, transform: "translateY(100px)" }}
       animate={{
         opacity: 1,
@@ -24,7 +24,7 @@ function SubmitButton({ isLoading }) {
       transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
       whileHover="hover"
       whileFocus="hover"
-      whileTap="hover"
+      whileTap={{ scale: 0.95 }}
     >
       <motion.div
         className="absolute -top-4 right-32 z-10 h-40 w-40 rounded-full bg-blue-200 dark:bg-sky-800"

@@ -4,8 +4,13 @@ import { motion } from "motion/react";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeProvider";
 import { CLIENT_ROUTES } from "../../utils/clientRoutes.js";
+import BetaBanner from "./BetaBanner.jsx";
+
+import { useState } from "react";
+import BugReportModal from "../shared/BugReportModal.jsx";
 
 function Footer() {
+  const [isBugModalOpen, setIsBugModalOpen] = useState(false);
   const location = useLocation();
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
@@ -16,6 +21,8 @@ function Footer() {
       className="relative mt-20 bg-slate-900 dark:bg-slate-800"
       style={{ transition: "var(--transition-bg)" }}
     >
+      <BugReportModal isOpen={isBugModalOpen} closeModal={() => setIsBugModalOpen(false)} />
+      <BetaBanner />
       <motion.button
         className="absolute -top-5 left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 touch-manipulation items-center justify-center rounded-full text-white shadow-lg"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -85,7 +92,7 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <Link to={CLIENT_ROUTES.PRIVACY} className="text-slate-300 hover:text-white">
+                    <Link to="/about" className="text-slate-300 hover:text-white">
                       {t("footer.about", "About us")}
                     </Link>
                   </motion.div>
@@ -119,6 +126,27 @@ function Footer() {
                   >
                     <a href="#" className="text-slate-300 hover:text-white">
                       {t("footer.faq", "FAQ")}
+                    </a>
+                  </motion.div>
+                </li>
+                <li>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsBugModalOpen(true);
+                      }}
+                      className="group flex items-center gap-2 text-rose-400 hover:text-rose-300"
+                    >
+                      <span className="relative flex h-2 w-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75"></span>
+                        <span className="relative inline-flex h-2 w-2 rounded-full bg-rose-500"></span>
+                      </span>
+                      {t("footer.reportBug", "Report a Bug")}
                     </a>
                   </motion.div>
                 </li>

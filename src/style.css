@@ -8,6 +8,8 @@
   --animate-fadeinup: fadeInUp 0.8s ease-out forwards;
   --animate-modal-fade-in: modalFadeIn 0.3s ease-out forwards;
   --animate-fadeout-slide: fadeOutSlide 0.3s ease-in forwards;
+  /* Defined properly in theme to be usable by Tailwind utilities */
+  --animate-infinite-scroll: infinite-scroll 40s linear infinite;
   --font-brutal: "AmazeDoom", sans-serif;
 
   @keyframes fallDown {
@@ -78,6 +80,16 @@
       transform: translateX(100%) scale(0.8);
     }
   }
+
+  /* Keyframes for the infinite scroll */
+  @keyframes infinite-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @font-face {
@@ -110,6 +122,8 @@
 :root.dark {
   background-color: #0f172a;
 }
+
+/* Original Heavy Global Transition */
 * {
   transition:
     transform 0.4s ease,
@@ -122,5 +136,27 @@
     padding 0.4s ease,
     border-width 0.3s ease,
     border-radius 0.4s ease,
-    filter 0.4s ease;
+    filter 0.4s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    stroke 0.3s ease,
+    fill 0.3s ease,
+    backdrop-filter 0.4s ease;
+}
+
+/* 
+   Exception Class for Motion Elements.
+   Includes colors/shadows but excludes transform/opacity/layout 
+*/
+.motion-safe {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    stroke 0.3s ease,
+    fill 0.3s ease,
+    box-shadow 0.3s ease,
+    filter 0.4s ease,
+    backdrop-filter 0.4s ease !important;
 }
