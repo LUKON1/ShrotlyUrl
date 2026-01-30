@@ -13,6 +13,7 @@ import SharePage from "./Pages/SharePage.jsx";
 import PausedPage from "./Pages/PausedPage.jsx";
 import ExpiredPage from "./Pages/ExpiredPage.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
+import ContactPage from "./Pages/ContactPage.jsx";
 import useAuthOnLoading from "../utils/useAuthOnLoading.js";
 import AppLoader from "./shared/AppLoader.jsx";
 import { ThemeProvider } from "../context/ThemeProvider.jsx";
@@ -43,6 +44,7 @@ function AppContent() {
           <Route path={CLIENT_ROUTES.PAUSED} element={<PausedPage />} />
           <Route path={CLIENT_ROUTES.EXPIRED} element={<ExpiredPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/cont" element={<ContactPage />} />
           <Route
             path={CLIENT_ROUTES.PROFILE}
             element={

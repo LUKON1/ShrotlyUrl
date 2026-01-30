@@ -8,10 +8,10 @@ const AboutPage = () => {
   return (
     <div className="flex min-h-[60vh] w-full flex-col items-center justify-center p-4">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex max-w-2xl flex-col items-center gap-6 text-center"
+        className="motion-safe flex max-w-2xl flex-col items-center gap-6 text-center lg:-mt-40"
       >
         <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-12 dark:border-slate-700 dark:bg-slate-800/50">
           <h1 className="mb-4 text-4xl font-extrabold text-slate-800 dark:text-slate-100">

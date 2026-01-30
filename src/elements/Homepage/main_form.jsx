@@ -11,6 +11,7 @@ import axios from "../../api/axios.js";
 import useAuth from "../../utils/useAuth.js";
 import useAxiosPrivate from "../../utils/useAxiosPrivate.js";
 import TimeDropdown from "./time_dropdown.jsx";
+import crossIcon from "../../assets/cross.svg";
 
 function ShortenerForm() {
   const API_SHORTER = "/cut/shorter";
@@ -111,7 +112,7 @@ function ShortenerForm() {
               >
                 <img
                   className="h-full w-8 hover:cursor-pointer lg:w-10 dark:invert"
-                  src="/src/assets/cross.svg"
+                  src={crossIcon}
                   alt="X"
                 />
               </button>

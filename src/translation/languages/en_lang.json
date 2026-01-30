@@ -194,5 +194,13 @@
   "about": {
     "title": "About Us",
     "description": "We are working hard to bring you this page. Stay tuned!"
+  },
+  "contact": {
+    "badge": "Get in Touch",
+    "title": "Contact Us",
+    "subtitle": "Have questions or feedback? We'd love to hear from you.",
+    "emailText": "For general inquiries",
+    "office": "Digital Office",
+    "officeText": "Based in the cloud"
   }
 }

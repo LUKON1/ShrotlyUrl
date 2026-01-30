@@ -102,12 +102,9 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <a
-                      href="mailto:support@shortlyurl.com"
-                      className="text-slate-300 hover:text-white"
-                    >
+                    <Link to="/contacts" className="text-slate-300 hover:text-white">
                       {t("footer.contact", "Contact us")}
-                    </a>
+                    </Link>
                   </motion.div>
                 </li>
               </ul>

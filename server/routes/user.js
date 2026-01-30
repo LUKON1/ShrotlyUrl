@@ -7,8 +7,9 @@ const UserModel = require("../models/User");
 const UrlModel = require("../models/Url");
 const auth = require("../middleware/auth");
 const loginLimiter = require("../middleware/loginLimiter");
+const regLimiter = require("../middleware/regLimiter");
 
-router.post("/registr", async (req, res) => {
+router.post("/registr", regLimiter, async (req, res) => {
   try {
     const { pwd, user, anonymousCodes } = req.body;
     if (!pwd || !user) {
