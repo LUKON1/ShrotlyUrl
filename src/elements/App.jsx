@@ -11,6 +11,7 @@ import { OfflineProvider } from "../context/OfflineProvider.jsx";
 import OfflineModal from "./shared/OfflineModal.jsx";
 import { CLIENT_ROUTES } from "../utils/clientRoutes.js";
 import { useOffline } from "../context/OfflineProvider.jsx";
+import BackgroundEffect from "./layout/BackgroundEffect.jsx";
 
 // Lazy loading pages
 const Homepage = lazy(() => import("./Pages/!Homepage.jsx"));
@@ -92,10 +93,13 @@ function App() {
     <ThemeProvider>
       <OfflineProvider>
         <div
-          className="flex min-h-screen w-screen flex-col bg-white dark:bg-slate-900"
+          className="relative flex min-h-screen w-screen flex-col bg-white dark:bg-slate-900"
           style={{ transition: "var(--transition-bg)" }}
         >
-          <AppContent />
+          <BackgroundEffect />
+          <div className="relative z-10 flex min-h-screen w-full flex-col">
+            <AppContent />
+          </div>
         </div>
       </OfflineProvider>
     </ThemeProvider>
