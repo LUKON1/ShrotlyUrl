@@ -18,6 +18,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 const DB_URI = process.env.DB_URI;
 const HOST_NAME = process.env.HOST_NAME;
