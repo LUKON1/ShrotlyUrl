@@ -142,7 +142,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
             <>
               {displayedUrls.length > 0 ? (
                 <motion.ul
-                  className="mx-auto w-full max-w-7xl px-0"
+                  className="motion-safe mx-auto w-full max-w-7xl px-0"
                   layout="position"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -158,7 +158,9 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
                     {displayedUrls.map((urlItem, index) => (
                       <motion.li
                         key={urlItem._id}
-                        className={openAnalyticsId !== urlItem._id ? "mb-8" : ""}
+                        className={
+                          openAnalyticsId !== urlItem._id ? "motion-safe mb-8" : "motion-safe"
+                        }
                         style={{ willChange: "transform, opacity" }}
                         initial={{ opacity: 0, y: 100 }}
                         animate={deletingIds.has(urlItem._id) ? "exit" : "enter"}
@@ -199,7 +201,7 @@ function Urlslist({ urls, notificationRef, getMyUrls, updateUrl, removeUrl, isLo
                         <AnimatePresence mode="wait">
                           {openAnalyticsId === urlItem._id && (
                             <motion.div
-                              className="relative z-10 mt-2 mb-8 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-shadow hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800"
+                              className="motion-safe relative z-10 mt-2 mb-8 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-shadow hover:shadow-xl sm:p-6 dark:border-slate-700 dark:bg-slate-800"
                               initial={{ opacity: 0, y: 20, scale: 0.95 }}
                               animate={{ opacity: 1, y: 0, scale: 1 }}
                               exit={{ opacity: 0, y: 20, scale: 0.95 }}

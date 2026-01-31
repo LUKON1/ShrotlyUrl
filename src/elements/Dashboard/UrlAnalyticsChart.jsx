@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -76,7 +76,7 @@ const UrlAnalyticsChart = ({ urlId }) => {
           aspect={undefined}
           key={urlId}
         >
-          <LineChart
+          <AreaChart
             data={chartData}
             margin={{
               top: 5,
@@ -85,6 +85,12 @@ const UrlAnalyticsChart = ({ urlId }) => {
               bottom: 30,
             }}
           >
+            <defs>
+              <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" className="stroke-gray-300 dark:stroke-gray-600" />
             <XAxis
               dataKey="date"
@@ -96,23 +102,27 @@ const UrlAnalyticsChart = ({ urlId }) => {
               contentStyle={{
                 backgroundColor: "rgb(30 41 59)",
                 border: "none",
+                borderRadius: "8px",
                 color: "#fff",
+                boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
               }}
-              labelStyle={{ color: "#fff" }}
-              itemStyle={{ color: "#60a5fa" }}
+              labelStyle={{ color: "#e2e8f0", marginBottom: "0.25rem" }}
+              itemStyle={{ color: "#818cf8" }}
               labelFormatter={(value) =>
                 `${t("myurls.date")}: ${dayjs(value).format("DD/MM/YYYY")}`
               }
               formatter={(value, name) => [value, t("myurls.clicks")]}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="clicks"
               stroke="#8884d8"
+              fillOpacity={1}
+              fill="url(#colorClicks)"
               activeDot={{ r: 8 }}
               name={t("myurls.clicks")}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
 

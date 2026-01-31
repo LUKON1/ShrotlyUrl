@@ -100,13 +100,12 @@ router.get("/analytics", async (req, res) => {
         clicks: chartData[date].clicks,
       }));
 
-    // Fill last 30 days if empty (optional, but good for UI)
+    // Fill last 30 days if empty
     const now = new Date();
     for (let i = 29; i >= 0; i--) {
       const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
       if (!chartData[d]) {
-        // Only add if we need to fill gaps, assuming we want at least 30 days range
-        // For now, let's just let the frontend handle sparse data or return what we have
+        chartData[d] = { created: 0, clicks: 0 };
       }
     }
 
@@ -225,8 +224,18 @@ router.get("/analytics/:urlId", async (req, res) => {
     // Sort chart data by date
     chartData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    // Fill missing dates with 0 (optional, but good for charts)
-    // ... (omitted for brevity, can be added if needed)
+    // Fill missing dates with 0 for the last 7 days to make the chart look nice
+    const filledChartData = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+      const existing = chartData.find((item) => item.date === d);
+      if (existing) {
+        filledChartData.push(existing);
+      } else {
+        filledChartData.push({ date: d, clicks: 0 });
+      }
+    }
 
     res.status(200).json({
       urlId: urlEntry._id,
@@ -235,7 +244,7 @@ router.get("/analytics/:urlId", async (req, res) => {
       totalClicks: urlEntry.clicks, // Use the master counter from UrlModel
       createdAt: urlEntry.createdAt,
       expiredAt: urlEntry.expiredAt,
-      chartData: chartData,
+      chartData: filledChartData,
       devices,
       browsers,
       countries,
