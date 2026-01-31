@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 
-const AboutPage = () => {
+const FAQPage = () => {
   const { t } = useTranslation();
 
   return (
@@ -15,10 +15,10 @@ const AboutPage = () => {
       >
         <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-12 dark:border-slate-700 dark:bg-slate-800/50">
           <h1 className="mb-4 text-4xl font-extrabold text-slate-800 dark:text-slate-100">
-            {t("about.title", "About Us")}
+            {t("faq.title", "FAQ")}
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400">
-            {t("about.description", "We are working hard to bring you this page. Stay tuned!")}
+            {t("faq.description", "Frequently Asked Questions will be here soon.")}
           </p>
           <div className="mt-8">
             <span className="inline-flex animate-pulse items-center rounded-full bg-sky-100 px-4 py-1.5 text-sm font-medium text-sky-800 dark:bg-sky-900/30 dark:text-sky-300">
@@ -31,4 +31,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage;
+export default FAQPage;

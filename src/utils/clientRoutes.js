@@ -7,6 +7,7 @@ export const CLIENT_ROUTES = {
   SIGNIN: "/sign",
   SHARE: "/share",
   ABOUT: "/about",
+  FAQ: "/faq",
   CONTACT: "/cont",
   HOME: "/",
 };

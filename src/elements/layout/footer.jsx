@@ -121,9 +121,9 @@ function Footer() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <a href="#" className="text-slate-300 hover:text-white">
+                    <Link to={CLIENT_ROUTES.FAQ} className="text-slate-300 hover:text-white">
                       {t("footer.faq", "FAQ")}
-                    </a>
+                    </Link>
                   </motion.div>
                 </li>
                 <li>
