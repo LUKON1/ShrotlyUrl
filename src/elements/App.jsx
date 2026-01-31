@@ -25,6 +25,7 @@ const ExpiredPage = lazy(() => import("./Pages/ExpiredPage.jsx"));
 const AboutPage = lazy(() => import("./Pages/AboutPage.jsx"));
 const ContactPage = lazy(() => import("./Pages/ContactPage.jsx"));
 const Footer = lazy(() => import("./layout/footer.jsx"));
+const NotFound = lazy(() => import("./Pages/NotFound.jsx"));
 
 function AppContent() {
   const { isOfflineModalOpen, showOfflineModal, hideOfflineModal } = useOffline();
@@ -66,6 +67,7 @@ function AppContent() {
             <Route path={CLIENT_ROUTES.REGISTRATION} element={<Registrpage />} />
             <Route path={CLIENT_ROUTES.SIGNIN} element={<Signinpage />} />
             <Route path={`${CLIENT_ROUTES.SHARE}/:shareId`} element={<SharePage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>

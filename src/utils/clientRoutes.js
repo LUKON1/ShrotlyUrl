@@ -1,6 +1,6 @@
 export const CLIENT_ROUTES = {
   PRIVACY: "/priv",
-  PAUSED: "/pause",
+  PAUSED: "/pau",
   EXPIRED: "/exp",
   PROFILE: "/prof",
   REGISTRATION: "/reg",
