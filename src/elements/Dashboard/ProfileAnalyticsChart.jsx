@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   AreaChart,
   Area,
@@ -9,16 +10,64 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+import DateRangeSelector from "./DateRangeSelector";
+import ExportButton from "./ExportButton";
+
+dayjs.extend(isBetween);
 
 function ProfileAnalyticsChart({ data, title }) {
+  const [dateRange, setDateRange] = useState({
+    range: "last7Days",
+    startDate: dayjs().subtract(6, "day").format("YYYY-MM-DD"),
+    endDate: dayjs().format("YYYY-MM-DD"),
+  });
+
+  const filteredData = useMemo(() => {
+    // Generate all dates in range
+    const start = dayjs(dateRange.startDate).startOf("day");
+    const end = dayjs(dateRange.endDate).endOf("day");
+    const filledData = [];
+    let current = start;
+
+    while (current.isBefore(end) || current.isSame(end, "day")) {
+      const dateStr = current.format("YYYY-MM-DD");
+      const existingItem = data?.find((item) => item.date === dateStr);
+
+      if (existingItem) {
+        filledData.push(existingItem);
+      } else {
+        filledData.push({ date: dateStr, clicks: 0, created: 0 });
+      }
+      current = current.add(1, "day");
+    }
+
+    return filledData;
+  }, [data, dateRange]);
+
+  const handleRangeChange = useCallback((newRange) => {
+    setDateRange(newRange);
+  }, []);
+
   return (
     <div
       className="relative z-10 rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-shadow hover:shadow-xl dark:border-slate-700 dark:bg-slate-800"
       style={{ willChange: "background-color, border-color" }}
     >
-      <h3 className="mb-6 text-xl font-bold text-gray-900 dark:text-gray-100">{title}</h3>
+      <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{title}</h3>
+          <DateRangeSelector onChange={handleRangeChange} initialRange="last7Days" />
+        </div>
+        <ExportButton
+          data={filteredData}
+          filename="profile_analytics.csv"
+          headers={["Date", "URLs Created", "Clicks"]}
+        />
+      </div>
+
       <ResponsiveContainer width="100%" height={300}>
-        <AreaChart data={data}>
+        <AreaChart data={filteredData}>
           <defs>
             <linearGradient id="colorCreated" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8} />

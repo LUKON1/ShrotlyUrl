@@ -238,7 +238,7 @@ function Myurlspage() {
                 devices={analytics?.devices || {}}
                 browsers={analytics?.browsers || {}}
                 countries={analytics?.countries || {}}
-                referrers={analytics?.referrers || {}}
+                os={analytics?.os || {}}
                 t={t}
               />
 

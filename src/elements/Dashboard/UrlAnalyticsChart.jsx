@@ -12,8 +12,13 @@ import {
 import { useTranslation } from "react-i18next";
 import useAxiosPrivate from "../../utils/useAxiosPrivate";
 import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
 
 import AnalyticsWidgets from "./AnalyticsWidgets";
+import DateRangeSelector from "./DateRangeSelector";
+import ExportButton from "./ExportButton";
+
+dayjs.extend(isBetween);
 
 const UrlAnalyticsChart = ({ urlId }) => {
   const { t } = useTranslation();
@@ -22,6 +27,12 @@ const UrlAnalyticsChart = ({ urlId }) => {
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [dateRange, setDateRange] = useState({
+    range: "last7Days",
+    startDate: dayjs().subtract(6, "day").format("YYYY-MM-DD"),
+    endDate: dayjs().format("YYYY-MM-DD"),
+  });
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -45,6 +56,31 @@ const UrlAnalyticsChart = ({ urlId }) => {
     }
   }, [urlId, axiosPrivate, t]);
 
+  const filteredData = React.useMemo(() => {
+    const start = dayjs(dateRange.startDate).startOf("day");
+    const end = dayjs(dateRange.endDate).endOf("day");
+    const filledData = [];
+    let current = start;
+
+    while (current.isBefore(end) || current.isSame(end, "day")) {
+      const dateStr = current.format("YYYY-MM-DD");
+      const existingItem = chartData?.find((item) => item.date === dateStr);
+
+      if (existingItem) {
+        filledData.push(existingItem);
+      } else {
+        filledData.push({ date: dateStr, clicks: 0 });
+      }
+      current = current.add(1, "day");
+    }
+
+    return filledData;
+  }, [chartData, dateRange]);
+
+  const handleRangeChange = React.useCallback((newRange) => {
+    setDateRange(newRange);
+  }, []);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-4 text-xl text-blue-600 dark:text-blue-400">
@@ -61,13 +97,22 @@ const UrlAnalyticsChart = ({ urlId }) => {
     );
   }
 
-  // Allow rendering even with empty data to show empty state/grid
-
   return (
     <div className="w-full">
-      <h3 className="mb-4 text-center text-2xl font-bold text-gray-800 dark:text-gray-200">
-        {t("myurls.analytics")}
-      </h3>
+      <div className="mb-4 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+            {t("myurls.analytics")}
+          </h3>
+          <DateRangeSelector onChange={handleRangeChange} initialRange="last7Days" />
+        </div>
+        <ExportButton
+          data={filteredData}
+          filename={`url_analytics_${urlId}.csv`}
+          headers={["Date", "Clicks"]}
+        />
+      </div>
+
       <div className="h-80 w-full">
         <ResponsiveContainer
           width="100%"
@@ -77,7 +122,7 @@ const UrlAnalyticsChart = ({ urlId }) => {
           key={urlId}
         >
           <AreaChart
-            data={chartData}
+            data={filteredData}
             margin={{
               top: 5,
               right: 30,
@@ -131,7 +176,7 @@ const UrlAnalyticsChart = ({ urlId }) => {
           devices={analyticsData.devices}
           browsers={analyticsData.browsers}
           countries={analyticsData.countries}
-          referrers={analyticsData.referrers}
+          os={analyticsData.os}
           t={t}
         />
       )}

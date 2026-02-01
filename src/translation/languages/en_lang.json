@@ -128,7 +128,7 @@
     "expiredUrls": "Expired URLs",
     "last7Days": "last 7 days",
     "last30Days": "last 30 days",
-    "activityChart": "Activity Over Last 7 Days",
+    "activityChart": "Activity",
     "topUrls": "Top 5 URLs by Clicks",
     "memberSince": "Member since",
     "noData": "No data available",
@@ -184,7 +184,19 @@
     "browsers": "Browsers",
     "countries": "Countries",
     "referrers": "Referrers",
-    "noData": "No data available"
+    "os": "Operating Systems",
+    "noData": "No data available",
+    "exportToExcel": "Export to Excel",
+    "ranges": {
+      "last7Days": "Last 7 Days",
+      "last30Days": "Last 30 Days",
+      "last90Days": "Last 90 Days",
+      "lastYear": "Last Year",
+      "custom": "Custom Range"
+    },
+    "customRangeError": "Start date cannot be more than 1 year in the past",
+    "customRangeFutureError": "End date cannot be in the future",
+    "customRangeInvalidError": "Start date must be before end date"
   },
   "bugreport": {
     "title": "Report a Bug",
@@ -196,7 +208,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "send": "Send Report"
+    "send": "Send Report",
+    "apply": "Apply",
+    "export": "Export"
   },
   "about": {
     "title": "About Us",

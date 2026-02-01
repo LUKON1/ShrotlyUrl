@@ -127,13 +127,13 @@ const ListWidget = ({ data, title }) => {
   );
 };
 
-const AnalyticsWidgets = ({ devices = {}, browsers = {}, countries = {}, referrers = {}, t }) => {
+const AnalyticsWidgets = ({ devices = {}, browsers = {}, countries = {}, os = {}, t }) => {
   return (
     <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
       <PieChartWidget data={devices} title={t("analytics.devices") || "Devices"} />
       <PieChartWidget data={browsers} title={t("analytics.browsers") || "Browsers"} />
+      <PieChartWidget data={os} title={t("analytics.os") || "Operating Systems"} />
       <ListWidget data={countries} title={t("analytics.countries") || "Countries"} />
-      <ListWidget data={referrers} title={t("analytics.referrers") || "Referrers"} />
     </div>
   );
 };

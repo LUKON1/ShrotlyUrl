@@ -45,6 +45,7 @@ router.get("/analytics", async (req, res) => {
     const browsers = {};
     const countries = {};
     const referrers = {};
+    const os = {};
 
     const addToMap = (map, key, count = 1) => {
       if (!key) return;
@@ -64,6 +65,7 @@ router.get("/analytics", async (req, res) => {
       if (stat.browsers) stat.browsers.forEach((v, k) => addToMap(browsers, k, v));
       if (stat.countries) stat.countries.forEach((v, k) => addToMap(countries, k, v));
       if (stat.referrers) stat.referrers.forEach((v, k) => addToMap(referrers, k, v));
+      if (stat.os) stat.os.forEach((v, k) => addToMap(os, k, v));
     });
 
     // 2. Process Today's Data
@@ -82,6 +84,7 @@ router.get("/analytics", async (req, res) => {
       addToMap(browsers, click.browser);
       addToMap(countries, click.country);
       addToMap(referrers, click.referrer);
+      addToMap(os, click.os);
     });
 
     // 3. Process Created By Day (From UrlModel)
@@ -147,6 +150,7 @@ router.get("/analytics", async (req, res) => {
       browsers,
       countries,
       referrers,
+      os,
     });
   } catch (err) {
     console.error("Error in /analytics route:", err);
@@ -188,6 +192,7 @@ router.get("/analytics/:urlId", async (req, res) => {
     const browsers = {};
     const countries = {};
     const referrers = {};
+    const os = {};
 
     // Helper to sum up stats
     const addToMap = (map, key, count = 1) => {
@@ -202,6 +207,7 @@ router.get("/analytics/:urlId", async (req, res) => {
       if (stat.browsers) stat.browsers.forEach((v, k) => addToMap(browsers, k, v));
       if (stat.countries) stat.countries.forEach((v, k) => addToMap(countries, k, v));
       if (stat.referrers) stat.referrers.forEach((v, k) => addToMap(referrers, k, v));
+      if (stat.os) stat.os.forEach((v, k) => addToMap(os, k, v));
     });
 
     // Process Today (Real-time)
@@ -219,20 +225,36 @@ router.get("/analytics/:urlId", async (req, res) => {
       addToMap(browsers, click.browser);
       addToMap(countries, click.country);
       addToMap(referrers, click.referrer);
+      addToMap(os, click.os);
     });
 
     // Sort chart data by date
     chartData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    // Fill missing dates with 0 for the last 7 days to make the chart look nice
+    // Fill missing dates with 0 from the earliest date to today
     const filledChartData = [];
-    const now = new Date();
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
-      const existing = chartData.find((item) => item.date === d);
-      if (existing) {
-        filledChartData.push(existing);
-      } else {
+    if (chartData.length > 0) {
+      const earliestDate = new Date(chartData[0].date);
+      const todayDate = new Date();
+
+      // Reset time parts to ensure correct day calculation
+      earliestDate.setHours(0, 0, 0, 0);
+      todayDate.setHours(0, 0, 0, 0);
+
+      for (let d = new Date(earliestDate); d <= todayDate; d.setDate(d.getDate() + 1)) {
+        const dateString = d.toISOString().split("T")[0];
+        const existing = chartData.find((item) => item.date === dateString);
+        if (existing) {
+          filledChartData.push(existing);
+        } else {
+          filledChartData.push({ date: dateString, clicks: 0 });
+        }
+      }
+    } else {
+      // Fallback: If no data at all, return last 7 days with 0
+      const now = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
         filledChartData.push({ date: d, clicks: 0 });
       }
     }
@@ -249,6 +271,7 @@ router.get("/analytics/:urlId", async (req, res) => {
       browsers,
       countries,
       referrers,
+      os,
     });
   } catch (err) {
     console.error("Error in /analytics/:urlId route:", err);
