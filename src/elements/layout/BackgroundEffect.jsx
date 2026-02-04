@@ -17,7 +17,7 @@ const BackgroundEffect = () => {
   const lastPosRef = useRef({ x: 0, y: 0 }); // Intialize with 0,0 but will be set on resize
 
   // Mobile detection ref to use inside animation loop
-  const isMobileRef = useRef(window.innerWidth < 768);
+  const isMobileRef = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -37,7 +37,6 @@ const BackgroundEffect = () => {
     const resize = () => {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
-      isMobileRef.current = w < 768;
 
       // On resize, if we haven't interacted yet, center the "resume" point
       if (lastPosRef.current.x === 0 && lastPosRef.current.y === 0) {
@@ -255,19 +254,26 @@ const BackgroundEffect = () => {
     const handleMouseMove = (e) => {
       // Ignore synthetic mouse events fired after touch
       if (Date.now() - lastTouchTime.current < 500) return;
+      isMobileRef.current = false; // Revert to desktop behavior on mouse use
       handleInput(e.clientX, e.clientY);
     };
 
     const handleTouchMove = (e) => {
+      isMobileRef.current = true; // Activate mobile behavior on first touch
       lastTouchTime.current = Date.now();
-      if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        handleInput(touch.clientX, touch.clientY);
-      }
+      lastInteractionTime.current = Date.now(); // Ensure we have a fresh timestamp
+      wakeUp(); // Restart animation loop if sleeping
+
+      // User requested to disable direct touch interaction (no handleInput)
+      // Just let the idle "ghost" animation play continuously
     };
 
     const handleClick = () => {
+      // Ignore synthetic click events fired after touch
+      if (Date.now() - lastTouchTime.current < 500) return;
+
       mouseRef.current.isClick = true;
+      isMobileRef.current = false; // Revert to desktop behavior on click
       lastInteractionTime.current = Date.now();
       wakeUp();
     };
