@@ -13,6 +13,11 @@ const BackgroundEffect = () => {
   const isIdle = useRef(false);
   const timeRef = useRef(0); // For generating ghost cursor movement
   const lastTouchTime = useRef(0); // To ignore synthetic mouse events
+  // Store last known interaction position for mobile "resume" behavior
+  const lastPosRef = useRef({ x: 0, y: 0 }); // Intialize with 0,0 but will be set on resize
+
+  // Mobile detection ref to use inside animation loop
+  const isMobileRef = useRef(window.innerWidth < 768);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -28,11 +33,16 @@ const BackgroundEffect = () => {
     // Configuration
     const baseOpacity = 0.3;
     const velocityColorBoost = 0.15; // How much brighter when fast
-    const idleDelay = 2500; // ms before ghost cursor takes over
 
     const resize = () => {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
+      isMobileRef.current = w < 768;
+
+      // On resize, if we haven't interacted yet, center the "resume" point
+      if (lastPosRef.current.x === 0 && lastPosRef.current.y === 0) {
+        lastPosRef.current = { x: w / 2, y: h / 2 };
+      }
       initParticles();
       wakeUp();
     };
@@ -73,6 +83,14 @@ const BackgroundEffect = () => {
 
       // Check for idle state
       const now = Date.now();
+      const isMobile = isMobileRef.current;
+      const idleDelay = isMobile ? 0 : 2500;
+
+      // On mobile, if no touch active (x = -9999), we want almost immediate idle (or respect the short delay)
+      // Actually, to fix the "gap", if we are mobile and NO touch is active, let's treat it as idle candidates
+      // The delay helps avoid flickering if touch is lost for a millisecond?
+      // But 200ms is short.
+
       if (now - lastInteractionTime.current > idleDelay) {
         isIdle.current = true;
       } else {
@@ -83,17 +101,38 @@ const BackgroundEffect = () => {
       let targetX = mouseRef.current.x;
       let targetY = mouseRef.current.y;
 
+      // Ensure lastPosRef is initialized
+      if (!lastPosRef.current || lastPosRef.current.x === undefined) {
+        lastPosRef.current = { x: w / 2, y: h / 2 };
+      }
+
       if (isIdle.current) {
         // Ghost cursor movement (Lissajous-like pattern)
-        // Center of screen
-        const centerX = w / 2;
-        const centerY = h / 2;
+
+        let centerX, centerY;
+
+        if (isMobile) {
+          // On mobile, resume from last touch position
+          centerX = lastPosRef.current.x;
+          centerY = lastPosRef.current.y;
+        } else {
+          // On desktop, default to center of screen
+          centerX = w / 2;
+          centerY = h / 2;
+        }
+
         // Wander radius
         const radiusX = w * 0.3;
         const radiusY = h * 0.3;
 
         targetX = centerX + Math.cos(timeRef.current * 0.7) * radiusX;
         targetY = centerY + Math.sin(timeRef.current * 1.1) * radiusY;
+      } else {
+        // If active, update last known position (for mobile resume)
+        // valid mouse position check
+        if (mouseRef.current.x > -500) {
+          lastPosRef.current = { x: mouseRef.current.x, y: mouseRef.current.y };
+        }
       }
 
       let totalVelocity = 0;
@@ -192,15 +231,13 @@ const BackgroundEffect = () => {
       });
 
       // Sleep Logic
-      // Only sleep if completely still AND (user left screen AND not idle-mode)
-      // Actually, if idle mode is on, we never sleep because ghost cursor keeps moving particles?
-      // Ghost cursor moves continuously, so particles near it move. `totalVelocity` > 0.
-      // So it will only sleep if user is gone AND we disable idle (which we don't).
-      // Or if checking idle takes no resources?
-      // Refined logic: If idle, we effectively never sleep because we WANT animation.
-      // If NOT idle (user active), we only sleep if user stops moving mouse AND particles settle.
+      // Only sleep on desktop if completely still
+      // On mobile, NEVER sleep because we want continuous animation
 
-      if (totalVelocity < 0.5 && !isIdle.current && mouseRef.current.x === -9999) {
+      const shouldSleep =
+        !isMobile && totalVelocity < 0.5 && !isIdle.current && mouseRef.current.x === -9999;
+
+      if (shouldSleep) {
         isSleeping.current = true;
       } else {
         animationFrameId.current = requestAnimationFrame(animate);
@@ -245,7 +282,7 @@ const BackgroundEffect = () => {
       lastTouchTime.current = Date.now();
       mouseRef.current.x = -9999;
       mouseRef.current.y = -9999;
-      lastInteractionTime.current = Date.now(); // Reset idle timer so it doesn't jump immediately to ghost if delay hasn't passed
+      lastInteractionTime.current = Date.now(); // Reset idle timer
     };
 
     window.addEventListener("resize", resize);
