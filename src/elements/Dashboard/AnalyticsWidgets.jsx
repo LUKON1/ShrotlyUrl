@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 // A more refined color palette fitting the "sky/blue" theme but diverse enough
@@ -25,14 +25,31 @@ const CustomTooltip = ({ active, payload }) => {
   return null;
 };
 
-const PieChartWidget = ({ data, title }) => {
-  const hasData = data && Object.keys(data).length > 0;
+const PieChartWidget = React.memo(({ data, title, t }) => {
+  const chartData = useMemo(() => {
+    const hasData = data && Object.keys(data).length > 0;
+    if (!hasData) return [{ name: "No Data", value: 1 }];
 
-  const chartData = hasData
-    ? Object.keys(data)
-        .map((key) => ({ name: key, value: data[key] }))
-        .sort((a, b) => b.value - a.value)
-    : [{ name: "No Data", value: 1 }];
+    const entries = Object.entries(data)
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value);
+
+    // Limit to 5 items + "Other" to prevent legend overflow
+    if (entries.length > 5) {
+      const topEntries = entries.slice(0, 5);
+      const otherValue = entries.slice(5).reduce((sum, item) => sum + item.value, 0);
+      if (otherValue > 0) {
+        topEntries.push({
+          name: t ? t("analytics.other") || "Other" : "Other",
+          value: otherValue,
+        });
+      }
+      return topEntries;
+    }
+    return entries;
+  }, [data, t]);
+
+  const hasData = data && Object.keys(data).length > 0;
 
   return (
     <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-200 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800">
@@ -64,7 +81,7 @@ const PieChartWidget = ({ data, title }) => {
             {hasData && (
               <Legend
                 verticalAlign="bottom"
-                height={36}
+                height={72} /* Increased to allow 2 rows */
                 iconType="circle"
                 wrapperStyle={{ fontSize: "12px", paddingTop: "10px" }}
               />
@@ -74,18 +91,20 @@ const PieChartWidget = ({ data, title }) => {
       </div>
     </div>
   );
-};
+});
 
-const ListWidget = ({ data, title }) => {
-  const hasData = data && Object.keys(data).length > 0;
-
-  const sortedData = hasData
-    ? Object.entries(data)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 8) // Top 8 items
-    : [];
+const ListWidget = React.memo(({ data, title }) => {
+  const sortedData = useMemo(() => {
+    const hasData = data && Object.keys(data).length > 0;
+    return hasData
+      ? Object.entries(data)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 8) // Top 8 items
+      : [];
+  }, [data]);
 
   const maxVal = sortedData.length > 0 ? sortedData[0][1] : 1;
+  const hasData = sortedData.length > 0;
 
   return (
     <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-200 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800">
@@ -125,17 +144,19 @@ const ListWidget = ({ data, title }) => {
       </div>
     </div>
   );
-};
+});
 
-const AnalyticsWidgets = ({ devices = {}, browsers = {}, countries = {}, os = {}, t }) => {
-  return (
-    <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-      <PieChartWidget data={devices} title={t("analytics.devices") || "Devices"} />
-      <PieChartWidget data={browsers} title={t("analytics.browsers") || "Browsers"} />
-      <PieChartWidget data={os} title={t("analytics.os") || "Operating Systems"} />
-      <ListWidget data={countries} title={t("analytics.countries") || "Countries"} />
-    </div>
-  );
-};
+const AnalyticsWidgets = React.memo(
+  ({ devices = {}, browsers = {}, countries = {}, os = {}, t }) => {
+    return (
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <PieChartWidget data={devices} title={t("analytics.devices") || "Devices"} t={t} />
+        <PieChartWidget data={browsers} title={t("analytics.browsers") || "Browsers"} t={t} />
+        <PieChartWidget data={os} title={t("analytics.os") || "Operating Systems"} t={t} />
+        <ListWidget data={countries} title={t("analytics.countries") || "Countries"} />
+      </div>
+    );
+  }
+);
 
 export default AnalyticsWidgets;

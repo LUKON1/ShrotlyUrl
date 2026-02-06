@@ -7,7 +7,7 @@ function Homepage() {
   const { t } = useTranslation();
   return (
     <PageWrapper>
-      <H1>{t('homepage.title')}</H1>
+      <H1>{t("homepage.title")}</H1>
       <ShortenerForm />
     </PageWrapper>
   );

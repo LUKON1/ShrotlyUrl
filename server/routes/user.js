@@ -26,16 +26,7 @@ router.post("/registr", regLimiter, async (req, res) => {
       pwd: hashedPwd,
     });
 
-    await newUser.save();
-
-    // Link anonymous URLs if provided
-    if (anonymousCodes && Array.isArray(anonymousCodes) && anonymousCodes.length > 0) {
-      await UrlModel.updateMany(
-        { shortCode: { $in: anonymousCodes }, userId: null },
-        { $set: { userId: newUser._id } }
-      );
-    }
-
+    // Generate tokens before saving to avoid double save
     const accessToken = jwt.sign(
       { userId: newUser._id, user: newUser.user },
       process.env.JWT_SECRET,
@@ -47,6 +38,15 @@ router.post("/registr", regLimiter, async (req, res) => {
     });
 
     newUser.refreshToken = refreshToken;
+
+    // Link anonymous URLs if provided
+    if (anonymousCodes && Array.isArray(anonymousCodes) && anonymousCodes.length > 0) {
+      await UrlModel.updateMany(
+        { shortCode: { $in: anonymousCodes }, userId: null },
+        { $set: { userId: newUser._id } }
+      );
+    }
+
     await newUser.save();
 
     res.cookie("jwt", refreshToken, {
@@ -59,7 +59,7 @@ router.post("/registr", regLimiter, async (req, res) => {
     res.status(201).json({ accessToken: accessToken, userId: newUser._id });
   } catch (err) {
     console.error("Error in /registr route:", err);
-    res.status(500).json({ error: "Server error", details: err.message });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -106,7 +106,7 @@ router.post("/login", loginLimiter, async (req, res) => {
     });
   } catch (err) {
     console.error("Error in /login route:", err);
-    res.status(500).json({ error: "Server error", details: err.message });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -178,7 +178,7 @@ router.post("/refresh", async (req, res) => {
     });
   } catch (err) {
     console.error("Error in /refresh route:", err);
-    res.status(500).json({ error: "Server error", details: err.message });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -216,7 +216,7 @@ router.post("/logout", async (req, res) => {
     res.sendStatus(204);
   } catch (err) {
     console.error("Error in /logout route:", err);
-    res.status(500).json({ error: "Server error", details: err.message });
+    res.status(500).json({ error: "Server error" });
   }
 });
 router.delete("/deleteuser", auth, async (req, res) => {
@@ -245,7 +245,7 @@ router.delete("/deleteuser", auth, async (req, res) => {
     res.status(200).json({ message: "User and all associated URLs deleted successfully" });
   } catch (err) {
     console.error("Error in /deleteuser route:", err);
-    res.status(500).json({ error: "Server error", details: err.message });
+    res.status(500).json({ error: "Server error" });
   }
 });
 

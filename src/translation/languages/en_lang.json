@@ -186,6 +186,7 @@
     "referrers": "Referrers",
     "os": "Operating Systems",
     "noData": "No data available",
+    "other": "Other",
     "exportToExcel": "Export to Excel",
     "ranges": {
       "last7Days": "Last 7 Days",
