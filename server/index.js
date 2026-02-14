@@ -52,6 +52,14 @@ app.use(
 );
 
 app.use(express.json());
+const mongoSanitize = require("express-mongo-sanitize");
+app.use((req, res, next) => {
+  const options = { replaceWith: "_" };
+  if (req.body) mongoSanitize.sanitize(req.body, options);
+  if (req.params) mongoSanitize.sanitize(req.params, options);
+  if (req.query) mongoSanitize.sanitize(req.query, options);
+  next();
+});
 app.use(cookie());
 
 const apiLimiter = require("./middleware/rateLimiter");
